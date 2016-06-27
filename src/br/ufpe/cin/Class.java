@@ -17,31 +17,28 @@ public class Class {
 	private Type tipo;
 	private String name;
 	private Metric comlexity;
-	private String extendses;
-	private Class extendType;
+	private Class inheritage;
 	private boolean ignored;
+	private boolean inProject;
 	private TypeClass typeClass;
 	private String filePath;
-	private List<String> annotations;
-	private List<Class> annotationsType;
+	private List<Class> annotations;
 	private Map<Class, Metric> connectivityStrength;
-	private List<String> interfaces;
 	private Map<String, Method> methods;
-	private Map<String, Variable> variables;
-	private Map<Variable, Class> variablesType;
-	private List<Class> interfacesType;
+	private List<Class> variables;
+	private List<Class> parameterizeds;
+	private List<Class> interfaces;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
 		setMethods(new HashMap<String, Method>());
-		this.setVariables(new HashMap<String, Variable>());
-		this.variablesType = new HashMap<Variable, Class>();
-		this.setInterfaces(new ArrayList<String>());
-		this.setInterfacesType(new ArrayList<Class>());
+		this.setVariables(new ArrayList<Class>());
+		this.setParameterizeds(new ArrayList<Class>());
+		this.setInterfaces(new ArrayList<Class>());
 		this.comlexity = new Metric(Metric.Type.complexity);
-		this.annotations = new ArrayList<String>();
-		this.annotationsType = new ArrayList<Class>();
+		this.annotations = new ArrayList<Class>();
 		this.ignored = false;
+		this.inProject = false;
 	}
 	
 	public boolean equals(Object object) {
@@ -79,14 +76,6 @@ public class Class {
 		this.comlexity = comlexity;
 	}
 
-	public String getExtendses() {
-		return extendses;
-	}
-
-	public void setExtendses(String extendses) {
-		this.extendses = extendses;
-	}
-
 	public boolean isIgnored() {
 		return ignored;
 	}
@@ -119,14 +108,6 @@ public class Class {
 		this.connectivityStrength = connectivityStrength;
 	}
 
-	public List<String> getInterfaces() {
-		return interfaces;
-	}
-
-	public void setInterfaces(List<String> interfaces) {
-		this.interfaces = interfaces;
-	}
-
 	public Map<String, Method> getMethods() {
 		return methods;
 	}
@@ -135,52 +116,84 @@ public class Class {
 		this.methods = methods;
 	}
 
-	public Map<String, Variable> getVariables() {
+	public List<Class> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(Map<String, Variable> variables) {
+	public void setVariables(List<Class> variables) {
 		this.variables = variables;
 	}
 
-	public Map<Variable, Class> getVariablesType() {
-		return variablesType;
+	public List<Class> getInterfaces() {
+		return interfaces;
 	}
 
-	public void setVariablesType(Map<Variable, Class> variablesType) {
-		this.variablesType = variablesType;
+	public void setInterfaces(List<Class> interfacesType) {
+		this.interfaces = interfacesType;
 	}
 
-	public List<Class> getInterfacesType() {
-		return interfacesType;
-	}
-
-	public void setInterfacesType(List<Class> interfacesType) {
-		this.interfacesType = interfacesType;
-	}
-
-	public List<Class> getAnnotationsType() {
-		return annotationsType;
-	}
-
-	public void setAnnotationsType(List<Class> annotationsType) {
-		this.annotationsType = annotationsType;
-	}
-
-	public Class getExtendType() {
-		return extendType;
-	}
-
-	public void setExtendType(Class extendType) {
-		this.extendType = extendType;
-	}
-
-	public List<String> getAnnotations() {
+	public List<Class> getAnnotations() {
 		return annotations;
 	}
 
-	public void setAnnotations(List<String> annotations) {
-		this.annotations = annotations;
+	public void setAnnotations(List<Class> annotationsType) {
+		this.annotations = annotationsType;
+	}
+	
+	public Class getInheritage() {
+		return inheritage;
 	}
 
+	public void setInheritage(Class inheritage) {
+		this.inheritage = inheritage;
+	}
+
+	public List<Class> getParameterizeds() {
+		return parameterizeds;
+	}
+
+	public void setParameterizeds(List<Class> parameterizeds) {
+		this.parameterizeds = parameterizeds;
+	}
+
+	public boolean isInProject() {
+		return inProject;
+	}
+
+	public void setInProject(boolean inProject) {
+		this.inProject = inProject;
+	}
+
+	public Class getVariable(String parameter, List<String> types) {
+		for(Class variable : this.variables){
+			if(!variable.getName().equals(parameter))
+				return null;
+			
+			if(variable.getParameterizeds().size() != types.size())
+				return null;
+			
+			for(int i = 0; i < variable.getParameterizeds().size(); i++){
+				if(!variable.getParameterizeds().get(i).getName().equals(types.get(i)))
+					return null;
+			}
+			
+			return variable;
+		}
+		return null;
+	}
+	
+	public Method getMethod(String name, List<Class> parameters){
+		String fullName = Method.getFullName(name, parameters);
+		Method method = this.getMethods().get(fullName);
+		
+		if(method ==null){
+			method = new Method();
+			method.setName(name);
+			
+			for(Class parameter : parameters)
+				method.getParametersType().add(parameter);
+		}
+		
+		return method;
+	}
 }

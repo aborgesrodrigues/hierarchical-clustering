@@ -1,22 +1,17 @@
 package br.ufpe.cin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Variable {
-	private String name;
 	private boolean primitive;
-	private int quantidade;
 	private boolean keepTogether;
-	private Class classType;
+	private Class nameType;
+	private List<Class> classTypes;
 	
 	public Variable(){
 		this.keepTogether = false;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		this.classTypes = new ArrayList<Class>();
 	}
 
 	public boolean isPrimitive() {
@@ -27,14 +22,6 @@ public class Variable {
 		this.primitive = primitive;
 	}
 
-	public int getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
-	}
-
 	public boolean isKeepTogether() {
 		return keepTogether;
 	}
@@ -42,14 +29,40 @@ public class Variable {
 	public void setKeepTogether(boolean keepTogether) {
 		this.keepTogether = keepTogether;
 	}
-
-	public Class getClassType() {
-		return classType;
-	}
-
-	public void setClassType(Class classType) {
-		this.classType = classType;
-	}
 	
+	public boolean equals(Object object) {
+	    if(object instanceof Variable) {
+	    	Variable other = ((Variable) object);
+	    	if(!this.getNameType().equals(other.getNameType()))
+	    		return false;
+	    	
+	    	if(this.getClassTypes().size() != other.getClassTypes().size())
+	    		return false;
+	    	
+	    	for(int i = 0; i < this.getClassTypes().size(); i++){
+	    		if(!this.getClassTypes().get(i).equals(other.getClassTypes().get(i)))
+	    			return false;
+	    	}
+	    	return true;
+	    } else {
+	        return false;
+	    }
+	}
+
+	public List<Class> getClassTypes() {
+		return classTypes;
+	}
+
+	public void setClassTypes(List<Class> classTypes) {
+		this.classTypes = classTypes;
+	}
+ 
+	public Class getNameType() {
+		return nameType;
+	}
+
+	public void setNameType(Class nameType) {
+		this.nameType = nameType;
+	}
 	
 }

@@ -1,41 +1,37 @@
 package br.ufpe.cin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Method  implements Cloneable{
 	private Class classType;
 	private String name;
-	private Map<Variable, Class> parametersType;
-	private Map<Variable, Class> variablesType;
-	private Map<Variable, Class> instantiationsType;
 	private Class returnType;
-	private String returnClass;
-	private Map<String, Variable> parameters;
-	private Map<String, Variable> variables;
-	private Map<String, Variable> instantiations;
+	private List<Class> parametersType;
+	private List<Class> ClasssType;
+	private List<Class> instantiationsType;
 	private Map<String, Method> methodsInvocation;
 	
 	public Method(){
-		this.setParametersType(new HashMap<Variable, Class>());
-		this.setVariablesType(new HashMap<Variable, Class>());
-		this.setInstantiationsType(new HashMap<Variable, Class>());
-		this.setParameters(new HashMap<String, Variable>());
-		this.setVariables(new HashMap<String, Variable>());
-		this.setInstantiations(new HashMap<String, Variable>());
+		this.parametersType = new ArrayList<Class>();
+		this.ClasssType = new ArrayList<Class>();
+		this.instantiationsType = new ArrayList<Class>();
 		this.setMethodsInvocation(new HashMap<String, Method>());
 	}
 	
     
 	public boolean equals(Object object) {
 	    if(object instanceof Method) {
-	    	if(this.getClassType().equals(((Method) object).getClassType()) && this.getName().equals(((Method) object).getName())){
-	    		for(String parameter : this.getParameters().keySet()){
-	    			for(String parameterAux : ((Method) object).getParameters().keySet()){
-	    				if(!parameter.equals(parameterAux))
-	    					return false;
-	    			}
-	    			
+	    	Method other = ((Method) object);
+	    	if(this.getClassType().equals(other.getClassType()) && this.getName().equals(other.getName())){
+	    		if(this.getParametersType().size() !=  other.getParametersType().size())
+	    			return false;
+	    		
+	    		for(int i = 0; i < this.getParametersType().size(); i++){
+	    			if(!this.getParametersType().get(i).equals(other.getParametersType().get(i)))
+	    				return false;
 	    		}
 	    		return true;
 	    	}
@@ -44,6 +40,25 @@ public class Method  implements Cloneable{
 	    } else {
 	        return false;
 	    }
+	}
+
+	
+	public Class getParameter(String parameter, List<String> types) {
+		for(Class classType : this.getParametersType()){
+			if(!classType.getName().equals(parameter))
+				return null;
+			
+			if(classType.getParameterizeds().size() != types.size())
+				return null;
+			
+			for(int i = 0; i < classType.getParameterizeds().size(); i++){
+				if(!classType.getParameterizeds().get(i).getName().equals(types.get(i)))
+					return null;
+			}
+			
+			return classType;
+		}
+		return null;
 	}
 
 
@@ -67,36 +82,6 @@ public class Method  implements Cloneable{
 	}
 
 
-	public Map<Variable, Class> getParametersType() {
-		return parametersType;
-	}
-
-
-	public void setParametersType(Map<Variable, Class> parametersType) {
-		this.parametersType = parametersType;
-	}
-
-
-	public Map<Variable, Class> getVariablesType() {
-		return variablesType;
-	}
-
-
-	public void setVariablesType(Map<Variable, Class> variablesType) {
-		this.variablesType = variablesType;
-	}
-
-
-	public Map<Variable, Class> getInstantiationsType() {
-		return instantiationsType;
-	}
-
-
-	public void setInstantiationsType(Map<Variable, Class> instantiationsType) {
-		this.instantiationsType = instantiationsType;
-	}
-
-
 	public Class getReturnType() {
 		return returnType;
 	}
@@ -107,23 +92,33 @@ public class Method  implements Cloneable{
 	}
 
 
-	public String getReturnClass() {
-		return returnClass;
+	public List<Class> getParametersType() {
+		return parametersType;
 	}
 
 
-	public void setReturnClass(String returnClass) {
-		this.returnClass = returnClass;
+	public void setParametersType(List<Class> parametersType) {
+		this.parametersType = parametersType;
 	}
 
 
-	public Map<String, Variable> getInstantiations() {
-		return instantiations;
+	public List<Class> getClasssType() {
+		return ClasssType;
 	}
 
 
-	public void setInstantiations(Map<String, Variable> instantiations) {
-		this.instantiations = instantiations;
+	public void setClasssType(List<Class> ClasssType) {
+		this.ClasssType = ClasssType;
+	}
+
+
+	public List<Class> getInstantiationsType() {
+		return instantiationsType;
+	}
+
+
+	public void setInstantiationsType(List<Class> instantiationsType) {
+		this.instantiationsType = instantiationsType;
 	}
 
 
@@ -136,24 +131,48 @@ public class Method  implements Cloneable{
 		this.methodsInvocation = methodsInvocation;
 	}
 
-
-	public Map<String, Variable> getParameters() {
-		return parameters;
+	public String getFullName(){
+		String fullyName = this.getName();
+		
+		for(Class parameter: this.getParametersType()){
+			if(!fullyName.isEmpty())
+				fullyName += ",";
+			
+			fullyName = parameter.getName();
+			
+			if(parameter.getParameterizeds().size() > 0){
+				fullyName += "<";
+				
+				for(Class parameterized : parameter.getParameterizeds())
+					fullyName += parameterized.getName();
+				
+				fullyName += ">";
+			}
+		}
+		
+		return fullyName;
 	}
-
-
-	public void setParameters(Map<String, Variable> parameters) {
-		this.parameters = parameters;
+	
+	public static String getFullName(String name, List<Class> parameters){
+		String fullyName = name;
+		
+		for(Class parameter: parameters){
+			if(!fullyName.isEmpty())
+				fullyName += ",";
+			
+			fullyName = parameter.getName();
+			
+			if(parameters.size() > 0){
+				fullyName += "<";
+				
+				for(Class parameterized : parameter.getParameterizeds())
+					fullyName += parameterized.getName();
+				
+				fullyName += ">";
+			}
+		}
+		
+		return fullyName;
 	}
-
-
-	public Map<String, Variable> getVariables() {
-		return variables;
-	}
-
-
-	public void setVariables(Map<String, Variable> variables) {
-		this.variables = variables;
-	}
-
+	
 }
