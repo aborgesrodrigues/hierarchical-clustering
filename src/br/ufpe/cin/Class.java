@@ -196,4 +196,43 @@ public class Class {
 		
 		return method;
 	}
+	
+	public String getFullName(){
+		String fullyName = "";
+				
+		for(Class parameter: this.getParameterizeds()){
+			if(!fullyName.isEmpty())
+				fullyName += ",";
+			
+			fullyName += parameter.getName();
+			
+			if(parameter.getParameterizeds().size() > 0){
+				fullyName += "<";
+				
+				for(Class parameterized : parameter.getParameterizeds())
+					fullyName += parameterized.getName();
+				
+				fullyName += ">";
+			}
+		}
+		
+		fullyName = this.getName() + fullyName;
+		
+		if(this.inheritage != null)
+			fullyName += " extends " + this.inheritage.getFullName();
+		
+		if(this.getInterfaces().size() > 0){
+			String interfaces = "";
+			for(Class interfaceAux : this.getInterfaces()){
+				if(!interfaces.isEmpty())
+					interfaces += ",";
+				
+				interfaces += interfaceAux.getFullName();
+			}
+			
+			fullyName += " implements " + interfaces;
+		}
+		
+		return fullyName;
+	}
 }

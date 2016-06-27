@@ -132,7 +132,7 @@ public class Method  implements Cloneable{
 	}
 
 	public String getFullName(){
-		String fullyName = this.getName();
+		String fullyName = "";
 		
 		for(Class parameter: this.getParametersType()){
 			if(!fullyName.isEmpty())
@@ -150,11 +150,13 @@ public class Method  implements Cloneable{
 			}
 		}
 		
+		fullyName = this.getName() + "(" + fullyName + ")";
+		
 		return fullyName;
 	}
 	
 	public static String getFullName(String name, List<Class> parameters){
-		String fullyName = name;
+		String fullyName = "";
 		
 		for(Class parameter: parameters){
 			if(!fullyName.isEmpty())
@@ -171,6 +173,8 @@ public class Method  implements Cloneable{
 				fullyName += ">";
 			}
 		}
+
+		fullyName = name + "(" + fullyName + ")";
 		
 		return fullyName;
 	}
