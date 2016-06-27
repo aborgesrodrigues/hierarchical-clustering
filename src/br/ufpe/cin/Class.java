@@ -200,26 +200,31 @@ public class Class {
 	public String getFullName(){
 		String fullyName = "";
 				
-		for(Class parameter: this.getParameterizeds()){
-			if(!fullyName.isEmpty())
-				fullyName += ",";
-			
-			fullyName += parameter.getName();
-			
-			if(parameter.getParameterizeds().size() > 0){
-				fullyName += "<";
+		if(this.getParameterizeds().size() > 0){
+			fullyName += "<";
+			for(Class parameter: this.getParameterizeds()){
+				if(!fullyName.equals("<"))
+					fullyName += ",";
 				
-				for(Class parameterized : parameter.getParameterizeds())
-					fullyName += parameterized.getName();
+				fullyName += parameter.getName();
 				
-				fullyName += ">";
+				if(parameter.getParameterizeds().size() > 0){
+					fullyName += "<";
+					
+					for(Class parameterized : parameter.getParameterizeds())
+						fullyName += parameterized.getName();
+					
+					fullyName += ">";
+				}
 			}
+			fullyName += ">";
 		}
 		
+		System.out.println("1fullyName " + fullyName);
 		fullyName = this.getName() + fullyName;
-		
+		System.out.println("2fullyName " + fullyName);
 		if(this.inheritage != null)
-			fullyName += " extends " + this.inheritage.getFullName();
+			fullyName += " extends " + this.inheritage.getName();
 		
 		if(this.getInterfaces().size() > 0){
 			String interfaces = "";
@@ -227,12 +232,12 @@ public class Class {
 				if(!interfaces.isEmpty())
 					interfaces += ",";
 				
-				interfaces += interfaceAux.getFullName();
+				interfaces += interfaceAux.getName();
 			}
 			
 			fullyName += " implements " + interfaces;
 		}
-		
+		System.out.println("3fullyName " + fullyName);
 		return fullyName;
 	}
 }
