@@ -107,7 +107,6 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 										if(!node.isMemberTypeDeclaration() && !node.isLocalTypeDeclaration()){
 											classType = getClassType(node.resolveBinding().getBinaryName());
 											
-											//classType.setName(node.resolveBinding().getBinaryName());
 											classType.setFilePath(unit.getPath().toOSString());
 											classType.setInProject(true);
 											
@@ -118,7 +117,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											else if(config.getEntityPackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.entity);*/
 											
-											System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length);
+											//System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length);
 											for(IAnnotationBinding annotation : node.resolveBinding().getAnnotations()){
 												if(annotation.getName().toString().equals("IdClass")){
 													//System.out.println("annotation " + " - " + annotation.getAnnotationType().getBinaryName() + getType(annotation.getAnnotationType()));
@@ -134,17 +133,17 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 												
 												classType.setInheritage(inheritage);
 												
-												System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()));
+												//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()));
 											}
 											
 											for(Object object : node.superInterfaceTypes()){
 												for(String interfaceType : getType(object))
 													classType.getInterfaces().add(getClassType(interfaceType));
 												
-												System.out.println("--implements "  + getType(object));
+												//System.out.println("--implements "  + getType(object));
 											}
 											
-											System.out.println("classModel " + classType.getFullName());
+											//System.out.println("classModel " + classType.getFullName());
 										}
 										
 										return true;
@@ -175,18 +174,18 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								    	methodType.getParametersType().addAll(parameters);
 								    	
 							    		
-							    		System.out.print(" return " + (!node.isConstructor() ? node.getReturnType2().resolveBinding().getBinaryName() + "*" + getType(node.getReturnType2()) : "null"));
+							    		//System.out.print(" return " + (!node.isConstructor() ? node.getReturnType2().resolveBinding().getBinaryName() + "*" + getType(node.getReturnType2()) : "null"));
 							    		
 							    		for(Object parameter : node.parameters()){
 							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
-							    			System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
+							    			//System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
 							    		}
 							    		
-							    		//classType.getMethods().put(methodType.getFullName(), methodType);
+							    		classType.getMethods().put(methodType.getFullName(), methodType);
 							    		
-							    		System.out.println("");
+							    		//System.out.println("");
 							    		
-							    		System.out.println("--methodModel " + methodType.getFullName());
+							    		//System.out.println("--methodModel " + methodType.getFullName());
 								    	return true;
 								    }
 								    
@@ -196,6 +195,9 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								    
 								    public boolean visit(MethodInvocation node)
 								    {
+								    	if(methodType == null)
+								    		return false;
+								    	
 								    	Class classInvocation = null;
 								    	if(node.getExpression() != null)
 								    		classInvocation = getClassType(node.getExpression().resolveTypeBinding().getBinaryName());
@@ -209,32 +211,29 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								        	parameters.add(getClassType(parameter.getBinaryName(), getType(typeFromBinding(node.getAST(), parameter))));
 							    		}
 								    	
-								        System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
+								        //System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
 								        
-								        Method method = classInvocation.getMethod(node.resolveMethodBinding().getName(), parameters);
+								        Method methodInvocation = classInvocation.getMethod(node.resolveMethodBinding().getName(), parameters);
 								        
 								        for(ITypeBinding parameter : node.resolveMethodBinding().getParameterTypes()){
 								        	//String parameterAux = typeFromBinding(node.getAST(), parameter).toString().replace(parameter.getBinaryName(), "").replace("<", "").replace(">", "");
 								        	Type type = typeFromBinding(node.getAST(), parameter);
-								        	System.out.print(" paramInvocation " + parameter.getBinaryName() + " - " + " - paramInvocationType(" +  getType(type) + ")");
+								        	//System.out.print(" paramInvocation " + parameter.getBinaryName() + " - " + " - paramInvocationType(" +  getType(type) + ")");
 							    		}
 								        
-								        /*for(Object parameter : node.typeArguments()){
-							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
-							    			System.out.print(" paramInvocation " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
-							    		}*/
+								        //System.out.println("");
 								        
-								        System.out.println("");
+								        //System.out.println("----methodInvocationModel " + methodInvocation.getFullName() + " - " + (methodType == null ? "null" : "not null"));
 								        
-								        System.out.println("----methodInvocationModel " + method.getFullName());
-								        
+							        	methodType.getMethodsInvocation().put(methodInvocation.getFullName(), methodInvocation);
+							        	
 								        return true;
 								    }
 								    
 								    
 									public boolean visit(VariableDeclarationFragment node) {
 										List<String> types = getType(typeFromBinding(node.getAST(), node.resolveBinding().getType()));
-										System.out.println("VariableDeclarationFragment " + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
+										//System.out.println("VariableDeclarationFragment " + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
 										
 										if(types.contains(node.resolveBinding().getType().getBinaryName()))
 											types.remove(node.resolveBinding().getType().getBinaryName());
@@ -246,7 +245,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 										else
 											classType.getVariables().add(variable);
 										
-										System.out.println("VariableDeclarationFragmentModel " + variable.getFullName());
+										//System.out.println("VariableDeclarationFragmentModel " + variable.getFullName());
 										return true;
 									}
 						    
@@ -261,25 +260,27 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    	}
 	    }
 	    
-	    /*
+	    
 	    for(Class classAux : classes.values()){
-    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size());
-    		
-    		for(Class variable : classAux.getVariables()){
-    			System.out.println("**Variable " + variable.getFullName());
-    		}
-    		
-    		for(Method methodAux : classAux.getMethods().values()){
-    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " instantiations " + methodAux.getInstantiationsType().size());
-    			for(Class variable : methodAux.getInstantiationsType()){
-	    			System.out.println("****Variable " + variable.getFullName());
+	    	if(classAux.isInProject()){
+	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size());
+	    		
+	    		for(Class variable : classAux.getVariables()){
+	    			System.out.println("**Variable " + variable.getFullName());
 	    		}
-    			
-    			for(Method methodInvocation : methodAux.getMethodsInvocation().values()){
-    				System.out.println("--MethodInvocation " + methodInvocation.getFullName());
-    			}
-    		}
-	    }*/
+	    		
+	    		for(Method methodAux : classAux.getMethods().values()){
+	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " instantiations " + methodAux.getInstantiationsType().size());
+	    			for(Class variable : methodAux.getInstantiationsType()){
+		    			System.out.println("****Variable " + variable.getFullName());
+		    		}
+	    			
+	    			for(Method methodInvocation : methodAux.getMethodsInvocation().values()){
+	    				System.out.println("----MethodInvocation " + methodInvocation.getClassType().getName() + " . " + methodInvocation.getFullName());
+	    			}
+	    		}
+	    	}
+	    }
 		return null;
 	}
 	

@@ -189,6 +189,7 @@ public class Class {
 		if(method ==null){
 			method = new Method();
 			method.setName(name);
+			method.setClassType(this);
 			
 			for(Class parameter : parameters)
 				method.getParametersType().add(parameter);
@@ -220,9 +221,8 @@ public class Class {
 			fullyName += ">";
 		}
 		
-		System.out.println("1fullyName " + fullyName);
 		fullyName = this.getName() + fullyName;
-		System.out.println("2fullyName " + fullyName);
+		
 		if(this.inheritage != null)
 			fullyName += " extends " + this.inheritage.getName();
 		
@@ -237,7 +237,6 @@ public class Class {
 			
 			fullyName += " implements " + interfaces;
 		}
-		System.out.println("3fullyName " + fullyName);
 		return fullyName;
 	}
 }
