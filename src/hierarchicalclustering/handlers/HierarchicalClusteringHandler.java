@@ -128,19 +128,29 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 												}
 											}
 											
-											if(node.getSuperclassType() != null && node.getSuperclassType().resolveBinding() != null){											
-												Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), getType(node.getSuperclassType()));
+											if(!node.isInterface()){
+												if(node.getSuperclassType() != null && node.getSuperclassType().resolveBinding() != null){											
+													Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), getType(node.getSuperclassType()));
+													
+													classType.setInheritage(inheritage);
+													
+													//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()));
+												}
 												
-												classType.setInheritage(inheritage);
-												
-												//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()));
+												for(Object object : node.superInterfaceTypes()){
+													for(String interfaceType : getType(object))
+														classType.getInterfaces().add(getClassType(interfaceType));
+													
+													//System.out.println("--implements "  + getType(object));
+												}
 											}
-											
-											for(Object object : node.superInterfaceTypes()){
-												for(String interfaceType : getType(object))
-													classType.getInterfaces().add(getClassType(interfaceType));
-												
-												//System.out.println("--implements "  + getType(object));
+											else{
+												if(node.superInterfaceTypes().size() > 0){
+													Type type = (Type)node.superInterfaceTypes().get(0);
+													System.out.println("&&&& " + type.resolveBinding().getBinaryName() + " - " + getType(node.superInterfaceTypes().get(0)));
+													//String superClass = getType(node.superInterfaceTypes().get(0)).get(0);
+													classType.setInheritage(getClassType(type.resolveBinding().getBinaryName(), getType(type)));
+												}
 											}
 											
 											//System.out.println("classModel " + classType.getFullName());
@@ -160,7 +170,11 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
 							    			//System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
 							    			
-							    			parameters.add(getClassType(variableDeclaration.resolveBinding().toString(), getType(variableDeclaration.getType())));
+							    			List<String> parametersTypes = getType(variableDeclaration.getType());
+							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().toString()))
+							    				parametersTypes.remove(variableDeclaration.resolveBinding().toString());
+							    			
+							    			parameters.add(getClassType(variableDeclaration.resolveBinding().toString(), parametersTypes));
 							    		}
 								    	
 								    	methodType = classType.getMethod(node.getName().toString(), parameters);
@@ -208,7 +222,12 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								    	
 								    	for(ITypeBinding parameter : node.resolveMethodBinding().getParameterTypes()){
 								        	//String parameterAux = typeFromBinding(node.getAST(), parameter).toString().replace(parameter.getBinaryName(), "").replace("<", "").replace(">", "");
-								        	parameters.add(getClassType(parameter.getBinaryName(), getType(typeFromBinding(node.getAST(), parameter))));
+								    		
+							    			List<String> parametersTypes = getType(typeFromBinding(node.getAST(), parameter));
+							    			if(parametersTypes.contains(parameter.getBinaryName()))
+							    				parametersTypes.remove(parameter.getBinaryName());
+							    			
+								        	parameters.add(getClassType(parameter.getBinaryName(), parametersTypes));
 							    		}
 								    	
 								        //System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
@@ -270,7 +289,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    		}
 	    		
 	    		for(Method methodAux : classAux.getMethods().values()){
-	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " instantiations " + methodAux.getInstantiationsType().size());
+	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " - parameters " + methodAux.getParametersType().size() + " - instantiations " + methodAux.getInstantiationsType().size());
 	    			for(Class variable : methodAux.getInstantiationsType()){
 		    			System.out.println("****Variable " + variable.getFullName());
 		    		}

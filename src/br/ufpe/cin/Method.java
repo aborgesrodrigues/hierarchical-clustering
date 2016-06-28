@@ -138,7 +138,7 @@ public class Method  implements Cloneable{
 			if(!fullyName.isEmpty())
 				fullyName += ",";
 			
-			fullyName = parameter.getName();
+			fullyName += parameter.getName();
 			
 			if(parameter.getParameterizeds().size() > 0){
 				fullyName += "<";
