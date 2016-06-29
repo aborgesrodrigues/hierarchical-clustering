@@ -20,6 +20,7 @@ public class Class {
 	private Class inheritage;
 	private boolean ignored;
 	private boolean inProject;
+	private boolean primitiveType;
 	private TypeClass typeClass;
 	private String filePath;
 	private List<Class> annotations;
@@ -39,6 +40,7 @@ public class Class {
 		this.annotations = new ArrayList<Class>();
 		this.ignored = false;
 		this.inProject = false;
+		this.primitiveType = false;
 	}
 	
 	public boolean equals(Object object) {
@@ -238,5 +240,13 @@ public class Class {
 			fullyName += " implements " + interfaces;
 		}
 		return fullyName;
+	}
+
+	public boolean isPrimitiveType() {
+		return primitiveType;
+	}
+
+	public void setPrimitiveType(boolean primitiveType) {
+		this.primitiveType = primitiveType;
 	}
 }

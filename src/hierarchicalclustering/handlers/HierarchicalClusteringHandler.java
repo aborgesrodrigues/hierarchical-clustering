@@ -147,7 +147,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											else{
 												if(node.superInterfaceTypes().size() > 0){
 													Type type = (Type)node.superInterfaceTypes().get(0);
-													System.out.println("&&&& " + type.resolveBinding().getBinaryName() + " - " + getType(node.superInterfaceTypes().get(0)));
+													//System.out.println("&&&& " + type.resolveBinding().getBinaryName() + " - " + getType(node.superInterfaceTypes().get(0)));
 													//String superClass = getType(node.superInterfaceTypes().get(0)).get(0);
 													classType.setInheritage(getClassType(type.resolveBinding().getBinaryName(), getType(type)));
 												}
@@ -171,33 +171,37 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 							    			//System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
 							    			
 							    			List<String> parametersTypes = getType(variableDeclaration.getType());
-							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().toString()))
-							    				parametersTypes.remove(variableDeclaration.resolveBinding().toString());
+							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
+							    				parametersTypes.remove(variableDeclaration.resolveBinding().getName());
 							    			
-							    			parameters.add(getClassType(variableDeclaration.resolveBinding().toString(), parametersTypes));
+							    			Class parameterType = getClassType(variableDeclaration.resolveBinding().getName(), parametersTypes);
+							    			parameterType.setPrimitiveType(variableDeclaration.getType().isPrimitiveType());
+							    			
+							    			parameters.add(parameterType);
 							    		}
 								    	
 								    	methodType = classType.getMethod(node.getName().toString(), parameters);
-								    	methodType.setName(node.getName().toString());
+								    	methodType.setName(node.getName().getFullyQualifiedName());
 								    	methodType.setClassType(classType);
-								    	if(!node.isConstructor())
-								    		methodType.setReturnType(getClassType(node.getReturnType2().resolveBinding().getBinaryName(), getType(node.getReturnType2())));
+								    	if(!node.isConstructor()){
+								    		Class returnType = getClassType(node.getReturnType2().resolveBinding().getBinaryName(), getType(node.getReturnType2()));
+								    		returnType.setPrimitiveType(node.getReturnType2().resolveBinding().isPrimitive());
+								    		
+								    		methodType.setReturnType(returnType);
+								    	}
 								    	else
-								    		methodType.setReturnType(null);
-								    	
-								    	methodType.getParametersType().addAll(parameters);
-								    	
+								    		methodType.setReturnType(null);								    	
 							    		
-							    		//System.out.print(" return " + (!node.isConstructor() ? node.getReturnType2().resolveBinding().getBinaryName() + "*" + getType(node.getReturnType2()) : "null"));
+							    		/*System.out.print(" return " + (!node.isConstructor() ? node.getReturnType2().resolveBinding().getBinaryName() + "*" + getType(node.getReturnType2()) : "null"));
+							    		System.out.print(node.getName().getFullyQualifiedName());
 							    		
 							    		for(Object parameter : node.parameters()){
 							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
-							    			//System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
+							    			System.out.print(" param " + variableDeclaration.resolveBinding().getName() + " - " + getType(variableDeclaration.getType()));
 							    		}
+							    		System.out.println("");*/
 							    		
 							    		classType.getMethods().put(methodType.getFullName(), methodType);
-							    		
-							    		//System.out.println("");
 							    		
 							    		//System.out.println("--methodModel " + methodType.getFullName());
 								    	return true;
@@ -227,12 +231,15 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 							    			if(parametersTypes.contains(parameter.getBinaryName()))
 							    				parametersTypes.remove(parameter.getBinaryName());
 							    			
-								        	parameters.add(getClassType(parameter.getBinaryName(), parametersTypes));
+							    			Class classParameter = getClassType(parameter.getBinaryName(), parametersTypes); 
+							    			classParameter.setPrimitiveType(parameter.isPrimitive());
+							    			
+								        	parameters.add(classParameter);
 							    		}
-								    	
-								        //System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
 								        
 								        Method methodInvocation = classInvocation.getMethod(node.resolveMethodBinding().getName(), parameters);
+								        
+								        /*System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
 								        
 								        for(ITypeBinding parameter : node.resolveMethodBinding().getParameterTypes()){
 								        	//String parameterAux = typeFromBinding(node.getAST(), parameter).toString().replace(parameter.getBinaryName(), "").replace("<", "").replace(">", "");
@@ -240,7 +247,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								        	//System.out.print(" paramInvocation " + parameter.getBinaryName() + " - " + " - paramInvocationType(" +  getType(type) + ")");
 							    		}
 								        
-								        //System.out.println("");
+								        System.out.println("");*/
 								        
 								        //System.out.println("----methodInvocationModel " + methodInvocation.getFullName() + " - " + (methodType == null ? "null" : "not null"));
 								        
@@ -258,6 +265,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											types.remove(node.resolveBinding().getType().getBinaryName());
 										
 										Class variable = getClassType(node.resolveBinding().getType().getBinaryName(), types);
+										variable.setPrimitiveType(node.resolveBinding().getType().isPrimitive());
 										
 										if(methodType != null)
 											methodType.getInstantiationsType().add(variable);
@@ -282,7 +290,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    
 	    for(Class classAux : classes.values()){
 	    	if(classAux.isInProject()){
-	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size());
+	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size() + " primitive " + classAux.isPrimitiveType());
 	    		
 	    		for(Class variable : classAux.getVariables()){
 	    			System.out.println("**Variable " + variable.getFullName());
@@ -291,7 +299,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    		for(Method methodAux : classAux.getMethods().values()){
 	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " - parameters " + methodAux.getParametersType().size() + " - instantiations " + methodAux.getInstantiationsType().size());
 	    			for(Class variable : methodAux.getInstantiationsType()){
-		    			System.out.println("****Variable " + variable.getFullName());
+		    			System.out.println("****Variable " + variable.getFullName() + " primitive " + classAux.isPrimitiveType());
 		    		}
 	    			
 	    			for(Method methodInvocation : methodAux.getMethodsInvocation().values()){
