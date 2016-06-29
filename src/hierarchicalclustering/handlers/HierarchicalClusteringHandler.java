@@ -37,6 +37,9 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 import br.ufpe.cin.Class;
 import br.ufpe.cin.Method;
@@ -60,6 +63,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		System.out.println("=======" + System.getenv("teste"));
+		
 	    IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	    IWorkspaceRoot root = workspace.getRoot();
 	    // Get all projects in the workspace
