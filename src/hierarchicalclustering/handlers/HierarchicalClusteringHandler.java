@@ -138,7 +138,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 													
 													classType.setInheritage(inheritage);
 													
-													//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()));
+													//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()) + " - " + getType(node.getSuperclassType().resolveBinding()));
 												}
 												
 												for(Object object : node.superInterfaceTypes()){
@@ -265,8 +265,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 										List<String> types = getType(typeFromBinding(node.getAST(), node.resolveBinding().getType()));
 										//System.out.println("VariableDeclarationFragment " + classType.getName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
 										
-										//if(types.contains(node.resolveBinding().getType().getBinaryName()))
-										//	types.remove(node.resolveBinding().getType().getBinaryName());
+										if(types.contains(node.resolveBinding().getType().getBinaryName()))
+											types.remove(node.resolveBinding().getType().getBinaryName());
 										
 										Class variable = getClassType(node.resolveBinding().getType().getBinaryName(), types);
 										variable.setPrimitiveType(node.resolveBinding().getType().isPrimitive());
@@ -276,7 +276,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 										else
 											classType.getVariables().add(variable);
 										
-										//System.out.println("VariableDeclarationFragmentModel " + variable.getFullName());
+										//System.out.println("VariableDeclarationFragmentModel " + variable.getFullName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types);
 										return true;
 									}
 						    
@@ -500,6 +500,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     	double primitiveValue = 0.0;
     	double abstractValue = 0.0;
     	
+    	System.out.println("calculo " + classe.getFullName() + " - " + " variables - " + classe.getVariables().size());
+    	
     	if(calculated.contains(classe))//case of having cyclic relation
     		return classe.getComlexity().getValor();
     	
@@ -507,6 +509,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     		return classe.getComlexity().getValor();
     	
     	if(classe.getInheritage() != null){
+    		calculated.add(classe.getInheritage());
     		abstractValue += this.calculateComplexity(classe.getInheritage(), calculated);
     	}
     	
@@ -522,7 +525,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 			}
 		}
 		
-		System.out.println("calculo " + classe.getFullName() + " - " + primitiveValue + " - " + abstractValue + " variables - " + classe.getVariables().size());
+		//System.out.println("calculo " + classe.getFullName() + " - " + primitiveValue + " - " + abstractValue + " variables - " + classe.getVariables().size());
 		
 		classe.getComlexity().setValor((primitiveValue * Metric.wpri) + (abstractValue * Metric.wabs));
 
