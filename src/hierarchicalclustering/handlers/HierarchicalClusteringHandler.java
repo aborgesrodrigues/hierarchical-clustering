@@ -133,8 +133,12 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											}
 											
 											if(!node.isInterface()){
-												if(node.getSuperclassType() != null && node.getSuperclassType().resolveBinding() != null){											
-													Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), getType(node.getSuperclassType()));
+												if(node.getSuperclassType() != null && node.getSuperclassType().resolveBinding() != null){
+									    			List<String> superClassTypes = getType(node.getSuperclassType());
+									    			if(superClassTypes.contains(node.getSuperclassType().resolveBinding().getBinaryName()))
+									    				superClassTypes.remove(node.getSuperclassType().resolveBinding().getBinaryName());
+													
+													Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), superClassTypes);
 													
 													classType.setInheritage(inheritage);
 													
@@ -175,8 +179,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 							    			//System.out.print(" param " + variableDeclaration.resolveBinding().getName() + " - " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + variableDeclaration.getType() + getType(variableDeclaration.resolveBinding().getType()));
 							    			
 							    			List<String> parametersTypes = getType(variableDeclaration.resolveBinding().getType());
-							    			//if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
-							    			//	parametersTypes.remove(variableDeclaration.resolveBinding().getName());
+							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
+							    				parametersTypes.remove(variableDeclaration.resolveBinding().getName());
 							    			
 							    			Class parameterType = getClassType(variableDeclaration.resolveBinding().getType().getBinaryName(), parametersTypes);
 							    			parameterType.setPrimitiveType(variableDeclaration.getType().isPrimitiveType());
@@ -232,8 +236,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								        	//String parameterAux = typeFromBinding(node.getAST(), parameter).toString().replace(parameter.getBinaryName(), "").replace("<", "").replace(">", "");
 								    		
 							    			List<String> parametersTypes = getType(typeFromBinding(node.getAST(), parameter));
-							    			//if(parametersTypes.contains(parameter.getBinaryName()))
-							    			//	parametersTypes.remove(parameter.getBinaryName());
+							    			if(parametersTypes.contains(parameter.getBinaryName()))
+							    				parametersTypes.remove(parameter.getBinaryName());
 							    			
 							    			Class classParameter = getClassType(parameter.getBinaryName(), parametersTypes); 
 							    			classParameter.setPrimitiveType(parameter.isPrimitive());
@@ -304,29 +308,6 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 		checkPersistenceMigration();
 		System.out.println("Término Verificação migração de persistência");
 		return null;
-	}
-	
-	private void printClasses(){
-		for(Class classAux : classes.values()){
-	    	if(classAux.isInProject()){
-	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size() + " primitive " + classAux.isPrimitiveType());
-	    		
-	    		for(Class variable : classAux.getVariables()){
-	    			System.out.println("**Variable " + variable.getFullName());
-	    		}
-	    		
-	    		for(Method methodAux : classAux.getMethods().values()){
-	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " - parameters " + methodAux.getParametersType().size() + " - instantiations " + methodAux.getInstantiationsType().size());
-	    			for(Class variable : methodAux.getInstantiationsType()){
-		    			System.out.println("****Variable " + variable.getFullName() + " primitive " + classAux.isPrimitiveType());
-		    		}
-	    			
-	    			for(Method methodInvocation : methodAux.getMethodsInvocation().values()){
-	    				System.out.println("----MethodInvocation " + methodInvocation.getClassType().getName() + " . " + methodInvocation.getFullName());
-	    			}
-	    		}
-	    	}
-	    }
 	}
 	
 	private List<String> getType(Object object){
@@ -467,6 +448,29 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    
 	}
 	
+	private void printClasses(){
+		for(Class classAux : classes.values()){
+	    	if(classAux.isInProject()){
+	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size() + " primitive " + classAux.isPrimitiveType());
+	    		
+	    		for(Class variable : classAux.getVariables()){
+	    			System.out.println("**Variable " + variable.getFullName());
+	    		}
+	    		
+	    		for(Method methodAux : classAux.getMethods().values()){
+	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " - parameters " + methodAux.getParametersType().size() + " - instantiations " + methodAux.getInstantiationsType().size());
+	    			for(Class variable : methodAux.getInstantiationsType()){
+		    			System.out.println("****Variable " + variable.getFullName() + " primitive " + classAux.isPrimitiveType());
+		    		}
+	    			
+	    			for(Method methodInvocation : methodAux.getMethodsInvocation().values()){
+	    				System.out.println("----MethodInvocation " + methodInvocation.getClassType().getName() + " . " + methodInvocation.getFullName());
+	    			}
+	    		}
+	    	}
+	    }
+	}
+	
     private void calculateComplexities(){
     	FileWriter fileWriter = null;
     	try {
@@ -500,7 +504,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     	double primitiveValue = 0.0;
     	double abstractValue = 0.0;
     	
-    	System.out.println("calculo " + classe.getFullName() + " - " + " variables - " + classe.getVariables().size());
+    	System.out.println("calculo " + classe.getFullName() + " - " + " variables - " + classe.getVariables().size() + " complexity " + classe.getComlexity().getValor());
     	
     	if(calculated.contains(classe))//case of having cyclic relation
     		return classe.getComlexity().getValor();
@@ -509,9 +513,21 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     		return classe.getComlexity().getValor();
     	
     	if(classe.getInheritage() != null){
-    		calculated.add(classe.getInheritage());
+    		calculated.add(classe);
     		abstractValue += this.calculateComplexity(classe.getInheritage(), calculated);
     	}
+    	
+		for(Class annotation : classe.getAnnotations()){
+			System.out.println("calculoannotation " + " - " + classe.getName() + " - " + annotation.getName() + " - primitive " + annotation.isPrimitiveType());
+			if(annotation.isPrimitiveType()){
+				//dependes of the types not the amount of use of them
+				primitiveValue++;
+			}
+			else if(!annotation.equals(classe)){//se classe tiver atributo com seu tipo não considerar
+				calculated.add(classe);
+				abstractValue += this.calculateComplexity(annotation, calculated);
+			}
+		}
     	
 		for(Class variable : classe.getVariables()){
 			System.out.println("calculoclass " + " - " + classe.getName() + " - " + variable.getName() + " - primitive " + variable.isPrimitiveType());
