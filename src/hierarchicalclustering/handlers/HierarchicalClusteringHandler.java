@@ -1,5 +1,7 @@
 package hierarchicalclustering.handlers;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,12 +39,11 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import br.ufpe.cin.Class;
 import br.ufpe.cin.Method;
+import br.ufpe.cin.Metric;
+import br.ufpe.cin.Properties;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -53,7 +54,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	private Map<String, Class> classes;
 	private Class classType;
 	private Method methodType;
-	//private Properties config = Properties.getInstance();
+	private Properties config = Properties.getInstance();
 	/**
 	 * The constructor.
 	 */
@@ -63,8 +64,6 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		System.out.println("=======" + System.getenv("teste"));
-		
 	    IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	    IWorkspaceRoot root = workspace.getRoot();
 	    // Get all projects in the workspace
@@ -115,12 +114,12 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											classType.setFilePath(unit.getPath().toOSString());
 											classType.setInProject(true);
 											
-											/*if(config.getPersistencePackage().equals(cu.getPackage().getName().toString()))
+											if(config.getPersistencePackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.persistence);
 											else if(config.getBusinessPackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.business);
 											else if(config.getEntityPackage().equals(cu.getPackage().getName().toString()))
-												classType.setTypeClass(Class.TypeClass.entity);*/
+												classType.setTypeClass(Class.TypeClass.entity);
 											
 											//System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length);
 											for(IAnnotationBinding annotation : node.resolveBinding().getAnnotations()){
@@ -173,13 +172,13 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								    	List<Class> parameters = new ArrayList<Class>();
 								    	for(Object parameter : node.parameters()){
 							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
-							    			//System.out.print(" param " + variableDeclaration.resolveBinding().toString() + " - " + getType(variableDeclaration.getType()));
+							    			//System.out.print(" param " + variableDeclaration.resolveBinding().getName() + " - " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + variableDeclaration.getType() + getType(variableDeclaration.resolveBinding().getType()));
 							    			
-							    			List<String> parametersTypes = getType(variableDeclaration.getType());
-							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
-							    				parametersTypes.remove(variableDeclaration.resolveBinding().getName());
+							    			List<String> parametersTypes = getType(variableDeclaration.resolveBinding().getType());
+							    			//if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
+							    			//	parametersTypes.remove(variableDeclaration.resolveBinding().getName());
 							    			
-							    			Class parameterType = getClassType(variableDeclaration.resolveBinding().getName(), parametersTypes);
+							    			Class parameterType = getClassType(variableDeclaration.resolveBinding().getType().getBinaryName(), parametersTypes);
 							    			parameterType.setPrimitiveType(variableDeclaration.getType().isPrimitiveType());
 							    			
 							    			parameters.add(parameterType);
@@ -233,8 +232,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								        	//String parameterAux = typeFromBinding(node.getAST(), parameter).toString().replace(parameter.getBinaryName(), "").replace("<", "").replace(">", "");
 								    		
 							    			List<String> parametersTypes = getType(typeFromBinding(node.getAST(), parameter));
-							    			if(parametersTypes.contains(parameter.getBinaryName()))
-							    				parametersTypes.remove(parameter.getBinaryName());
+							    			//if(parametersTypes.contains(parameter.getBinaryName()))
+							    			//	parametersTypes.remove(parameter.getBinaryName());
 							    			
 							    			Class classParameter = getClassType(parameter.getBinaryName(), parametersTypes); 
 							    			classParameter.setPrimitiveType(parameter.isPrimitive());
@@ -264,10 +263,10 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 								    
 									public boolean visit(VariableDeclarationFragment node) {
 										List<String> types = getType(typeFromBinding(node.getAST(), node.resolveBinding().getType()));
-										//System.out.println("VariableDeclarationFragment " + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
+										//System.out.println("VariableDeclarationFragment " + classType.getName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
 										
-										if(types.contains(node.resolveBinding().getType().getBinaryName()))
-											types.remove(node.resolveBinding().getType().getBinaryName());
+										//if(types.contains(node.resolveBinding().getType().getBinaryName()))
+										//	types.remove(node.resolveBinding().getType().getBinaryName());
 										
 										Class variable = getClassType(node.resolveBinding().getType().getBinaryName(), types);
 										variable.setPrimitiveType(node.resolveBinding().getType().isPrimitive());
@@ -292,8 +291,23 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    	}
 	    }
 	    
+	    printClasses();
 	    
-	    for(Class classAux : classes.values()){
+	    System.out.println("Término carregamento classess");
+		System.out.println("Início Cálculo Complexidade");
+		calculateComplexities();
+		System.out.println("Término Cálculo Complexidade");
+		System.out.println("Início Cálculo força conectividade");
+		calculateConnetvitiesStrength();
+		System.out.println("Término Cálculo força conectividade");
+		System.out.println("Início Verificação migração de persistência");
+		checkPersistenceMigration();
+		System.out.println("Término Verificação migração de persistência");
+		return null;
+	}
+	
+	private void printClasses(){
+		for(Class classAux : classes.values()){
 	    	if(classAux.isInProject()){
 	    		System.out.println("Class " + classAux.getFullName() + " Variables " + classAux.getVariables().size() + " methods " + classAux.getMethods().size() + " primitive " + classAux.isPrimitiveType());
 	    		
@@ -313,7 +327,6 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    		}
 	    	}
 	    }
-		return null;
 	}
 	
 	private List<String> getType(Object object){
@@ -452,5 +465,221 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 	    	return null;
 	    }
 	    
+	}
+	
+    private void calculateComplexities(){
+    	FileWriter fileWriter = null;
+    	try {
+    		fileWriter = new FileWriter(config.getPathToComplexityCSVFile());
+    		
+    		fileWriter.append("Class;Complexity Value\n");
+
+        	for(Class classType : classes.values()){
+        		if(classType.isInProject()){
+        			classType.getComlexity().setValor(calculateComplexity(classType, new ArrayList<Class>()));
+        			System.out.println("Complexity;" + classType.getName() + ";" + classType.getComlexity().getValor());
+        			
+        			fileWriter.append(classType.getName() + ";" + classType.getComlexity().getValor() + "\n");
+        		}
+        	}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+            try {
+	            fileWriter.flush();
+	            fileWriter.close();
+	        } catch (IOException e) {
+	            System.out.println("Error while flushing/closing fileWriter !!!");
+	            e.printStackTrace();
+	        }
+		}
+
+    }
+    
+    private double calculateComplexity(Class classe, List<Class> calculated){
+    	double primitiveValue = 0.0;
+    	double abstractValue = 0.0;
+    	
+    	if(calculated.contains(classe))//case of having cyclic relation
+    		return classe.getComlexity().getValor();
+    	
+    	if(classe.getComlexity().getValor() != 0)
+    		return classe.getComlexity().getValor();
+    	
+    	if(classe.getInheritage() != null){
+    		abstractValue += this.calculateComplexity(classe.getInheritage(), calculated);
+    	}
+    	
+		for(Class variable : classe.getVariables()){
+			System.out.println("calculoclass " + " - " + classe.getName() + " - " + variable.getName() + " - primitive " + variable.isPrimitiveType());
+			if(variable.isPrimitiveType()){
+				//dependes of the types not the amount of use of them
+				primitiveValue++;
+			}
+			else if(!variable.equals(classe)){//se classe tiver atributo com seu tipo não considerar
+				calculated.add(classe);
+				abstractValue += this.calculateComplexity(variable, calculated);
+			}
+		}
+		
+		System.out.println("calculo " + classe.getFullName() + " - " + primitiveValue + " - " + abstractValue + " variables - " + classe.getVariables().size());
+		
+		classe.getComlexity().setValor((primitiveValue * Metric.wpri) + (abstractValue * Metric.wabs));
+
+		return classe.getComlexity().getValor();
+    }
+    
+    private void calculateConnetvitiesStrength(){
+    	FileWriter fileWriter = null;
+    	try {
+    		fileWriter = new FileWriter(config.getPathToConnectionStrengthCSVFile());
+    		
+    		fileWriter.append("Class origin; Class destiny;Connection Strength Value\n");
+    		for(Class classType : classes.values()){
+        		if(classType.getTypeClass() != null && !classType.getTypeClass().equals(Class.TypeClass.entity)){
+        			for(Method method : classType.getMethods().values()){
+        				for(Method methodInvocation : method.getMethodsInvocation().values()){
+        					mountConnectivityStrength(classType, methodInvocation);
+        				}
+        			}
+        		}
+        	}
+    		for(Class classType : classes.values()){
+    			if(classType.getTypeClass() != null && !classType.getTypeClass().equals(Class.TypeClass.entity)){
+        			for(Map.Entry<Class, Metric> entry : classType.getConnectivityStrength().entrySet()){
+        				fileWriter.append(classType.getName() + ";" + entry.getKey().getName() + ";" + entry.getValue().getValor() + "\n");
+        			}
+        		}
+    		}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+            try {
+	            fileWriter.flush();
+	            fileWriter.close();
+	        } catch (IOException e) {
+	            System.out.println("Error while flushing/closing fileWriter !!!");
+	            e.printStackTrace();
+	        }
+		}
+    }
+    
+    private void mountConnectivityStrength(Class classType, Method method){
+    	//System.out.println(methodInvocation.getClassName() + " - " + methodInvocation.getNome() + " qtdmi =" + methodInvocation.getParametrosClasse().size());
+		if (method.getClassType() != null){
+			if(method.getParametersType().size() > 0){
+				for(Class parameter : method.getParametersType()){
+					double wcs = 0;
+					if(parameter.isPrimitiveType())
+						wcs = Metric.wpri;
+					else
+						wcs = parameter.getComlexity().getValor();
+					
+					Metric metric = classType.getConnectivityStrength().get(method.getClassType());
+					
+					if(metric == null)
+						metric = new Metric(Metric.Type.connectionStrength);
+					
+					metric.setValor(metric.getValor() + wcs);
+					
+					//The connection strengh is equal for both sides of a method call
+					classType.getConnectivityStrength().put(method.getClassType(), metric);
+					if(method.getClassType() != null)
+						method.getClassType().getConnectivityStrength().put(classType, metric);
+				
+				}
+			}
+			else{
+				Metric metric = classType.getConnectivityStrength().get(method.getClassType());
+				//Class variable = classType.getVariable(method.getClassType().getNomeQualificado());
+				
+				if(metric == null)
+					metric = new Metric(Metric.Type.connectionStrength);
+				
+				metric.setValor(metric.getValor());
+				
+				/*if(variable != null)
+					metric.setKeepTogether(variable.isKeepTogether());*/
+				
+				//The connection strengh is equal for both sides of a method call
+				classType.getConnectivityStrength().put(method.getClassType(), metric);
+				if(method.getClassType() != null)
+					method.getClassType().getConnectivityStrength().put(classType, metric);
+			}
+		}
+    }
+    
+	private void checkPersistenceMigration(){
+		String lineSeparation = System.getProperty( "line.separator" );
+		String jDownloaderFinderMethod = 	"analysis_api:analysis_result('persistence_call', _, Result) :-  " + lineSeparation +
+											"persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'ClassDAO', 'ClassBusiness', 'org.sigaept.nucleo.dao.GenericDAO') ," + lineSeparation + 
+											"Description = 'Call to DAO'," + lineSeparation + 
+											"make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result)." + lineSeparation + lineSeparation;
+		
+		/* jDownloaderReplacerMethod = 	"transformation_api:transformation( " + lineSeparation +
+											"_,                                        % Individual result (No group) " + lineSeparation +
+											"persistence_call(CallId),                 % RoleTerm " + lineSeparation +
+											"[addEJBAnnotation(CallId, 'org.sigaept.edu.dao.UnidadeOrganizacionalDAO', 'org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO'), replaceDAOCallforBusinessCall(CallId, 'ClassDAO', 'ClassBusiness', 'org.sigaept.nucleo.dao.GenericDAO')],         % CTHead " + lineSeparation +
+											"'Replace DAO call for EJB call',      % Description " + lineSeparation +
+											"[global, preview]).                               % Option: Show Preview" + lineSeparation + lineSeparation;
+		*/
+    	FileWriter fileWriter = null;
+    	FileWriter fileWriterJDownloaderFinder = null;
+    	//FileWriter fileWriterJDownloaderReplacer = null;
+    	try {
+    		fileWriter = new FileWriter(config.getPathToPersistenceMigrationFile());
+    		fileWriterJDownloaderFinder = new FileWriter(config.getPathToPersistenceMigrationJTranformerFinderFile());
+    		//fileWriterJDownloaderReplacer = new FileWriter(config.getPathToPersistenceMigrationJTranformerReplacerFile());
+    		
+    		fileWriter.append("Persistence Class;Destination Class;Connectivity Strength\n");
+    		
+    		for(Class classType : classes.values()){
+    			//System.out.println("checkPersistenceMigration " + classe.getNome() + " - " + classe.getTypeClass() + " - " + (classe.getTypeClass() != null ? classe.getTypeClass().toString() : "null"));
+    			if(classType.getTypeClass() != null && classType.getTypeClass().equals(Class.TypeClass.persistence)){
+    				double biggestStrength = 0;
+    				Class biggestClass = null;
+    				
+    				for(Map.Entry<Class, Metric> entry : classType.getConnectivityStrength().entrySet()){
+    					if(entry.getKey().getTypeClass() != null && entry.getKey().getTypeClass().equals(Class.TypeClass.business)){
+    						if(entry.getValue().isKeepTogether()){
+    							biggestClass = entry.getKey();
+    							biggestStrength = entry.getValue().getValor();
+    							break;
+    						}
+    						else if(entry.getValue().getValor() >= biggestStrength){
+	    						biggestStrength = entry.getValue().getValor();
+	    						biggestClass = entry.getKey();
+    						}
+    					}
+    				}
+    				
+    				if(biggestClass != null){
+    					classType.setBelongsTo(biggestClass);
+    					fileWriter.append(classType.getName() + ";" + biggestClass.getName() + ";" + biggestStrength + "\n");
+    					
+    					fileWriterJDownloaderFinder.append(jDownloaderFinderMethod.replace("ClassDAO", config.getPersistencePackage() + "." + classType.getName()).replace("ClassBusiness", config.getBusinessPackage() + "." + biggestClass.getName()));
+    				}
+    			}
+    		}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+            try {
+	            fileWriter.flush();
+	            fileWriter.close();
+	            
+	            fileWriterJDownloaderFinder.flush();
+	            fileWriterJDownloaderFinder.close();
+	            
+	            //fileWriterJDownloaderReplacer.flush();
+	            //ileWriterJDownloaderReplacer.close();
+	        } catch (IOException e) {
+	            System.out.println("Error while flushing/closing fileWriter !!!");
+	            e.printStackTrace();
+	        }
+		}
+
 	}
 }

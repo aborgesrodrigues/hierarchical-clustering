@@ -29,6 +29,7 @@ public class Class {
 	private List<Class> variables;
 	private List<Class> parameterizeds;
 	private List<Class> interfaces;
+	private Class belongsTo;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
@@ -248,5 +249,13 @@ public class Class {
 
 	public void setPrimitiveType(boolean primitiveType) {
 		this.primitiveType = primitiveType;
+	}
+
+	public Class getBelongsTo() {
+		return belongsTo;
+	}
+
+	public void setBelongsTo(Class belongsTo) {
+		this.belongsTo = belongsTo;
 	}
 }

@@ -1,80 +1,67 @@
 package br.ufpe.cin;
 
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
 
 public class Properties {
-	public static final String CAMINHO_ARQUIVO = Properties.class.getClassLoader().getResource(".").getFile() + "/config.properties";
-	
-	private java.util.Properties properties = null;
 	private static Properties instance;
-
-	private Properties(String pathFile) {
-		this.properties = new java.util.Properties();
-		try {
-			properties.load(new FileInputStream(pathFile));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 
 	public static Properties getInstance() {
 		if (instance == null) {
-			instance = new Properties(CAMINHO_ARQUIVO);
+			instance = new Properties();
 		}
 		return instance;
 	}
 
 
 	public boolean isShowEntities() {
-		return properties.getProperty("ShowEntitiesInGraph") == "true";
+		return System.getenv("ShowEntitiesInGraph") == "true";
 	}
 	
 	public String getPathSourceCode() {
-		return properties.getProperty("PathSourceCode");
+		return System.getenv("PathSourceCode");
 	}
 	
 	public List<String> getPackagesToIgnore() {
-		String value = properties.getProperty("IgnorePackages");
+		String value = System.getenv("IgnorePackages");
 		return Arrays.asList(value.split(","));
 	}
 	
 	public List<String> getClassesToIdentifyInGraph() {
-		String value = properties.getProperty("IdentifyClassesInGraph");
+		String value = System.getenv("IdentifyClassesInGraph");
 		return Arrays.asList(value.split(","));
 	}
 	
 	public String getPathToConnectionStrengthCSVFile() {
-		return properties.getProperty("PathToConnectionStrengthCSVFile");
+		return System.getenv("PathToConnectionStrengthCSVFile");
 	}
 	
 	public String getPathToComplexityCSVFile() {
-		return properties.getProperty("PathToComplexityCSVFile");
+		return System.getenv("PathToComplexityCSVFile");
 	}
 	
 	public String getPathToPersistenceMigrationFile() {
-		return properties.getProperty("PathToPersistenceMigrationFile");
+		return System.getenv("PathToPersistenceMigrationFile");
 	}
 	
 	public String getPathToPersistenceMigrationJTranformerFinderFile() {
-		return properties.getProperty("PathToPersistenceMigrationJTranformerFinderFile");
+		return System.getenv("PathToPersistenceMigrationJTranformerFinderFile");
 	}
 	
 	public String getPersistencePackage() {
-		return properties.getProperty("PersistencePackage");
+		return System.getenv("PersistencePackage");
 	}
 	
 	public String getBusinessPackage() {
-		return properties.getProperty("BusinessPackage");
+		return System.getenv("BusinessPackage");
 	}
 	
 	public String getEntityPackage() {
-		return properties.getProperty("EntityPackage");
+		return System.getenv("EntityPackage");
 	}
 	
 	public String getPathToIsolatedClustersMigration() {
-		return properties.getProperty("PathToIsolatedClustersMigration");
+		return System.getenv("PathToIsolatedClustersMigration");
 	}
 
 }
