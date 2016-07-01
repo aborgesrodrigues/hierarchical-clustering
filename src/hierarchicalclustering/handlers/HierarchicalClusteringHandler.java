@@ -692,7 +692,9 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     		//fileWriterJDownloaderReplacer = new FileWriter(config.getPathToPersistenceMigrationJTranformerReplacerFile());
     		
     		fileWriter.append("Persistence Class;Destination Class;Connectivity Strength\n");
-    		
+			int contDifferents = 0;
+			int contEquals = 0;
+			
     		for(Class classType : classes.values()){
     			//System.out.println("checkPersistenceMigration " + classe.getNome() + " - " + classe.getTypeClass() + " - " + (classe.getTypeClass() != null ? classe.getTypeClass().toString() : "null"));
     			if(classType.getTypeClass() != null && classType.getTypeClass().equals(Class.TypeClass.persistence)){
@@ -719,14 +721,18 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     					}
     				}
     				
-    				if(biggestClass != null && keepTogether != null && !biggestClass.equals(keepTogether))
+    				if(biggestClass != null && keepTogether != null && !biggestClass.equals(keepTogether) && keepTogether.getMethods().size() > 0){
     					System.out.println("different " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
-    				else if(biggestClass != null && keepTogether != null)
+    					contDifferents++;
+    				}
+    				else if(biggestClass != null && keepTogether != null){
     					System.out.println("equal " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
+    					contEquals++;
+    				}
     				
     				Class belongsTo = null;
     				double belongsToStrength = 0;
-    				if(config.keepParametizedClassesTogether() && keepTogether != null){
+    				if(config.keepParametizedClassesTogether() && keepTogether != null && keepTogether.getMethods().size() > 0){
     					belongsTo = keepTogether;
     					belongsToStrength = keepTogetherStrength;
     				}
@@ -743,6 +749,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     				}
     			}
     		}
+    		System.out.println("total different " + contDifferents + " - total equals " + contEquals);
 
 		} catch (Exception e) {
 			e.printStackTrace();
