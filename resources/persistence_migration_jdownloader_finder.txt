@@ -1,5 +1,5 @@
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenciaGradeHorarioDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.VincularAlunoAClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenciaGradeHorarioDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -44,7 +44,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.MediaGeralTurmaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterInscricaoElementoCurricularEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.MediaGeralTurmaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterSituacaoAlunoCursoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -64,7 +64,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TipoAcessoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterPermissaoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TipoAcessoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterUsuarioEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -84,7 +84,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TipoEtapaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterEtapaAvaliacaoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TipoEtapaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDataLimiteEtapaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -99,7 +99,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoPeriodoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterInscricaoElementoCurricularEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoPeriodoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterStatusAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -159,7 +159,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenteDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterPlanoEnsinoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenteDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -254,7 +254,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ServidorDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ServidorDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterServidorEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -344,7 +344,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoClasseDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterInscricaoElementoCurricularEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoClasseDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.VincularAlunoAClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -404,7 +404,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ProcedimentoElementoCurricularDao', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterAproveitamentoAceleracaoeDispensaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ProcedimentoElementoCurricularDao', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterPedidoRenovacaoMatriculaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -414,7 +414,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AtoAutorizativoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AtoAutorizativoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterServidorEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -479,7 +479,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoCursoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterMatriculaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.StatusAlunoCursoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.FecharPeriodoLetivoClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -529,7 +529,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.FaltaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.FaltaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -539,7 +539,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ModalidadeEnsinoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterConjuntoRegrasAcademicasEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ModalidadeEnsinoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterCursoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -559,7 +559,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.UnidadeEnsinoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.UnidadeEnsinoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -594,7 +594,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ElementoCurricularAproveitadoElementoCurricularDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ElementoCurricularAproveitadoElementoCurricularDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterAproveitamentoAceleracaoeDispensaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -609,7 +609,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterEtapaAvaliacaoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -634,7 +634,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ResultadoAvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.ResultadoAvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -754,7 +754,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.UnidadeOrganizacionalDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.UnidadeOrganizacionalDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -779,7 +779,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenciaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.DocenciaDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -794,7 +794,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.InstituicaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.InstituicaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -979,7 +979,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.EstruturaEtapaAvaliacaoMatrizCurricularDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.AbrirPeriodoLetivoPorTurmaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.EstruturaEtapaAvaliacaoMatrizCurricularDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterEtapaAvaliacaoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -1009,7 +1009,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.EtapaAvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.EtapaAvaliacaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDataLimiteEtapaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -1064,7 +1064,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.PeriodoLetivoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.PeriodoLetivoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterPeriodoLetivoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -1119,7 +1119,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.VinculoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.VinculoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterServidorEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -1334,7 +1334,7 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AulaAntecipacaoReposicaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.AulaAntecipacaoReposicaoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
@@ -1514,12 +1514,12 @@ Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TurnoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterMatriculaEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.TurnoDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterSituacaoAlunoCursoEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 
 analysis_api:analysis_result('persistence_call', _, Result) :-  
-persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.LotacaoServidorDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterConselhoClasseEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
+persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness, 'org.sigaept.edu.dao.org.sigaept.edu.dao.LotacaoServidorDAO', 'org.sigaept.edu.negocio.ejb.org.sigaept.edu.negocio.ejb.ManterServidorEJB', 'org.sigaept.nucleo.dao.GenericDAO') ,
 Description = 'Call to DAO',
 make_result_term(persistence_call(CallId, MethodCall, MethodCalled, MethodCalledName, MethodCalledParameters, MethodCalledReturnType, MethodCalledExceptions, MethodCalledTypeParameters, CallParameters, DAO, Business, NotBusiness), Description, Result).
 

@@ -586,28 +586,17 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
             					classType.getConnectivityStrength().put(parameterized, metric);
            						parameterized.getConnectivityStrength().put(classType, metric);
         					}
-        					/*double wcs = 0;
-        					if(parameterized.isPrimitiveType() || !parameterized.isInProject())
-        						wcs = Metric.wpri;
-        					else
-        						wcs = parameterized.getComlexity().getValor();
-        					
-        					Metric metric = classType.getConnectivityStrength().get(parameterized);
-        					
-        					if(metric == null)
-        						metric = new Metric(Metric.Type.connectionStrength);
-        					
-        					metric.setValor(metric.getValor() + wcs);
-        					
-        					//The connection strengh is equal for both sides of a method call
-        					classType.getConnectivityStrength().put(parameterized, metric);
-       						parameterized.getConnectivityStrength().put(classType, metric);*/
         				}
         			}
         			
         			for(Method method : classType.getMethods().values()){
         				for(Method methodInvocation : method.getMethodsInvocation().values()){
-        					mountConnectivityStrength(classType, methodInvocation);
+        			    	if(methodInvocation.getClassType().isInProject() && !methodInvocation.getClassType().equals(classType)){
+        				    	//System.out.println(methodInvocation.getClassName() + " - " + methodInvocation.getNome() + " qtdmi =" + methodInvocation.getParametrosClasse().size());
+        						if (methodInvocation.getClassType() != null && !methodInvocation.getClassType().equals(Class.TypeClass.entity)){
+        							mountConnectivityStrength(classType, methodInvocation);
+        						}
+        			    	}
         				}
         			}
         		}
@@ -634,9 +623,9 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     }
     
     private void mountConnectivityStrength(Class classType, Method method){
-    	if(method.getClassType().isInProject() && !method.getClassType().equals(classType)){
+    	//if(method.getClassType().isInProject() && !method.getClassType().equals(classType)){
 	    	//System.out.println(methodInvocation.getClassName() + " - " + methodInvocation.getNome() + " qtdmi =" + methodInvocation.getParametrosClasse().size());
-			if (method.getClassType() != null && !method.getClassType().equals(Class.TypeClass.entity)){
+			//if (method.getClassType() != null && !method.getClassType().equals(Class.TypeClass.entity)){
 				if(method.getParametersType().size() > 0){
 					for(Class parameter : method.getParametersType()){
 						double wcs = 0;
@@ -676,8 +665,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 					if(method.getClassType() != null)
 						method.getClassType().getConnectivityStrength().put(classType, metric);
 				}
-			}
-    	}
+			//}
+    	//}
     }
     
 	private void checkPersistenceMigration(){
@@ -718,11 +707,11 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     							biggestClass = entry.getKey();
     							biggestStrength = entry.getValue().getValor();
     							break;
-    						}
-    						else if(entry.getValue().getValor() >= biggestStrength){*/
+    						}*/
+    						if(entry.getValue().getValor() >= biggestStrength){
 	    						biggestStrength = entry.getValue().getValor();
 	    						biggestClass = entry.getKey();
-    						//}
+    						}
     						if(entry.getValue().isKeepTogether()){
     							keepTogether = entry.getKey();
     							keepTogetherStrength = entry.getValue().getValor();
