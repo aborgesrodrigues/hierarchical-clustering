@@ -134,13 +134,18 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											
 											if(!node.isInterface()){
 												if(node.getSuperclassType() != null && node.getSuperclassType().resolveBinding() != null){
-									    			List<String> superClassTypes = getType(node.getSuperclassType());
-									    			if(superClassTypes.contains(node.getSuperclassType().resolveBinding().getBinaryName()))
-									    				superClassTypes.remove(node.getSuperclassType().resolveBinding().getBinaryName());
-													
-													Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), superClassTypes);
+													//Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), superClassTypes);
+									    			Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName());
 													
 													classType.setInheritage(inheritage);
+													
+													List<String> superClassTypes = getType(node.getSuperclassType());
+													
+													if(superClassTypes.contains(node.getSuperclassType().resolveBinding().getBinaryName()))
+									    				superClassTypes.remove(node.getSuperclassType().resolveBinding().getBinaryName());
+													
+													for(String paremetized : superClassTypes)
+														classType.getParameterizeds().add(getClassType(paremetized));
 													
 													//System.out.println("--extends " + node.getSuperclassType().resolveBinding().getBinaryName() + " - " + getType(node.getSuperclassType()) + " - " + getType(node.getSuperclassType().resolveBinding()));
 												}
@@ -155,9 +160,9 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 											else{
 												if(node.superInterfaceTypes().size() > 0){
 													Type type = (Type)node.superInterfaceTypes().get(0);
-													//System.out.println("&&&& " + type.resolveBinding().getBinaryName() + " - " + getType(node.superInterfaceTypes().get(0)));
-													//String superClass = getType(node.superInterfaceTypes().get(0)).get(0);
-													classType.setInheritage(getClassType(type.resolveBinding().getBinaryName(), getType(type)));
+													
+													//classType.setInheritage(getClassType(type.resolveBinding().getBinaryName(), getType(type)));
+													classType.setInheritage(getClassType(type.resolveBinding().getBinaryName()));
 												}
 											}
 											
@@ -315,8 +320,10 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     	String result = "";
     	if(object instanceof ArrayType){
     		//System.out.println("ArrayType " + object);
+    		//all index has the same type so I need only 1 type 
     		for(Object objectAux : ((ArrayType)object).dimensions()){
     			results.addAll(getType(objectAux));
+    			break;
 			}
 		}
     	else if(object instanceof ParameterizedType){
@@ -512,13 +519,20 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     	if(classe.getComlexity().getValor() != 0)
     		return classe.getComlexity().getValor();
     	
+    	/*if(classe.getParameterizeds().size() > 0){   		
+    		for(Class parameterized : classe.getParameterizeds()){
+        		calculated.add(classe);
+        		abstractValue += this.calculateComplexity(parameterized, calculated);
+    		}
+    	}*/
+    	
     	if(classe.getInheritage() != null){
     		calculated.add(classe);
     		abstractValue += this.calculateComplexity(classe.getInheritage(), calculated);
     	}
     	
 		for(Class annotation : classe.getAnnotations()){
-			System.out.println("calculoannotation " + " - " + classe.getName() + " - " + annotation.getName() + " - primitive " + annotation.isPrimitiveType());
+			//System.out.println("calculoannotation " + " - " + classe.getName() + " - " + annotation.getName() + " - primitive " + annotation.isPrimitiveType());
 			if(annotation.isPrimitiveType()){
 				//dependes of the types not the amount of use of them
 				primitiveValue++;
@@ -530,8 +544,8 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
 		}
     	
 		for(Class variable : classe.getVariables()){
-			System.out.println("calculoclass " + " - " + classe.getName() + " - " + variable.getName() + " - primitive " + variable.isPrimitiveType());
-			if(variable.isPrimitiveType()){
+			//System.out.println("calculoclass " + " - " + classe.getName() + " - " + variable.getName() + " - primitive " + variable.isPrimitiveType());
+			if(variable.isPrimitiveType() || !variable.isInProject()){
 				//dependes of the types not the amount of use of them
 				primitiveValue++;
 			}
@@ -556,6 +570,41 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     		fileWriter.append("Class origin; Class destiny;Connection Strength Value\n");
     		for(Class classType : classes.values()){
         		if(classType.getTypeClass() != null && !classType.getTypeClass().equals(Class.TypeClass.entity)){
+        			
+        			if(classType.getParameterizeds().size() > 0){
+        				for(Class parameterized : classType.getParameterizeds()){
+        					if(parameterized.getTypeClass() != null && !parameterized.getTypeClass().equals(Class.TypeClass.entity)){
+        						System.out.println("keeptogether " + classType.getName() + " - " + parameterized.getName());
+        						Metric metric = classType.getConnectivityStrength().get(parameterized);
+        						if(metric == null){
+            						metric = new Metric(Metric.Type.connectionStrength);
+            						metric.setValor(0);
+        						}
+        						
+        						metric.setKeepTogether(true);
+        						
+            					classType.getConnectivityStrength().put(parameterized, metric);
+           						parameterized.getConnectivityStrength().put(classType, metric);
+        					}
+        					/*double wcs = 0;
+        					if(parameterized.isPrimitiveType() || !parameterized.isInProject())
+        						wcs = Metric.wpri;
+        					else
+        						wcs = parameterized.getComlexity().getValor();
+        					
+        					Metric metric = classType.getConnectivityStrength().get(parameterized);
+        					
+        					if(metric == null)
+        						metric = new Metric(Metric.Type.connectionStrength);
+        					
+        					metric.setValor(metric.getValor() + wcs);
+        					
+        					//The connection strengh is equal for both sides of a method call
+        					classType.getConnectivityStrength().put(parameterized, metric);
+       						parameterized.getConnectivityStrength().put(classType, metric);*/
+        				}
+        			}
+        			
         			for(Method method : classType.getMethods().values()){
         				for(Method methodInvocation : method.getMethodsInvocation().values()){
         					mountConnectivityStrength(classType, methodInvocation);
@@ -585,48 +634,50 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     }
     
     private void mountConnectivityStrength(Class classType, Method method){
-    	//System.out.println(methodInvocation.getClassName() + " - " + methodInvocation.getNome() + " qtdmi =" + methodInvocation.getParametrosClasse().size());
-		if (method.getClassType() != null){
-			if(method.getParametersType().size() > 0){
-				for(Class parameter : method.getParametersType()){
-					double wcs = 0;
-					if(parameter.isPrimitiveType())
-						wcs = Metric.wpri;
-					else
-						wcs = parameter.getComlexity().getValor();
+    	if(method.getClassType().isInProject() && !method.getClassType().equals(classType)){
+	    	//System.out.println(methodInvocation.getClassName() + " - " + methodInvocation.getNome() + " qtdmi =" + methodInvocation.getParametrosClasse().size());
+			if (method.getClassType() != null && !method.getClassType().equals(Class.TypeClass.entity)){
+				if(method.getParametersType().size() > 0){
+					for(Class parameter : method.getParametersType()){
+						double wcs = 0;
+						if(parameter.isPrimitiveType() || !parameter.isInProject())
+							wcs = Metric.wpri;
+						else
+							wcs = parameter.getComlexity().getValor();
+						
+						Metric metric = classType.getConnectivityStrength().get(method.getClassType());
+						
+						if(metric == null)
+							metric = new Metric(Metric.Type.connectionStrength);
+						
+						metric.setValor(metric.getValor() + wcs);
+						
+						//The connection strengh is equal for both sides of a method call
+						classType.getConnectivityStrength().put(method.getClassType(), metric);
+						if(method.getClassType() != null)
+							method.getClassType().getConnectivityStrength().put(classType, metric);
 					
+					}
+				}
+				else{
 					Metric metric = classType.getConnectivityStrength().get(method.getClassType());
+					//Class variable = classType.getVariable(method.getClassType().getNomeQualificado());
 					
 					if(metric == null)
 						metric = new Metric(Metric.Type.connectionStrength);
 					
-					metric.setValor(metric.getValor() + wcs);
+					metric.setValor(metric.getValor());
+					
+					/*if(variable != null)
+						metric.setKeepTogether(variable.isKeepTogether());*/
 					
 					//The connection strengh is equal for both sides of a method call
 					classType.getConnectivityStrength().put(method.getClassType(), metric);
 					if(method.getClassType() != null)
 						method.getClassType().getConnectivityStrength().put(classType, metric);
-				
 				}
 			}
-			else{
-				Metric metric = classType.getConnectivityStrength().get(method.getClassType());
-				//Class variable = classType.getVariable(method.getClassType().getNomeQualificado());
-				
-				if(metric == null)
-					metric = new Metric(Metric.Type.connectionStrength);
-				
-				metric.setValor(metric.getValor());
-				
-				/*if(variable != null)
-					metric.setKeepTogether(variable.isKeepTogether());*/
-				
-				//The connection strengh is equal for both sides of a method call
-				classType.getConnectivityStrength().put(method.getClassType(), metric);
-				if(method.getClassType() != null)
-					method.getClassType().getConnectivityStrength().put(classType, metric);
-			}
-		}
+    	}
     }
     
 	private void checkPersistenceMigration(){
@@ -658,26 +709,48 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     			if(classType.getTypeClass() != null && classType.getTypeClass().equals(Class.TypeClass.persistence)){
     				double biggestStrength = 0;
     				Class biggestClass = null;
+    				Class keepTogether = null;
+    				double keepTogetherStrength = 0;
     				
     				for(Map.Entry<Class, Metric> entry : classType.getConnectivityStrength().entrySet()){
     					if(entry.getKey().getTypeClass() != null && entry.getKey().getTypeClass().equals(Class.TypeClass.business)){
-    						if(entry.getValue().isKeepTogether()){
+    						/*if(entry.getValue().isKeepTogether()){
     							biggestClass = entry.getKey();
     							biggestStrength = entry.getValue().getValor();
     							break;
     						}
-    						else if(entry.getValue().getValor() >= biggestStrength){
+    						else if(entry.getValue().getValor() >= biggestStrength){*/
 	    						biggestStrength = entry.getValue().getValor();
 	    						biggestClass = entry.getKey();
+    						//}
+    						if(entry.getValue().isKeepTogether()){
+    							keepTogether = entry.getKey();
+    							keepTogetherStrength = entry.getValue().getValor();
     						}
     					}
     				}
     				
-    				if(biggestClass != null){
-    					classType.setBelongsTo(biggestClass);
-    					fileWriter.append(classType.getName() + ";" + biggestClass.getName() + ";" + biggestStrength + "\n");
+    				if(biggestClass != null && keepTogether != null && !biggestClass.equals(keepTogether))
+    					System.out.println("different " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
+    				else if(biggestClass != null && keepTogether != null)
+    					System.out.println("equal " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
+    				
+    				Class belongsTo = null;
+    				double belongsToStrength = 0;
+    				if(config.keepParametizedClassesTogether() && keepTogether != null){
+    					belongsTo = keepTogether;
+    					belongsToStrength = keepTogetherStrength;
+    				}
+    				else{
+    					belongsTo = biggestClass;
+    					belongsToStrength = biggestStrength;
+    				}
+    				
+    				if(belongsTo != null){
+    					classType.setBelongsTo(belongsTo);
+    					fileWriter.append(classType.getName() + ";" + belongsTo.getName() + ";" + belongsToStrength + "\n");
     					
-    					fileWriterJDownloaderFinder.append(jDownloaderFinderMethod.replace("ClassDAO", config.getPersistencePackage() + "." + classType.getName()).replace("ClassBusiness", config.getBusinessPackage() + "." + biggestClass.getName()));
+    					fileWriterJDownloaderFinder.append(jDownloaderFinderMethod.replace("ClassDAO", config.getPersistencePackage() + "." + classType.getName()).replace("ClassBusiness", config.getBusinessPackage() + "." + belongsTo.getName()));
     				}
     			}
     		}

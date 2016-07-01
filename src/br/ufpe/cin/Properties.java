@@ -63,5 +63,9 @@ public class Properties {
 	public String getPathToIsolatedClustersMigration() {
 		return System.getenv("PathToIsolatedClustersMigration");
 	}
+	
+	public boolean keepParametizedClassesTogether() {
+		return System.getenv("KeepParametizedClassesTogether").equals("true");
+	}
 
 }
