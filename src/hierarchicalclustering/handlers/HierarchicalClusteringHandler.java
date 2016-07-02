@@ -745,7 +745,7 @@ public class HierarchicalClusteringHandler extends AbstractHandler {
     					classType.setBelongsTo(belongsTo);
     					fileWriter.append(classType.getName() + ";" + belongsTo.getName() + ";" + belongsToStrength + "\n");
     					
-    					fileWriterJDownloaderFinder.append(jDownloaderFinderMethod.replace("ClassDAO", config.getPersistencePackage() + "." + classType.getName()).replace("ClassBusiness", config.getBusinessPackage() + "." + belongsTo.getName()));
+    					fileWriterJDownloaderFinder.append(jDownloaderFinderMethod.replace("ClassDAO", classType.getName()).replace("ClassBusiness", belongsTo.getName()));
     				}
     			}
     		}
