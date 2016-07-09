@@ -7,9 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class RemoveUselessClasses {
-
-	public static void main(String[] args) {
-		String csvFile = RemoveUselessClasses.class.getClassLoader().getResource(".").getFile() + "/useless_classes.csv";
+	
+	public static void main(String pathToUselessClassesCSVFile) {
+		String csvFile = pathToUselessClassesCSVFile;
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ";";
@@ -22,9 +22,9 @@ public class RemoveUselessClasses {
 				String[] columns = line.split(cvsSplitBy);
 
 				//System.out.println(columns[0] + ";" + columns[1] + ";" + columns[2]);
-				File file = new File(columns[2] + "/" + columns[1]);
+				File file = new File(columns[1] + "/" + columns[0]);
 				if(!file.delete())
-					System.out.println("Erro ao excluir arquivo " + columns[2] + "/" + columns[1]);
+					System.out.println("Erro ao excluir arquivo " + columns[1] + "/" + columns[0]);
 			}
 
 		} catch (FileNotFoundException e) {

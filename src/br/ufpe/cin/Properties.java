@@ -67,5 +67,13 @@ public class Properties {
 	public boolean keepParametizedClassesTogether() {
 		return System.getenv("KeepParametizedClassesTogether").equals("true");
 	}
+	
+	public String getPathToUselessClassesCSVFile() {
+		return System.getenv("PathToUselessClassesCSVFile");
+	}
 
+	public String getPathToIsolatedClassesCSVFile() {
+		return System.getenv("PathToIsolatedClassesCSVFile");
+	}
+	
 }
