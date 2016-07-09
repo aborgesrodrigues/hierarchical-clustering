@@ -18,6 +18,11 @@
             categoryId="hierarchical-clustering.commands.category"
             id="hierarchical-clustering.commands.removeUselessClassesCommand">
       </command>
+      <command
+            name="MoveIsolatedClasses Command"
+            categoryId="hierarchical-clustering.commands.category"
+            id="hierarchical-clustering.commands.moveIsolatedClasses">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -28,6 +33,10 @@
       <handler
             commandId="hierarchical-clustering.commands.removeUselessClassesCommand"
             class="hierarchicalclustering.handlers.RemoveUselessClassesHandler">
+      </handler>
+      <handler
+            commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
+            class="hierarchicalclustering.handlers.MoveIsolatedClassesHandler">
       </handler>
    </extension>
    <extension
@@ -40,6 +49,12 @@
       </key>
       <key
             commandId="hierarchical-clustering.commands.removeUselessClassesCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+      <key
+            commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
             contextId="org.eclipse.ui.contexts.window"
             sequence="M1+6"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
@@ -63,6 +78,11 @@
                   mnemonic="R"
                   id="hierarchical-clustering.menus.removeUselessClassesCommand">
             </command>
+            <command
+                  commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
+                  mnemonic="R"
+                  id="hierarchical-clustering.menus.moveIsolatedClassesCommand">
+            </command>
          </menu>
       </menuContribution>
       <menuContribution
@@ -78,8 +98,14 @@
             <command
                   commandId="hierarchical-clustering.commands.removeUselessClassesCommand"
                   icon="icons/sample.gif"
-                  tooltip="Remove useless Classes"
+                  tooltip="Remove Useless Classes"
                   id="hierarchical-clustering.toolbars.removeUselessClassesCommand">
+            </command>
+            <command
+                  commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
+                  icon="icons/sample.gif"
+                  tooltip="Move Isolated Classes"
+                  id="hierarchical-clustering.toolbars.moveIsolatedClassesCommand">
             </command>
          </toolbar>
       </menuContribution>

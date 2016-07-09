@@ -16,8 +16,8 @@ import java.util.List;
 public class MoveIsolatedClasses {
 	private static Properties config = Properties.getInstance();
 	
-	public static void main(String[] args) {
-    	ClassesParse classesGeneration = new ClassesParse();
+	public static void main() {
+    	ClassParser classesGeneration = new ClassParser();
     	
     	//move isolated classes
     	MoveIsolatedClasses.move(classesGeneration.getClasses().values());
@@ -285,8 +285,8 @@ public class MoveIsolatedClasses {
 			        // use comma as separator
 				String[] columns = line.split(cvsSplitBy);
 				Class classe = new Class();
-				classe.setName(columns[1].replace(".java", ""));
-				classe.setFilePath(columns[2] + "/" + columns[1]);
+				classe.setName(config.getBusinessPackage() + "." + columns[0].replace(".java", ""));
+				classe.setFilePath(columns[1] + "/" + columns[0]);
 				
 				isolatedClasses.add(classe);
 			}

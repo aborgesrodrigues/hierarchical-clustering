@@ -8,8 +8,10 @@ import java.io.IOException;
 
 public class RemoveUselessClasses {
 	
-	public static void main(String pathToUselessClassesCSVFile) {
-		String csvFile = pathToUselessClassesCSVFile;
+	private static Properties config = Properties.getInstance();
+	
+	public static void main() {
+		String csvFile = config.getPathToUselessClassesCSVFile();
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ";";
