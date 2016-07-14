@@ -94,8 +94,9 @@ public class ClassParser {
 										if(!node.isMemberTypeDeclaration() && !node.isLocalTypeDeclaration()){
 											classType = getClassType(node.resolveBinding().getBinaryName());
 											
-											classType.setFilePath(unit.getPath().toOSString());
+											classType.setFilePath(config.getPathSourceCode() + "/" + unit.getPath().toOSString());
 											classType.setInProject(true);
+											classType.setPackageInfo(cu.getPackage().getName().toString());
 											
 											if(config.getPersistencePackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.persistence);
@@ -103,6 +104,14 @@ public class ClassParser {
 												classType.setTypeClass(Class.TypeClass.business);
 											else if(config.getEntityPackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.entity);
+											
+											classType.setIgnored(false);
+											for(String ignore : config.getPackagesToIgnore()){
+												if(cu.getPackage().getName().toString().contains(ignore)){
+													classType.setIgnored(true);
+													break;
+												}
+											}
 											
 											//System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length);
 											for(IAnnotationBinding annotation : node.resolveBinding().getAnnotations()){
@@ -283,7 +292,7 @@ public class ClassParser {
 	    	}
 	    }
 	    
-	    printClasses();
+	    //printClasses();
 	    
 	    System.out.println("Término carregamento classess");
 		System.out.println("Início Cálculo Complexidade");
@@ -478,7 +487,7 @@ public class ClassParser {
         	for(Class classType : classes.values()){
         		if(classType.isInProject()){
         			classType.getComlexity().setValor(calculateComplexity(classType, new ArrayList<Class>()));
-        			System.out.println("Complexity;" + classType.getName() + ";" + classType.getComlexity().getValor());
+        			//System.out.println("Complexity;" + classType.getName() + ";" + classType.getComlexity().getValor());
         			
         			fileWriter.append(classType.getName() + ";" + classType.getComlexity().getValor() + "\n");
         		}
@@ -501,7 +510,7 @@ public class ClassParser {
     	double primitiveValue = 0.0;
     	double abstractValue = 0.0;
     	
-    	System.out.println("calculo " + classe.getFullName() + " - " + " variables - " + classe.getVariables().size() + " complexity " + classe.getComlexity().getValor());
+    	//System.out.println("calculo " + classe.getFullName() + " - " + " variables - " + classe.getVariables().size() + " complexity " + classe.getComlexity().getValor());
     	
     	if(calculated.contains(classe))//case of having cyclic relation
     		return classe.getComlexity().getValor();
@@ -712,11 +721,11 @@ public class ClassParser {
     				}
     				
     				if(biggestClass != null && keepTogether != null && !biggestClass.equals(keepTogether) && keepTogether.getMethods().size() > 0){
-    					System.out.println("different " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
+    					//System.out.println("different " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
     					contDifferents++;
     				}
     				else if(biggestClass != null && keepTogether != null){
-    					System.out.println("equal " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
+    					//System.out.println("equal " + classType.getName() + " - " + biggestClass.getName() + " - " + keepTogether.getName());
     					contEquals++;
     				}
     				
@@ -739,7 +748,7 @@ public class ClassParser {
     				}
     			}
     		}
-    		System.out.println("total different " + contDifferents + " - total equals " + contEquals);
+    		//System.out.println("total different " + contDifferents + " - total equals " + contEquals);
 
 		} catch (Exception e) {
 			e.printStackTrace();

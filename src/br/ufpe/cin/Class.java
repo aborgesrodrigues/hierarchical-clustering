@@ -30,6 +30,7 @@ public class Class {
 	private List<Class> parameterizeds;
 	private List<Class> interfaces;
 	private Class belongsTo;
+	private String packageInfo;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
@@ -42,6 +43,7 @@ public class Class {
 		this.ignored = false;
 		this.inProject = false;
 		this.primitiveType = false;
+		this.packageInfo = "";
 	}
 	
 	public boolean equals(Object object) {
@@ -62,6 +64,10 @@ public class Class {
 	public void setTipo(Type tipo) {
 		this.tipo = tipo;
 	}
+	
+	public String getReducedName() {
+		return name.replace(this.packageInfo + ".", "");
+	}	
 
 	public String getName() {
 		return name;
@@ -257,5 +263,13 @@ public class Class {
 
 	public void setBelongsTo(Class belongsTo) {
 		this.belongsTo = belongsTo;
+	}
+
+	public String getPackageInfo() {
+		return packageInfo;
+	}
+
+	public void setPackageInfo(String packageInfo) {
+		this.packageInfo = packageInfo;
 	}
 }
