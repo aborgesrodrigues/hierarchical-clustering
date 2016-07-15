@@ -14,7 +14,7 @@ org.sigaept.edu.dao.RelatorioComumDAO;org.sigaept.edu.negocio.ejb.ManterRelatori
 org.sigaept.edu.dao.TipoAcessoDAO;org.sigaept.edu.negocio.ejb.ManterUsuarioEJB;1.2
 org.sigaept.edu.dao.GradeHorariaDAO;org.sigaept.edu.negocio.ejb.ManterGradeHorariaEJB;77.78919603029998
 org.sigaept.edu.dao.DiaSemanaDAO;org.sigaept.edu.negocio.ejb.ManterDiaSemanaEJB;0.6
-org.sigaept.edu.dao.ResultadoFinalConceitoDAO;org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB;120.5585123357166
+org.sigaept.edu.dao.ResultadoFinalConceitoDAO;org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB;120.55851233571661
 org.sigaept.edu.dao.TipoEtapaDAO;org.sigaept.edu.negocio.ejb.ManterDataLimiteEtapaEJB;0.8999999999999999
 org.sigaept.edu.dao.AbrangenciaProjetoExtensaoDAO;org.sigaept.edu.negocio.ejb.ManterProjetoExtensaoEJB;0.3
 org.sigaept.edu.dao.ValidaDocumentoDAO;org.sigaept.edu.negocio.ejb.ManterValidaDocumentoEJB;2.7789299999999995
@@ -48,8 +48,8 @@ org.sigaept.edu.dao.BancoPagamentoDAO;org.sigaept.edu.negocio.ejb.ManterServidor
 org.sigaept.edu.dao.PerfilDAO;org.sigaept.edu.negocio.ejb.ManterPerfilEJB;16.947600000000005
 org.sigaept.edu.dao.TipoConvenioEstagioDAO;org.sigaept.edu.negocio.ejb.ManterConvenioEJB;0.0
 org.sigaept.edu.dao.ClasseServidorDAO;org.sigaept.edu.negocio.ejb.ManterClasseServidorEJB;0.0
-org.sigaept.edu.dao.ElementoMatrizDAO;org.sigaept.edu.negocio.ejb.ManterMatrizCurricularEJB;326.10383536539007
 org.sigaept.edu.dao.UnidadeFederativaDAO;org.sigaept.edu.negocio.ejb.ManterUnidadeFederativaEJB;0.0
+org.sigaept.edu.dao.ElementoMatrizDAO;org.sigaept.edu.negocio.ejb.ManterMatrizCurricularEJB;326.10383536539007
 org.sigaept.edu.dao.PeriodicidadeIngressoDAO;org.sigaept.edu.negocio.ejb.ManterPeriodicidadeIngressoEJB;0.0
 org.sigaept.edu.dao.SubAreaConhecimentoCNPQDAO;org.sigaept.edu.negocio.ejb.ManterProjetoExtensaoEJB;0.4599
 org.sigaept.edu.dao.HistoricoMatriculaMatrizDAO;org.sigaept.edu.negocio.ejb.ManterMatriculaEJB;51.64627067159727
@@ -67,7 +67,7 @@ org.sigaept.edu.dao.TipoTelefoneDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;0
 org.sigaept.edu.dao.PreProjetoEstagioTramiteDAO;org.sigaept.edu.negocio.ejb.ManterEstagioMatriculaEJB;1.9578599999999997
 org.sigaept.edu.dao.VisitaTecnicaGerencialDAO;org.sigaept.edu.negocio.ejb.ManterVisitaTecnicaGerencialEJB;3.0197999999999996
 org.sigaept.edu.dao.EtniaDAO;org.sigaept.edu.negocio.ejb.ManterEtniaEJB;0.0
-org.sigaept.edu.dao.ClasseDAO;org.sigaept.edu.negocio.ejb.ManterClasseEJB;2070.5138016880364
+org.sigaept.edu.dao.ClasseDAO;org.sigaept.edu.negocio.ejb.ManterClasseEJB;2070.513801688037
 org.sigaept.edu.dao.CategoriaProjetoExtensaoDAO;org.sigaept.edu.negocio.ejb.ManterCategoriaProjetoExtensaoEJB;0.6
 org.sigaept.edu.dao.PlanoEstagioDAO;org.sigaept.edu.negocio.ejb.ManterPlanoEstagioEJB;74.01423768955799
 org.sigaept.edu.dao.ProcedimentoElementoCurricularDao;org.sigaept.edu.negocio.ejb.ManterPedidoRenovacaoMatriculaEJB;55.431694262138976
@@ -116,7 +116,7 @@ org.sigaept.edu.dao.AlunoTrabalhadorDAO;org.sigaept.edu.negocio.ejb.ManterAlunoE
 org.sigaept.edu.dao.AreaTematicaDAO;org.sigaept.edu.negocio.ejb.ManterProgramaEJB;0.0
 org.sigaept.edu.dao.MatriculaDAO;org.sigaept.edu.negocio.ejb.ManterMatriculaEJB;1519.215546765785
 org.sigaept.edu.dao.TipoEstagioDAO;org.sigaept.edu.negocio.ejb.ManterRelatorioFinalEstagioEJB;0.6
-org.sigaept.edu.dao.AlunoDAO;org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB;0.0
+org.sigaept.edu.dao.AlunoDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;766.7893940690095
 org.sigaept.edu.dao.ReaberturaTurmaDAO;org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB;33.966764108138996
 org.sigaept.edu.dao.AprovadoProcessoSeletivoDAO;org.sigaept.edu.negocio.ejb.ManterAprovadoProcessoSeletivoEJB;1.5
 org.sigaept.edu.dao.EditalProcessoSeletivoDAO;org.sigaept.edu.negocio.ejb.ManterEditalProcessoSeletivoEJB;1.5
@@ -193,13 +193,13 @@ org.sigaept.edu.dao.OrgaoPublicoDAO;org.sigaept.edu.negocio.ejb.ManterServidorEJ
 org.sigaept.edu.dao.ZonaProcedenciaDAO;org.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJB;0.0
 org.sigaept.edu.dao.ParentescoDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;0.3
 org.sigaept.edu.dao.TipoAtoAutorizativoDAO;org.sigaept.edu.negocio.ejb.ManterCalendarioAcademicoEJB;0.3
-org.sigaept.edu.dao.PessoaFisicaDAO;org.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJB;23.391830253000006
+org.sigaept.edu.dao.PessoaFisicaDAO;org.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJB;23.391830253000002
 org.sigaept.edu.dao.PeriodoLetivoDAO;org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB;364.0789537516562
 org.sigaept.edu.dao.DescricaoRegraDAO;org.sigaept.edu.negocio.ejb.ManterRegraAcademicaEJB;0.0
 org.sigaept.edu.dao.AnoConclusaoInstituicaoOrigemDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;0.0
 org.sigaept.edu.dao.EixoTecnologicoDAO;org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoEJB;0.4599
 org.sigaept.edu.dao.OfertaVagaDAO;org.sigaept.edu.negocio.ejb.ManterOfertaVagaEJB;132.12240447000002
-org.sigaept.edu.dao.PeriodoAvaliacaoDocenteDAO;org.sigaept.edu.negocio.ejb.ManterAvaliacaoDocenteEJB;35.67458303309999
+org.sigaept.edu.dao.PeriodoAvaliacaoDocenteDAO;org.sigaept.edu.negocio.ejb.ManterAvaliacaoDocenteEJB;35.6745830331
 org.sigaept.edu.dao.AproveitamentoAceleracaoeDispensaDAO;org.sigaept.edu.negocio.ejb.ManterAproveitamentoAceleracaoeDispensaEJB;127.67790420727795
 org.sigaept.edu.dao.TipoParticipanteDAO;org.sigaept.edu.negocio.ejb.ManterParticipacaoEJB;0.3
 org.sigaept.edu.dao.TreinamentoDAO;org.sigaept.edu.negocio.ejb.ManterTreinamentoEJB;0.0

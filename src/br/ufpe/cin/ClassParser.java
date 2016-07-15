@@ -113,7 +113,7 @@ public class ClassParser {
 												}
 											}
 											
-											//System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length);
+											//System.out.println("class " + node.resolveBinding().getBinaryName() + " - " + node.resolveBinding().getAnnotations().length + " - " + classType.isInProject());
 											for(IAnnotationBinding annotation : node.resolveBinding().getAnnotations()){
 												if(annotation.getName().toString().equals("IdClass")){
 													//System.out.println("annotation " + " - " + annotation.getAnnotationType().getBinaryName() + getType(annotation.getAnnotationType()));
@@ -264,10 +264,11 @@ public class ClassParser {
 								    
 									public boolean visit(VariableDeclarationFragment node) {
 										List<String> types = getType(typeFromBinding(node.getAST(), node.resolveBinding().getType()));
-										//System.out.println("VariableDeclarationFragment " + classType.getName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
 										
 										if(types.contains(node.resolveBinding().getType().getBinaryName()))
 											types.remove(node.resolveBinding().getType().getBinaryName());
+										
+										//System.out.println("VariableDeclarationFragment " + classType.getName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
 										
 										Class variable = getClassType(node.resolveBinding().getType().getBinaryName(), types);
 										variable.setPrimitiveType(node.resolveBinding().getType().isPrimitive());
@@ -376,10 +377,12 @@ public class ClassParser {
 	public Class getClassType(String name, List<String> parameterizedTypes){
 		String fullNameClass = "";
 		for(String type : parameterizedTypes){
-			if(!fullNameClass.isEmpty())
-				fullNameClass += ",";
-			
-			fullNameClass += type;
+			if(!type.equals(name)){
+				if(!fullNameClass.isEmpty())
+					fullNameClass += ",";
+				
+				fullNameClass += type;
+			}
 		}
 		
 		if(!fullNameClass.isEmpty())
@@ -396,6 +399,7 @@ public class ClassParser {
 			for(String type : parameterizedTypes)
 				classType.getParameterizeds().add(getClassType(type));
 			
+			//System.out.println("getClassType " + fullNameClass + " - " + classType.getName() + " - " + classType.isInProject());
 			classes.put(fullNameClass, classType);
 		}
 		
@@ -474,6 +478,8 @@ public class ClassParser {
 	    			}
 	    		}
 	    	}
+	    	else
+	    		System.out.println("class not in project " + classAux.getName());
 	    }
 	}
 	

@@ -53,6 +53,12 @@ public class MoveIsolatedClasses {
 				System.out.println("Business file origin " + classe.getFilePath());
 				System.out.println("Move Business file to " + folder + classe.getReducedName() + ".java");
 				
+				for(Class parameterized : classe.getParameterizeds()){
+					if(!parameterized.isIgnored() && parameterized.isInProject()){
+						iterateClass(parameterized, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+					}
+				}
+				
 				//move interface
 				for(Class interfaceClass : classe.getInterfaces()){
 					if(interfaceClass != null){
@@ -138,25 +144,6 @@ public class MoveIsolatedClasses {
 						}
 					}
 					
-					for(Class variableClasse : classe.getVariables()){
-						if(variableClasse != null && !variableClasse.isIgnored() && variableClasse.isInProject()){
-							if(variableClasse.getTypeClass() != null && variableClasse.getTypeClass().equals(Class.TypeClass.entity))
-								iterateClass(variableClasse, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
-							else{
-								folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + variableClasse.getFilePath().replace(config.getPathSourceCode(), "").replace(variableClasse.getReducedName() + ".java", "");
-								folder = removePartPath(folder);
-								new File(folder).mkdirs();
-								
-								File persistenceFile = new File(variableClasse.getFilePath());
-								persistenceFile.renameTo(new File(folder + variableClasse.getReducedName() + ".java"));
-								
-								System.out.println("Variable file origin " + variableClasse.getFilePath() + (variableClasse.getTypeClass() != null ? variableClasse.getTypeClass().toString() : "null"));
-								System.out.println("Move Variable file to " + folder + variableClasse.getReducedName() + ".java");
-							}
-							
-						}
-					}
-					
 					if(method.getReturnType() != null){
 						//File returnFile = new File(method.getReturnType().getFilePath());
 						//copy(returnFile, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class());
@@ -169,6 +156,25 @@ public class MoveIsolatedClasses {
 					}
 				}
 				
+				for(Class variableClasse : classe.getVariables()){
+					if(variableClasse != null && !variableClasse.isIgnored() && variableClasse.isInProject()){
+						if(variableClasse.getTypeClass() != null && variableClasse.getTypeClass().equals(Class.TypeClass.entity))
+							iterateClass(variableClasse, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+						else{
+							folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + variableClasse.getFilePath().replace(config.getPathSourceCode(), "").replace(variableClasse.getReducedName() + ".java", "");
+							folder = removePartPath(folder);
+							new File(folder).mkdirs();
+							
+							File persistenceFile = new File(variableClasse.getFilePath());
+							persistenceFile.renameTo(new File(folder + variableClasse.getReducedName() + ".java"));
+							
+							System.out.println("Variable file origin " + variableClasse.getFilePath() + (variableClasse.getTypeClass() != null ? variableClasse.getTypeClass().toString() : "null"));
+							System.out.println("Move Variable file to " + folder + variableClasse.getReducedName() + ".java");
+						}
+						
+					}
+				}
+				
 				System.out.println("");
 				System.out.println("");
 			}
@@ -176,10 +182,20 @@ public class MoveIsolatedClasses {
 	}
 	
 	private static void iterateClass(Class classe, Class businessClass, String newPath, List<Class> calculated){
-		if(classe.isIgnored() || !classe.isInProject()){
+		if(classe.isIgnored()){
 			System.out.println("Ignored class " + classe.getName());
 			return;
 		}
+		else if(!classe.isInProject()){
+			System.out.println("class not in project" + classe.getName());
+			return;
+		}
+		else if(calculated.contains(classe)){
+			System.out.println("contains class" + classe.getName());
+			return;
+		}
+		if(classe.isInProject())
+			calculated.add(classe);
 		//System.out.println("class " + classe.getName());
 		
 		String folder = config.getPathToIsolatedClustersMigration() + "/" + businessClass.getName() + "/" + classe.getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getReducedName() + ".java", "");
@@ -195,7 +211,7 @@ public class MoveIsolatedClasses {
 		
 		for(Class interfaceClass : classe.getInterfaces()){
 			if(interfaceClass != null){
-				calculated.add(interfaceClass);
+				//calculated.add(interfaceClass);
 				iterateClass(interfaceClass, businessClass, newPath, calculated);
 			}
 		}
@@ -209,27 +225,28 @@ public class MoveIsolatedClasses {
 			
 			if(!classe.getInheritage().equals(classe) && !calculated.contains(classe.getInheritage())){
 				//System.out.println("classe.getInheritage() ");
-				calculated.add(classe.getInheritage());
+				//calculated.add(classe.getInheritage());
 				iterateClass(classe.getInheritage(), businessClass, newPath, calculated);
 			}
 		}
 		
 		for(Class classAux : classe.getVariables()){
-			if(classAux != null){
-				/*folder = config.getPathToIsolatedClustersMigration() + "/" + businessClass.getName() + "/" + classAux.getFilePath().replace(config.getPathSourceCode(), "").replace(classAux.getName() + ".java", "");
-				folder = removePartPath(folder);
-				new File(folder).mkdirs();
+			//System.out.println("variable " + classe.getName() + " - " + classAux.getName() + " - " + calculated.contains(classAux));
 				
-				File fileAux = new File(classAux.getFilePath());
-				copyFile(fileAux, folder);*/
-				//System.out.println("classe.getVariablesClass() " + classe.getVariablesClass().values().size());
-				
-				//System.out.println("Entity file origin " + classAux.getFilePath());
-				//System.out.println("Move Entity file to " + folder + classAux.getName() + ".java");
-				
-				if(!classAux.equals(classe) && !calculated.contains(classAux)){
-					calculated.add(classAux);
+			if(!classAux.equals(classe) && !calculated.contains(classAux)){
+				if(classAux.getParameterizeds().size() == 0){
+					System.out.println("not parametized " + classe.getName() + " - " + classAux.getName() + " - " + calculated.contains(classAux));
+					//calculated.add(classAux);
 					iterateClass(classAux, businessClass, newPath, calculated);
+				}
+				else{
+					for(Class parametized : classAux.getParameterizeds()){
+						System.out.println("parametized " + classe.getName() + " - " + parametized.getName() + " - " + calculated.contains(parametized));
+						if(!parametized.equals(classAux) && !calculated.contains(parametized)){
+							//calculated.add(classAux);
+							iterateClass(parametized, businessClass, newPath, calculated);
+						}
+					}
 				}
 			}
 		}
@@ -237,14 +254,14 @@ public class MoveIsolatedClasses {
 		for(Method method : classe.getMethods().values()){
 			if(method.getReturnType() != null){
 				if(!method.getReturnType().equals(classe) && !calculated.contains(method.getReturnType())){
-					calculated.add(method.getReturnType());
+					//calculated.add(method.getReturnType());
 					iterateClass(method.getReturnType(), businessClass, newPath, calculated);
 				}
 			}
 			for(Class classAux : method.getInstantiationsType()){
 				if(classAux != null){
 					if(!classAux.equals(classe) && !calculated.contains(classAux)){
-						calculated.add(classAux);
+						//calculated.add(classAux);
 						iterateClass(classAux, businessClass, newPath, calculated);
 					}
 				}
