@@ -22,9 +22,11 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.IMemberValuePairBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.InstanceofExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
@@ -173,11 +175,14 @@ public class ClassParser {
 								    	List<Class> parameters = new ArrayList<Class>();
 								    	for(Object parameter : node.parameters()){
 							    			SingleVariableDeclaration variableDeclaration = (SingleVariableDeclaration) parameter;
-							    			//System.out.print(" param " + variableDeclaration.resolveBinding().getName() + " - " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + variableDeclaration.getType() + getType(variableDeclaration.resolveBinding().getType()));
 							    			
-							    			List<String> parametersTypes = getType(variableDeclaration.resolveBinding().getType());
-							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().getName()))
-							    				parametersTypes.remove(variableDeclaration.resolveBinding().getName());
+							    			List<String> parametersTypes = getType(variableDeclaration.getType());
+							    			
+							    			//System.out.println(" param1 " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + parametersTypes.size() + " - " + parametersTypes);
+							    			if(parametersTypes.contains(variableDeclaration.resolveBinding().getType().getBinaryName()))
+							    				parametersTypes.remove(variableDeclaration.resolveBinding().getType().getBinaryName());
+							    			
+							    			//System.out.println(" param2 " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + parametersTypes.size() + " - " + parametersTypes);
 							    			
 							    			Class parameterType = getClassType(variableDeclaration.resolveBinding().getType().getBinaryName(), parametersTypes);
 							    			parameterType.setPrimitiveType(variableDeclaration.getType().isPrimitiveType());
@@ -189,7 +194,15 @@ public class ClassParser {
 								    	methodType.setName(node.getName().getFullyQualifiedName());
 								    	methodType.setClassType(classType);
 								    	if(!node.isConstructor()){
-								    		Class returnType = getClassType(node.getReturnType2().resolveBinding().getBinaryName(), getType(node.getReturnType2()));
+								    		
+							    			List<String> types = getType(node.getReturnType2());
+							    			
+							    			//System.out.println(" param1 " + variableDeclaration.resolveBinding().getType().getBinaryName() + " - " + parametersTypes.size() + " - " + parametersTypes);
+							    			if(types.contains(node.getReturnType2().resolveBinding().getBinaryName()))
+							    				types.remove(node.getReturnType2().resolveBinding().getBinaryName());
+								    		//System.out.println("returntype " + node.getReturnType2().resolveBinding().getBinaryName() + " - " + getType(node.getReturnType2()));
+								    		
+								    		Class returnType = getClassType(node.getReturnType2().resolveBinding().getBinaryName(), types);
 								    		returnType.setPrimitiveType(node.getReturnType2().resolveBinding().isPrimitive());
 								    		
 								    		methodType.setReturnType(returnType);
@@ -243,7 +256,7 @@ public class ClassParser {
 							    		}
 								        
 								        Method methodInvocation = classInvocation.getMethod(node.resolveMethodBinding().getName(), parameters);
-								        
+										        
 								        /*System.out.print("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
 								        
 								        for(ITypeBinding parameter : node.resolveMethodBinding().getParameterTypes()){
@@ -255,6 +268,7 @@ public class ClassParser {
 								        System.out.println("");*/
 								        
 								        //System.out.println("----methodInvocationModel " + methodInvocation.getFullName() + " - " + (methodType == null ? "null" : "not null"));
+								        //System.out.println("----methodInvocation return " + (node.getExpression() != null ? node.getExpression().resolveTypeBinding().getBinaryName() : "void") + " " + getType(node.resolveTypeBinding()) + " " + node.resolveMethodBinding().getName() + " - " + node.resolveMethodBinding().getTypeArguments().length + node.resolveMethodBinding().getTypeParameters().length);
 								        
 							        	methodType.getMethodsInvocation().put(methodInvocation.getFullName(), methodInvocation);
 							        	
@@ -281,6 +295,44 @@ public class ClassParser {
 										//System.out.println("VariableDeclarationFragmentModel " + variable.getFullName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types);
 										return true;
 									}
+									
+									public boolean visit(EnumDeclaration node){
+						    			if(!node.isMemberTypeDeclaration() && !node.isLocalTypeDeclaration()){
+					    					classType = getClassType(node.resolveBinding().getBinaryName());
+											
+											classType.setFilePath(config.getPathSourceCode() + "/" + unit.getPath().toOSString());
+											classType.setInProject(true);
+											classType.setPackageInfo(cu.getPackage().getName().toString());
+											
+											classType.setIgnored(false);
+						    			}
+						    			
+						    			return true;
+						    		}
+						    		
+						    		public boolean visit(InstanceofExpression node){
+						    			
+						    			List<String> types = getType(node.getRightOperand());
+										
+										if(types.contains(node.getRightOperand().resolveBinding().getBinaryName()))
+											types.remove(node.getRightOperand().resolveBinding().getBinaryName());
+										
+										//System.out.println("VariableDeclarationFragment " + classType.getName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types + " - " + node.getName() + " - ");
+										
+										Class variable = getClassType(node.getRightOperand().resolveBinding().getBinaryName(), types);
+										variable.setPrimitiveType(node.getRightOperand().isPrimitiveType());
+										
+										if(methodType != null)
+											methodType.getInstantiationsType().add(variable);
+										else
+											classType.getVariables().add(variable);
+										
+										//System.out.println("VariableDeclarationFragmentModel " + variable.getFullName() + " - " + node.resolveBinding().getType().getBinaryName() + " - " + types);
+										
+						    			//System.out.println("InstanceofExpression " + node.toString() + " - " + node.getRightOperand().resolveBinding().getBinaryName() + " - " + node.getRightOperand() + " - " + getType(node.getRightOperand()) + " = " + (classType != null ? classType.getName() : "null") + " - " + (methodType != null ? methodType.getName() : "null"));
+						    			
+						    			return true;
+						    		}
 						    
 								});
 						    }
@@ -469,6 +521,11 @@ public class ClassParser {
 	    		
 	    		for(Method methodAux : classAux.getMethods().values()){
 	    			System.out.println("--MethodDeclaration " + methodAux.getFullName() + " - parameters " + methodAux.getParametersType().size() + " - instantiations " + methodAux.getInstantiationsType().size());
+	    			
+	    			for(Class parameter : methodAux.getParametersType()){
+	    				System.out.println("****Parameter " + parameter.getFullName() + " parametizeds " + parameter.getParameterizeds().size());
+	    			}
+	    			
 	    			for(Class variable : methodAux.getInstantiationsType()){
 		    			System.out.println("****Variable " + variable.getFullName() + " primitive " + classAux.isPrimitiveType());
 		    		}

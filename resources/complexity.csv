@@ -148,8 +148,8 @@ org.sigaept.edu.dominio.Etnia;0.657
 org.sigaept.edu.dominio.Localizacao;3.86570499
 org.sigaept.edu.dao.TCCMatriculaDAO;2.94
 org.sigaept.edu.dao.TipoAbrangenciaRegraDAO;2.94
-org.sigaept.edu.negocio.fachada.IManterVerificacaoCasoEJB;0.0
 org.sigaept.edu.negocio.fachada.IManterUsuarioEJB;0.0
+org.sigaept.edu.negocio.fachada.IManterVerificacaoCasoEJB;0.0
 org.sigaept.edu.dominio.IPessoaFisica;0.0
 org.sigaept.edu.dao.TipoEscolaOrigemDAO;2.94
 org.sigaept.auth.core.util.AutorizacaoUtil;0.0
@@ -232,6 +232,7 @@ org.sigaept.edu.dominio.DescricaoRegra;1.6269
 org.sigaept.edu.dominio.AreaProcedencia;0.7599
 org.sigaept.nucleo.util.web.CNPJConverter;0.3
 org.sigaept.edu.dominio.PerguntaAvaliacaoDocente;9.366053555999999
+org.sigaept.edu.dominio.util.UnidadeMedidaEnum;0.3
 org.sigaept.auth.core.service.PermissionService;5.01
 org.sigaept.edu.dominio.ResultadoAvaliacaoConceito;87.29522953026851
 org.sigaept.edu.dominio.Perfil;3.0368999999999997
@@ -523,7 +524,7 @@ org.sigaept.edu.dao.PessoaExternaDAO;2.94
 org.sigaept.edu.dao.TipoUnidadeOrganizacionalDAO;2.94
 org.sigaept.edu.dao.TipoLancamentoDadosHistoricoDAO;2.94
 org.sigaept.edu.dominio.TipoRegimeMatricula;0.4599
-org.sigaept.edu.dominio.util.UtilNotas;1.5
+org.sigaept.edu.dominio.util.UtilNotas;1.2
 org.sigaept.edu.dominio.util.HistoricoEscolar;84.42486915902902
 org.sigaept.edu.dominio.RegimeTrabalho;0.7599
 org.sigaept.edu.dominio.Convenio;5.06259
