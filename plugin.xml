@@ -23,6 +23,11 @@
             categoryId="hierarchical-clustering.commands.category"
             id="hierarchical-clustering.commands.moveIsolatedClasses">
       </command>
+      <command
+            name="Generate Graph Command"
+            categoryId="hierarchical-clustering.commands.category"
+            id="hierarchical-clustering.commands.generateGraph">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -37,6 +42,10 @@
       <handler
             commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
             class="hierarchicalclustering.handlers.MoveIsolatedClassesHandler">
+      </handler>
+      <handler
+            commandId="hierarchical-clustering.commands.generateGraphCommand"
+            class="hierarchicalclustering.handlers.GenerateGraphHandler">
       </handler>
    </extension>
    <extension
@@ -55,6 +64,12 @@
       </key>
       <key
             commandId="hierarchical-clustering.commands.moveIsolatedClassesCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+      <key
+            commandId="hierarchical-clustering.commands.generateGraphCommand"
             contextId="org.eclipse.ui.contexts.window"
             sequence="M1+6"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
@@ -83,6 +98,11 @@
                   mnemonic="R"
                   id="hierarchical-clustering.menus.moveIsolatedClassesCommand">
             </command>
+            <command
+                  commandId="hierarchical-clustering.commands.generateGraphCommand"
+                  mnemonic="R"
+                  id="hierarchical-clustering.menus.generateGraphCommand">
+            </command>
          </menu>
       </menuContribution>
       <menuContribution
@@ -106,6 +126,12 @@
                   icon="icons/sample.gif"
                   tooltip="Move Isolated Classes"
                   id="hierarchical-clustering.toolbars.moveIsolatedClassesCommand">
+            </command>
+            <command
+                  commandId="hierarchical-clustering.commands.generateGraphCommand"
+                  icon="icons/sample.gif"
+                  tooltip="Generate Graph"
+                  id="hierarchical-clustering.toolbars.generateGraphCommand">
             </command>
          </toolbar>
       </menuContribution>

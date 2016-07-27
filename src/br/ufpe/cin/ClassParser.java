@@ -106,8 +106,11 @@ public class ClassParser {
 												classType.setTypeClass(Class.TypeClass.business);
 											else if(config.getEntityPackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.entity);
+											else
+												classType.setTypeClass(Class.TypeClass.other);
 											
 											classType.setIgnored(false);
+											classType.setInterface(node.isInterface());
 											for(String ignore : config.getPackagesToIgnore()){
 												if(cu.getPackage().getName().toString().contains(ignore)){
 													classType.setIgnored(true);
@@ -145,8 +148,13 @@ public class ClassParser {
 												}
 												
 												for(Object object : node.superInterfaceTypes()){
-													for(String interfaceType : getType(object))
-														classType.getInterfaces().add(getClassType(interfaceType));
+													for(String interfaceType : getType(object)){
+														Class interfaceClass = getClassType(interfaceType);
+														
+														if(!interfaceClass.getImplementClass().contains(classType))
+															interfaceClass.getImplementClass().add(classType);
+														classType.getInterfaces().add(interfaceClass);
+													}
 													
 													//System.out.println("--implements "  + getType(object));
 												}
@@ -447,6 +455,7 @@ public class ClassParser {
 		if(classType == null){
 			classType = new Class();
 			classType.setName(name);
+			classType.setTypeClass(Class.TypeClass.outside);
 			
 			for(String type : parameterizedTypes)
 				classType.getParameterizeds().add(getClassType(type));
@@ -631,12 +640,12 @@ public class ClassParser {
     		
     		fileWriter.append("Class origin; Class destiny;Connection Strength Value\n");
     		for(Class classType : classes.values()){
-        		if(classType.getTypeClass() != null && !classType.getTypeClass().equals(Class.TypeClass.entity)){
+        		if(!classType.getTypeClass().equals(Class.TypeClass.other) && !classType.getTypeClass().equals(Class.TypeClass.entity)){
         			
         			if(classType.getParameterizeds().size() > 0){
         				for(Class parameterized : classType.getParameterizeds()){
-        					if(parameterized.getTypeClass() != null && !parameterized.getTypeClass().equals(Class.TypeClass.entity)){
-        						System.out.println("keeptogether " + classType.getName() + " - " + parameterized.getName());
+        					if(!parameterized.getTypeClass().equals(Class.TypeClass.other) && !parameterized.getTypeClass().equals(Class.TypeClass.entity)){
+        						//System.out.println("keeptogether " + classType.getName() + " - " + parameterized.getName());
         						Metric metric = classType.getConnectivityStrength().get(parameterized);
         						if(metric == null){
             						metric = new Metric(Metric.Type.connectionStrength);
@@ -664,7 +673,7 @@ public class ClassParser {
         		}
         	}
     		for(Class classType : classes.values()){
-    			if(classType.getTypeClass() != null && !classType.getTypeClass().equals(Class.TypeClass.entity)){
+    			if(!classType.getTypeClass().equals(Class.TypeClass.other) && !classType.getTypeClass().equals(Class.TypeClass.entity)){
         			for(Map.Entry<Class, Metric> entry : classType.getConnectivityStrength().entrySet()){
         				fileWriter.append(classType.getName() + ";" + entry.getKey().getName() + ";" + entry.getValue().getValor() + "\n");
         			}
@@ -759,14 +768,14 @@ public class ClassParser {
 			
     		for(Class classType : classes.values()){
     			//System.out.println("checkPersistenceMigration " + classe.getNome() + " - " + classe.getTypeClass() + " - " + (classe.getTypeClass() != null ? classe.getTypeClass().toString() : "null"));
-    			if(classType.getTypeClass() != null && classType.getTypeClass().equals(Class.TypeClass.persistence)){
+    			if(classType.getTypeClass().equals(Class.TypeClass.persistence)){
     				double biggestStrength = 0;
     				Class biggestClass = null;
     				Class keepTogether = null;
     				double keepTogetherStrength = 0;
     				
     				for(Map.Entry<Class, Metric> entry : classType.getConnectivityStrength().entrySet()){
-    					if(entry.getKey().getTypeClass() != null && entry.getKey().getTypeClass().equals(Class.TypeClass.business)){
+    					if(entry.getKey().getTypeClass().equals(Class.TypeClass.business)){
     						/*if(entry.getValue().isKeepTogether()){
     							biggestClass = entry.getKey();
     							biggestStrength = entry.getValue().getValor();

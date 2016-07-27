@@ -11,7 +11,9 @@ public class Class {
 	public enum TypeClass{
 		persistence,
 		business,
-		entity
+		entity,
+		other,
+		outside
 	}
 	
 	private Type tipo;
@@ -21,6 +23,7 @@ public class Class {
 	private boolean ignored;
 	private boolean inProject;
 	private boolean primitiveType;
+	private boolean isInterface;
 	private TypeClass typeClass;
 	private String filePath;
 	private List<Class> annotations;
@@ -31,6 +34,7 @@ public class Class {
 	private List<Class> interfaces;
 	private Class belongsTo;
 	private String packageInfo;
+	private List<Class> implementClass;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
@@ -44,6 +48,7 @@ public class Class {
 		this.inProject = false;
 		this.primitiveType = false;
 		this.packageInfo = "";
+		this.implementClass = new ArrayList<Class>();
 	}
 	
 	public boolean equals(Object object) {
@@ -272,4 +277,21 @@ public class Class {
 	public void setPackageInfo(String packageInfo) {
 		this.packageInfo = packageInfo;
 	}
+
+	public boolean isInterface() {
+		return isInterface;
+	}
+
+	public void setInterface(boolean isInterface) {
+		this.isInterface = isInterface;
+	}
+
+	public List<Class> getImplementClass() {
+		return implementClass;
+	}
+
+	public void setImplementClass(List<Class> implementClass) {
+		this.implementClass = implementClass;
+	}
+
 }

@@ -1,5 +1,6 @@
 package br.ufpe.cin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class Properties {
 	
 	public List<String> getClassesToIdentifyInGraph() {
 		String value = System.getenv("IdentifyClassesInGraph");
+		if(value == null || value.isEmpty())
+			return new ArrayList<String>();
 		return Arrays.asList(value.split(","));
 	}
 	

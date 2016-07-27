@@ -7,6 +7,7 @@ public class Weight {
 	public static enum TypeRelationship{
 		association,
 		generalization,
+		interfacing,
 		implementation,
 		callMethod
 	}
@@ -45,7 +46,7 @@ public class Weight {
 	
 	public boolean equals(Object object) {
 	    if(object instanceof Weight) {
-	    	if(this.getOrigin().equals(((Weight) object).getOrigin()) && this.getDestination().equals(((Weight) object).getDestination()) && this.getTypeRelationship() == ((Weight) object).getTypeRelationship())
+	    	if(this.getOrigin().equals(((Weight) object).getOrigin()) && this.getDestination().equals(((Weight) object).getDestination()) && this.getTypeRelationship().equals(((Weight) object).getTypeRelationship()))
 	    		return true;
 	    	else
 	    		return false;
