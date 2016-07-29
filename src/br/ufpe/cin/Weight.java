@@ -46,7 +46,8 @@ public class Weight {
 	
 	public boolean equals(Object object) {
 	    if(object instanceof Weight) {
-	    	if(this.getOrigin().equals(((Weight) object).getOrigin()) && this.getDestination().equals(((Weight) object).getDestination()) && this.getTypeRelationship().equals(((Weight) object).getTypeRelationship()))
+	    	Weight other = (Weight) object;
+	    	if(this.getOrigin().equals(other.getOrigin()) && this.getDestination().equals(other.getDestination()) && this.getTypeRelationship().equals(other.getTypeRelationship()))
 	    		return true;
 	    	else
 	    		return false;
