@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ import javax.swing.JPanel;
 
 import com.google.common.base.Function;
 
+import br.ufpe.cin.ColorChooserButton.ColorChangedListener;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -121,6 +124,9 @@ public class GraphGeneration extends JApplet {
     java.lang.Class<CircleLayout> subLayoutType = CircleLayout.class;
     
     Map<String, Color>colors = new HashMap<String, Color>();
+    Map<String, Color>customColors = new HashMap<String, Color>();
+    Map<String, Color>auxColors = new HashMap<String, Color>();
+    private ClassParser classParser;
     
     /**
      * create an instance of a simple graph with controls to
@@ -305,6 +311,50 @@ public class GraphGeneration extends JApplet {
                 JOptionPane.showMessageDialog((JComponent)e.getSource(), instructions, "Help", JOptionPane.PLAIN_MESSAGE);
             }
         });
+        
+        final ColorChooserButton changeColor = new ColorChooserButton(Color.BLACK, "Change Color");
+        changeColor.addColorChangedListener(new ColorChangedListener() {
+			@Override
+			public void colorChanged(Color newColor) {
+				changeColorPicked(newColor);
+			}});
+        
+        
+        this.vv.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				for(String vertex : ps.getPicked()){
+					Color color = colors.get(vertex) == null ? Color.BLACK : colors.get(vertex);
+					changeColor.setSelectedColor(color, false);
+				}
+				System.out.println(ps.getPicked());
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}});
+        
         Dimension space = new Dimension(20,20);
         Box controls = Box.createVerticalBox();
         controls.add(Box.createRigidArea(space));
@@ -345,6 +395,14 @@ public class GraphGeneration extends JApplet {
         heightConstrain(modePanel);
         controls.add(modePanel);
         controls.add(Box.createRigidArea(space));
+        
+        JPanel colorsControls = new JPanel(new GridLayout(0,1));
+        colorsControls.setBorder(BorderFactory.createTitledBorder("Coloring"));
+        colorsControls.add(changeColor);
+        //colorsControls.add(colorChooser);
+        heightConstrain(colorsControls);
+        controls.add(colorsControls);
+        controls.add(Box.createRigidArea(space));
 
         controls.add(help);
         controls.add(Box.createVerticalGlue());
@@ -365,7 +423,7 @@ public class GraphGeneration extends JApplet {
     
     private void createGraph(){
     	this.graph = new DirectedSparseMultigraph<String,Weight>();
-    	ClassParser classParser = new ClassParser();
+    	classParser = new ClassParser();
     	
     	for(Class classe : classParser.getClasses().values()){
     		if(classe.isInProject() && !classe.isIgnored()&& classe.getTypeClass().equals(Class.TypeClass.business)){
@@ -381,42 +439,54 @@ public class GraphGeneration extends JApplet {
 		}
     	
     	for(Map.Entry<String, Color> entry : colors.entrySet()){
-    		//System.out.println("final " + entry.getKey() + " - " + entry.getValue());
-    		int countAssociationIncoming = 0;
-        	
-        	if(((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(entry.getKey()) != null){
-        		Color lastColor = null;
-    	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(entry.getKey())){
-    	    		if(weight.getTypeRelationship().equals(Weight.TypeRelationship.association)){
-    	    			if(lastColor == null || !lastColor.equals(colors.get(weight.getOrigin()))){
-    	    				//System.out.println("incoming " + classType.getName() + " - " + weight.getOrigin() + " - " + colors.get(weight.getOrigin()));
-    		    			countAssociationIncoming++;
-    		    			//System.out.println("association " + weight.getOrigin() + " - " + weight.getDestination() + " - " + colors.get(weight.getOrigin()) + " - " + (lastColor != null ? lastColor : "null"));
-    		    			lastColor = colors.get(weight.getOrigin());
-    	    			}
-    	    		}
-    	    	}
-        	}
-        	
-        	if(countAssociationIncoming > 1){
-        		changeColor(entry.getKey(), new ArrayList<String>());
-        		//color = Color.RED;
-        		//System.out.println("else " + classType.getName() + " - " + countAssociationIncoming + " - " + color );
-        	}
-        	//System.out.println("classe2 " + classType.getName() + " - " + color);
+    		checkMultipleDependencies(entry.getKey());
     	}
+    	
     }
     
-    private void changeColor(String vertex, List<String> calculated){
+    private void checkMultipleDependencies(String vertex){
+	
+    	//if vertex has more than 1 incoming association put red
+		int countAssociationIncoming = 0;
+    	
+    	if(((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(vertex) != null){
+    		Color lastColor = null;
+	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(vertex)){
+	    		if(weight.getTypeRelationship().equals(Weight.TypeRelationship.association)){
+	    			if(lastColor == null || !lastColor.equals(colors.get(weight.getOrigin()))){
+		    			countAssociationIncoming++;
+		    			lastColor = colors.get(weight.getOrigin());
+	    			}
+	    		}
+	    	}
+    	}
+    	
+    	if(countAssociationIncoming > 1)
+    		changeColor(vertex, Color.RED, new ArrayList<String>());
+    }
+    
+    private void changeColor(String vertex, Color color, List<String> calculated){
+    	changeColor(vertex, color, calculated, true);
+    }
+    
+    private void changeColor(String vertex, Color color, List<String> calculated, boolean ignoreCustomColor){
     	if(calculated.contains(vertex))
     		return;
     	
-    	colors.put(vertex, Color.RED);
+    	if(customColors.get(vertex)!= null)
+    		return;
+    	
+    	if(!color.equals(Color.RED))
+    		auxColors.put(vertex, color);
+    	else
+    		auxColors.put(vertex, null);
+    	
+    	colors.put(vertex, color);
     	calculated.add(vertex);
     	
     	if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex) != null){
 	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex))
-	    		changeColor(weight.getDestination(), calculated);
+	    		changeColor(weight.getDestination(), color, calculated, ignoreCustomColor);
     	}
     }
     
@@ -425,32 +495,10 @@ public class GraphGeneration extends JApplet {
     	if(calculated.contains(classType))
     		return;
     	
-    	//colors.put(classType.getName(), color);
     	calculated.add(classType);
-    	
-    	/*if(((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(classType.getName()) != null){
-    		Color lastColor = null;
-	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(classType.getName())){
-	    		if(weight.getTypeRelationship().equals(Weight.TypeRelationship.association)){
-	    			if(lastColor == null || !lastColor.equals(colors.get(weight.getOrigin()))){
-		    			countAssociationIncoming++;
-		    			System.out.println("association " + weight.getOrigin() + " - " + weight.getDestination() + " - " + colors.get(weight.getOrigin()) + " - " + (lastColor != null ? lastColor : "null"));
-		    			lastColor = colors.get(weight.getOrigin());
-	    			}
-	    		}
-	    	}
-    	}*/
-    		
-    	//if(countAssociationIncoming <= 1 && !color.equals(Color.RED)){
+
 		colors.put(classType.getName(), color);
-    		//System.out.println("if " + classType.getName() + " - " + countAssociationIncoming + " - " + color );
-    	//}
-    	/*else{
-    		colors.put(classType.getName(), Color.RED);
-    		color = Color.RED;
-    		System.out.println("else " + classType.getName() + " - " + countAssociationIncoming + " - " + color );
-    	}*/
-    	
+
     	//System.out.println("------" + classe.getNomeQualificado() + (classe.getHerancaClasse() != null ? " extends " + classe.getHerancaClasse().getNomeQualificado() : "") + " v=" + classe.getVariaveis().values().size() + " m=" + classe.getMethods().values().size());
 		if(classType.getInheritage() != null && classType.getInheritage().isInProject() && !classType.getInheritage().isIgnored() && classType.getInheritage().getTypeClass().equals(Class.TypeClass.business)){
 			this.createEdge(classType.getName(), classType.getInheritage().getName(), Weight.TypeRelationship.generalization);
@@ -460,17 +508,14 @@ public class GraphGeneration extends JApplet {
 		
 		for(Class interfac : classType.getInterfaces()){
 			if(interfac.isInProject() && !interfac.isIgnored()){
-				//System.out.println("**" + interfac.getNome());
 				this.createEdge(classType.getName(), interfac.getName(), Weight.TypeRelationship.interfacing);
 				if(colors.get(interfac.getName()) == null)
 					colors.put(interfac.getName(), color);
-				//this.createGraph(interfac, color);
 			}
 		}
 		
 		for(Class implementsClass : classType.getImplementClass()){
 			this.createEdge(classType.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
-			//colors.put(implementsClass.getName(), color);
 			this.createGraph(implementsClass, color, calculated);
 			
 		}
@@ -511,16 +556,6 @@ public class GraphGeneration extends JApplet {
 				}
 			}					
 		}
-		
-    	/*System.out.println("----------------------------------");
-    	System.out.println(classType.getName() + " - " + color.toString());
-    	if(graph.getIncidentEdges(classType.getName()) != null)
-	    	for(Weight weight : graph.getIncidentEdges(classType.getName()))
-	    		System.out.println(weight.getOrigin() + "-->" + weight.getDestination());
-    	
-    	if(graph.getPredecessors(classType.getName()) != null)
-	    	for(String predecessor : graph.getPredecessors(classType.getName()))
-	    		System.out.println("predecessor " + predecessor); */  
     }
     
     private void heightConstrain(Component component) {
@@ -542,6 +577,67 @@ public class GraphGeneration extends JApplet {
     
     private void uncluster() {
     	cluster(false);
+    }
+    
+    private void changeColorPicked(Color color) {
+    	Collection<String> picked = ps.getPicked();
+    	for(String vertex : picked){
+    		changeColor(vertex, color, new ArrayList<String>(), false);
+    		
+        	/*if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex) != null){
+    	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex)){
+    	    		checkMultipleDependencies(weight.getDestination());
+    	    	}
+        	}*/
+    		List<String> calculated = new ArrayList<String>();
+    		calculated.add(vertex);
+    		
+    		//if class is an interface change the color of the implementation too
+    		Class interfaceClass = classParser.getClasses().get(vertex);
+    		if(interfaceClass.isInterface() && interfaceClass.getImplementClass().size() > 0){
+    			for(Class implementationClass : interfaceClass.getImplementClass()){
+    				calculated.add(implementationClass.getName());
+    				changeColor(implementationClass.getName(), color, calculated, false);
+    			}
+    		}
+    		
+    		//if vertex has more than 1 incoming association put red
+    		List<String> vertices = new ArrayList<String>();
+    		vertices.addAll(calculated);
+    		for(String vertexAux : vertices){
+    			if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertexAux) != null){
+        	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertexAux)){
+        	    		int countAssociationIncoming = 0;
+        	        	
+        	        	if(((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(weight.getDestination()) != null){
+        	        		Color lastColor = null;
+        	        		String lastInVertex = null;
+        	    	    	for(Weight weightAux : ((DirectedSparseMultigraph<String, Weight>)graph).getInEdges(weight.getDestination())){
+        	    	    		if(weightAux.getTypeRelationship().equals(Weight.TypeRelationship.association)){
+        	    	    			//if(lastColor == null || !lastColor.equals(colors.get(weight.getOrigin()))){
+        	    	    			if(lastInVertex == null || !lastInVertex.equals(weightAux.getOrigin())){
+        	    		    			countAssociationIncoming++;
+        	    		    			lastColor = colors.get(weightAux.getOrigin());
+        	    		    			lastInVertex = weightAux.getOrigin();
+        	    	    			}
+        	    	    			//}
+        	    	    		}
+        	    	    	}
+        	        	}
+        	        	
+        	        	//System.out.println(vertex + " - " + weight.getDestination() + " - " + countAssociationIncoming);
+        	        	
+        	        	if(countAssociationIncoming > 1)
+        	        		changeColor(weight.getDestination(), Color.RED, calculated, false);
+        	    	}
+            	}	
+    		}
+    	}
+    	
+    	customColors = auxColors;
+    	auxColors = new HashMap<String, Color>();
+
+    	vv.repaint();
     }
 
     @SuppressWarnings("unchecked")
@@ -637,4 +733,5 @@ public class GraphGeneration extends JApplet {
 	public void setGraph(Graph<String, Weight> graph) {
 		this.graph = graph;
 	}
+	
 }

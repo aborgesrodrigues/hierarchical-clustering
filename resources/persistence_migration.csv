@@ -140,7 +140,7 @@ org.sigaept.edu.dao.ZonaProcedenciaDAO;org.sigaept.edu.negocio.ejb.ManterPessoaF
 org.sigaept.edu.dao.ParentescoDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;0.3
 org.sigaept.edu.dao.PessoaFisicaDAO;org.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJB;23.391830253000006
 org.sigaept.edu.dao.TipoAtoAutorizativoDAO;org.sigaept.edu.negocio.ejb.ManterCalendarioAcademicoEJB;0.3
-org.sigaept.edu.dao.PeriodoLetivoDAO;org.sigaept.edu.negocio.ejb.ManterPeriodoLetivoEJB;0.0
+org.sigaept.edu.dao.PeriodoLetivoDAO;org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB;364.0789537516562
 org.sigaept.edu.dao.DescricaoRegraDAO;org.sigaept.edu.negocio.ejb.ManterRegraAcademicaEJB;0.0
 org.sigaept.edu.dao.AnoConclusaoInstituicaoOrigemDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;0.0
 org.sigaept.edu.dao.PeriodoAvaliacaoDocenteDAO;org.sigaept.edu.negocio.ejb.ManterAvaliacaoDocenteEJB;35.67458303309999
