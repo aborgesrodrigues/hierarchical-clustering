@@ -106,6 +106,8 @@ public class ClassParser {
 												classType.setTypeClass(Class.TypeClass.business);
 											else if(config.getEntityPackage().equals(cu.getPackage().getName().toString()))
 												classType.setTypeClass(Class.TypeClass.entity);
+											else if (node.isInterface())
+												classType.setTypeClass(Class.TypeClass.interfaceType);
 											else
 												classType.setTypeClass(Class.TypeClass.other);
 											

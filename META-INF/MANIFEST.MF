@@ -160,4 +160,5 @@ Export-Package: edu.uci.ics.jung.algorithms.blockmodel,
  edu.uci.ics.jung.visualization.transform.shape,
  edu.uci.ics.jung.visualization.util
 Bundle-ClassPath: libs/jung.jar,
+ libs/hierarchical-clustering-java.jar,
  .

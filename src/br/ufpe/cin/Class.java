@@ -1,5 +1,6 @@
 package br.ufpe.cin;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ public class Class {
 		persistence,
 		business,
 		entity,
+		interfaceType,
 		other,
 		outside
 	}
@@ -35,6 +37,7 @@ public class Class {
 	private Class belongsTo;
 	private String packageInfo;
 	private List<Class> implementClass;
+	private Color color;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
@@ -292,6 +295,14 @@ public class Class {
 
 	public void setImplementClass(List<Class> implementClass) {
 		this.implementClass = implementClass;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

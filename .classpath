@@ -5,5 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="libs/jung.jar"/>
+	<classpathentry kind="lib" path="libs/hierarchical-clustering-java.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

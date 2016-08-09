@@ -44,7 +44,6 @@ import javax.swing.JPanel;
 
 import com.google.common.base.Function;
 
-import br.ufpe.cin.ColorChooserButton.ColorChangedListener;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -127,6 +126,7 @@ public class GraphGeneration extends JApplet {
     Map<String, Color>customColors = new HashMap<String, Color>();
     Map<String, Color>auxColors = new HashMap<String, Color>();
     private ClassParser classParser;
+    private List<List<Class>> circular = new ArrayList<List<Class>>();
     
     /**
      * create an instance of a simple graph with controls to
@@ -312,23 +312,30 @@ public class GraphGeneration extends JApplet {
             }
         });
         
-        final ColorChooserButton changeColor = new ColorChooserButton(Color.BLACK, "Change Color");
+        /*final ColorChooserButton changeColor = new ColorChooserButton(Color.BLACK, "Change Color");
         changeColor.addColorChangedListener(new ColorChangedListener() {
 			@Override
 			public void colorChanged(Color newColor) {
 				changeColorPicked(newColor);
-			}});
+			}});*/
         
         
         this.vv.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				List<Class> classes = new ArrayList<Class>();
 				for(String vertex : ps.getPicked()){
 					Color color = colors.get(vertex) == null ? Color.BLACK : colors.get(vertex);
-					changeColor.setSelectedColor(color, false);
+					//changeColor.setSelectedColor(color, false);
+					
+					for(Class classType : classParser.getClasses().values()){
+						if(classType.getColor() != null && classType.getColor().equals(color)){
+							classes.add(classType);
+						}
+					}
 				}
-				System.out.println(ps.getPicked());
+				DendrogramPanel.init(classes);
 			}
 
 			@Override
@@ -398,7 +405,7 @@ public class GraphGeneration extends JApplet {
         
         JPanel colorsControls = new JPanel(new GridLayout(0,1));
         colorsControls.setBorder(BorderFactory.createTitledBorder("Coloring"));
-        colorsControls.add(changeColor);
+        //colorsControls.add(changeColor);
         //colorsControls.add(colorChooser);
         heightConstrain(colorsControls);
         controls.add(colorsControls);
@@ -431,8 +438,9 @@ public class GraphGeneration extends JApplet {
     			
     			if(color == null){
     				color = this.getColor();
-    				//System.out.println("classe " + classe.getName());
-    				this.createGraph(classe, color, new ArrayList<Class>());	
+    				//System.out.println("início classe " + classe.getName());
+    				this.createGraph(classe, color, new ArrayList<Class>());
+    				//System.out.println("término classe " + classe.getName());
     			}
     						
     		}
@@ -461,8 +469,10 @@ public class GraphGeneration extends JApplet {
 	    	}
     	}
     	
-    	if(countAssociationIncoming > 1)
-    		changeColor(vertex, Color.RED, new ArrayList<String>());
+    	if(countAssociationIncoming > 1){
+    		//colors.put(vertex, Color.RED);
+    		//changeColor(vertex, Color.RED, new ArrayList<String>());
+    	}
     }
     
     private void changeColor(String vertex, Color color, List<String> calculated){
@@ -482,6 +492,7 @@ public class GraphGeneration extends JApplet {
     		auxColors.put(vertex, null);
     	
     	colors.put(vertex, color);
+    	classParser.getClassType(vertex).setColor(color);
     	calculated.add(vertex);
     	
     	if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex) != null){
@@ -491,13 +502,21 @@ public class GraphGeneration extends JApplet {
     }
     
     private void createGraph(Class classType, Color color, List<Class> calculated){
-    	
-    	if(calculated.contains(classType))
+    	//System.out.println("cor " + classType.getName() + " - " + color);
+    	//System.out.println("createGraph " + classType.getName());
+    	if(calculated.contains(classType)){
+    		//System.out.println("contains " + classType.getName());
+    		if(!circular.contains(calculated)){
+    			calculated.add(classType);
+	    		circular.add(calculated);
+    		}
     		return;
+    	}
     	
     	calculated.add(classType);
 
 		colors.put(classType.getName(), color);
+		classType.setColor(color);
 
     	//System.out.println("------" + classe.getNomeQualificado() + (classe.getHerancaClasse() != null ? " extends " + classe.getHerancaClasse().getNomeQualificado() : "") + " v=" + classe.getVariaveis().values().size() + " m=" + classe.getMethods().values().size());
 		if(classType.getInheritage() != null && classType.getInheritage().isInProject() && !classType.getInheritage().isIgnored() && classType.getInheritage().getTypeClass().equals(Class.TypeClass.business)){
@@ -509,8 +528,10 @@ public class GraphGeneration extends JApplet {
 		for(Class interfac : classType.getInterfaces()){
 			if(interfac.isInProject() && !interfac.isIgnored()){
 				this.createEdge(classType.getName(), interfac.getName(), Weight.TypeRelationship.interfacing);
-				if(colors.get(interfac.getName()) == null)
+				if(colors.get(interfac.getName()) == null){
 					colors.put(interfac.getName(), color);
+					interfac.setColor(color);
+				}
 			}
 		}
 		
@@ -556,6 +577,19 @@ public class GraphGeneration extends JApplet {
 				}
 			}					
 		}
+		
+		/*for(List<Class> list : circular){
+			System.out.println("Início");
+			for(Class aux : list){
+				System.out.println("classe " + aux.getName());
+				colors.put(aux.getName(), Color.BLACK);
+			}
+			System.out.println("Término");
+			System.out.println("");
+			System.out.println("");
+			System.out.println("");
+			System.out.println("");
+		}*/
     }
     
     private void heightConstrain(Component component) {
@@ -627,8 +661,11 @@ public class GraphGeneration extends JApplet {
         	        	
         	        	//System.out.println(vertex + " - " + weight.getDestination() + " - " + countAssociationIncoming);
         	        	
-        	        	if(countAssociationIncoming > 1)
-        	        		changeColor(weight.getDestination(), Color.RED, calculated, false);
+        	        	if(countAssociationIncoming > 1){
+        	        		colors.put(weight.getDestination(), Color.RED);
+        	        		classParser.getClassType(weight.getDestination()).setColor(color);
+        	        		//changeColor(weight.getDestination(), Color.RED, calculated, false);
+        	        	}
         	    	}
             	}	
     		}
