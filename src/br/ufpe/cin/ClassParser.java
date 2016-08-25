@@ -662,6 +662,20 @@ public class ClassParser {
         				}
         			}
         			
+        			for(Class implemented : classType.getImplementClass()){
+    					Metric metric = classType.getConnectivityStrength().get(implemented);
+    					//Class variable = classType.getVariable(method.getClassType().getNomeQualificado());
+    					
+    					if(metric == null)
+    						metric = new Metric(Metric.Type.connectionStrength);
+    					
+    					metric.setValor(999);
+    					
+    					//The connection strengh is equal for both sides of a method call
+    					classType.getConnectivityStrength().put(implemented, metric);
+    					implemented.getConnectivityStrength().put(classType, metric);
+        			}
+        			
         			for(Method method : classType.getMethods().values()){
         				for(Method methodInvocation : method.getMethodsInvocation().values()){
         			    	if(methodInvocation.getClassType().isInProject() && !methodInvocation.getClassType().equals(classType)){
@@ -728,7 +742,7 @@ public class ClassParser {
 					if(metric == null)
 						metric = new Metric(Metric.Type.connectionStrength);
 					
-					metric.setValor(metric.getValor());
+					metric.setValor(Metric.wpri / 2);
 					
 					/*if(variable != null)
 						metric.setKeepTogether(variable.isKeepTogether());*/

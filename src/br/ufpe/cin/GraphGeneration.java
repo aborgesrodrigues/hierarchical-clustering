@@ -319,7 +319,6 @@ public class GraphGeneration extends JApplet {
 				changeColorPicked(newColor);
 			}});*/
         
-        
         this.vv.addMouseListener(new MouseListener() {
 
 			@Override
@@ -335,7 +334,8 @@ public class GraphGeneration extends JApplet {
 						}
 					}
 				}
-				DendrogramPanel.init(classes);
+				DendrogramPanel dendrogramPanel = new DendrogramPanel();
+				dendrogramPanel.init(((DirectedSparseMultigraph<String, Weight>)graph), classes);
 			}
 
 			@Override
@@ -475,7 +475,7 @@ public class GraphGeneration extends JApplet {
     	}
     }
     
-    private void changeColor(String vertex, Color color, List<String> calculated){
+    /*private void changeColor(String vertex, Color color, List<String> calculated){
     	changeColor(vertex, color, calculated, true);
     }
     
@@ -499,7 +499,7 @@ public class GraphGeneration extends JApplet {
 	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex))
 	    		changeColor(weight.getDestination(), color, calculated, ignoreCustomColor);
     	}
-    }
+    }*/
     
     private void createGraph(Class classType, Color color, List<Class> calculated){
     	//System.out.println("cor " + classType.getName() + " - " + color);
@@ -613,16 +613,16 @@ public class GraphGeneration extends JApplet {
     	cluster(false);
     }
     
-    private void changeColorPicked(Color color) {
+    /*private void changeColorPicked(Color color) {
     	Collection<String> picked = ps.getPicked();
     	for(String vertex : picked){
     		changeColor(vertex, color, new ArrayList<String>(), false);
     		
-        	/*if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex) != null){
-    	    	for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex)){
-    	    		checkMultipleDependencies(weight.getDestination());
-    	    	}
-        	}*/
+        	//if(((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex) != null){
+    	    	//for(Weight weight : ((DirectedSparseMultigraph<String, Weight>)graph).getOutEdges(vertex)){
+    	    		//checkMultipleDependencies(weight.getDestination());
+    	    	//}
+        	//}
     		List<String> calculated = new ArrayList<String>();
     		calculated.add(vertex);
     		
@@ -675,7 +675,7 @@ public class GraphGeneration extends JApplet {
     	auxColors = new HashMap<String, Color>();
 
     	vv.repaint();
-    }
+    }*/
 
     @SuppressWarnings("unchecked")
 	private void cluster(boolean state) {

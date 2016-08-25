@@ -22,19 +22,23 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.apporiented.algorithm.clustering.Cluster;
-import com.apporiented.algorithm.clustering.ClusteringAlgorithm;
-import com.apporiented.algorithm.clustering.DefaultClusteringAlgorithm;
-import com.apporiented.algorithm.clustering.WeightedLinkageStrategy;
+import com.apporiented.algorithm.clustering.FastClusteringAlgorithm;
 import com.apporiented.algorithm.clustering.visualization.ClusterComponent;
 import com.apporiented.algorithm.clustering.visualization.VCoord;
+
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 
 public class DendrogramPanel extends JPanel {
 
@@ -61,6 +65,13 @@ public class DendrogramPanel extends JPanel {
     private double yModelOrigin = 0.0;
     private double wModel = 0.0;
     private double hModel = 0.0;
+    private Map<String, Cluster> clusters = new HashMap<String, Cluster>();
+    private int totalEdges;
+    
+    public DendrogramPanel(){
+    	totalEdges = 0;
+    	clusters = new HashMap<String, Cluster>();
+    }
 
     public boolean isShowDistanceValues() {
         return showDistanceValues;
@@ -179,11 +190,11 @@ public class DendrogramPanel extends JPanel {
             comp = new ClusterComponent(cluster, cluster.isLeaf(), initCoord);
             double leafHeight = clusterHeight / cluster.countLeafs();
             double yChild = initCoord.getY() - (clusterHeight / 2);
-            double distance = cluster.getDistanceValue() == null ? 0 : cluster.getDistanceValue();
+            double distance = cluster.getLevel();
             for (Cluster child : cluster.getChildren()) {
                 int childLeafCount = child.countLeafs();
                 double childHeight = childLeafCount * leafHeight;
-                double childDistance = child.getDistanceValue() == null ? 0 : child.getDistanceValue();
+                double childDistance = child.getLevel();
                 VCoord childInitCoord = new VCoord(initCoord.getX() + (distance - childDistance), yChild + childHeight
                         / 2.0);
                 yChild += childHeight;
@@ -248,7 +259,7 @@ public class DendrogramPanel extends JPanel {
                 int y2 = y1;
                 g2.drawLine(x1, y1, x2, y2);
 
-                double totalDistance = component.getCluster().getTotalDistance();
+                double totalDistance = component.getCluster().getLevel();
                 double xModelInterval;
                 if (scaleValueInterval <= 0) {
                     xModelInterval = totalDistance / 10.0;
@@ -283,12 +294,12 @@ public class DendrogramPanel extends JPanel {
         }
     }
 
-    public static void init(List<Class> classes) {
-    	System.out.println("quantidade " + classes.size());
+    public void init(DirectedSparseMultigraph<String, Weight> graph, List<Class> classes) {
+    	
         JFrame frame = new JFrame();
-        frame.setSize(400, 300);
-        frame.setLocation(400, 300);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(3000, 3000);
+        //frame.setLocation(1000, 1000);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         JPanel content = new JPanel();
         DendrogramPanel dp = new DendrogramPanel();
@@ -303,25 +314,201 @@ public class DendrogramPanel extends JPanel {
         dp.setScaleValueInterval(1);
         dp.setShowDistances(false);
 
-        Cluster cluster = createSampleCluster();
+        System.out.println("create cluster");
+        Cluster cluster = createCluster(graph, classes);
+        System.out.println("cluster created");
         dp.setModel(cluster);
         frame.setVisible(true);
     }
+    
+    private Cluster createCluster(DirectedSparseMultigraph<String, Weight> graph, List<Class> classes) {
+    	List<Cluster> clustersList = new ArrayList<Cluster>();
+    	//initiate the clusters
+    	for(Class classType : classes){
+    		Cluster cluster = new Cluster(classType.getName(), 0);
+    		clusters.put(classType.getName(), cluster);
+    		clustersList.add(cluster);
+    	}
+    	
+    	for(Cluster cluster : clusters.values()){
+	    	if(graph.getOutEdges(cluster.getName()) != null){
+	    		for(Weight weight : graph.getOutEdges(cluster.getName())){
+	    			addCluster(cluster, weight.getDestination());
+	    		}
+	    	}
+	    	
+	    	if(graph.getInEdges(cluster.getName()) != null){
+	    		for(Weight weight : graph.getInEdges(cluster.getName())){
+	    			addCluster(cluster, weight.getOrigin());
+	    		}
+	    	}
+    	}
+    	
+    	for(Cluster cluster : clustersList)
+    		cluster.setTotalEdges(this.totalEdges);
+    	
+    	
+        FastClusteringAlgorithm alg = new FastClusteringAlgorithm();
+        Cluster clusterRoot = alg.performClustering(clustersList);
+        clusterRoot.toConsole(0);
+        return clusterRoot;
+    }
+    
+    private void addCluster(Cluster mainCluster, String vertex){
+		Cluster cluster = clusters.get(vertex);
+		if(cluster != null){
+			if(!mainCluster.getOutputVertices().contains(cluster) && !cluster.getOutputVertices().contains(mainCluster))
+				this.totalEdges++;
+			if(!mainCluster.getOutputVertices().contains(cluster)){
+				mainCluster.getOutputVertices().add(cluster);
+				mainCluster.setOutputEdges(mainCluster.getOutputEdges() + 1);
+				
+			}
+		}
+    }
 
     private static Cluster createSampleCluster() {
-        double[][] distances = new double[][] { 
-        	{ 0, 1, 9, 7, 11, 14 }, 
-        	{ 1, 0, 4, 3, 8, 10 }, 
-        	{ 9, 4, 0, 9, 2, 8 },
-            { 7, 3, 9, 0, 6, 13 }, 
-            { 11, 8, 2, 6, 0, 10 }, 
-            { 14, 10, 8, 13, 10, 0 } 
+    	/*double[][] distances = new double[][] { 
+        	{  0,  1,  9,  7, 11, 14 }, 
+        	{  1,  0,  4,  3,  8, 10 }, 
+        	{  9,  4,  0,  9,  2,  8 },
+            {  7,  3,  9,  0,  6, 13 }, 
+            { 11,  8,  2,  6,  0, 10 }, 
+            { 14, 10,  8, 13, 10,  0 } 
         };
         String[] names = new String[] { "O1", "O2", "O3", "O4", "O5", "O6" };
-        ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
-        Cluster cluster = alg.performClustering(distances, names, new WeightedLinkageStrategy());
-        cluster.toConsole(0);
-        return cluster;
+    	double[][] distances = new double[][] { 
+        	{  0,  4,  3,  2,  1,  4,  3,  3 }, 
+        	{  4,  0,  1,  2,  3,  2,  3,  1 }, 
+        	{  3,  1,  0,  1,  2,  3,  2,  2 },
+            {  2,  2,  1,  0,  1,  2,  1,  1 }, 
+            {  1,  3,  2,  1,  0,  3,  2,  2 }, 
+            {  4,  2,  3,  2,  3,  0,  3,  1 },
+            {  3,  3,  2,  1,  3,  3,  0,  2 },
+            {  3,  1,  2,  1,  2,  1,  2,  0 }
+        };
+    	String[] names = new String[] { 
+    			"ManterConvenioEJB", 
+    			"ManterProjetoExtensaoEJB", 
+    			"IManterProjetoExtensaoEJB", 
+    			"ManterParticipacaoEJB", 
+    			"IManterConvenioEJB", 
+    			"ManterProgramaEJB", 
+    			"IManterParticipacaoEJB" ,
+    			"IManterProgramaEJB"
+    			};*/
+    	
+    	List<Cluster> clusters = new ArrayList<Cluster>();
+    	List<String> vertices;
+    	Cluster clusterManterConvenioEJB = new Cluster("ManterConvenioEJB", 8);
+    	Cluster clusterManterProjetoExtensaoEJB = new Cluster("ManterProjetoExtensaoEJB", 8);
+    	Cluster clusterIManterProjetoExtensaoEJB = new Cluster("IManterProjetoExtensaoEJB", 8);
+    	Cluster clusterManterParticipacaoEJB = new Cluster("ManterParticipacaoEJB", 8);
+    	Cluster clusterIManterConvenioEJB = new Cluster("IManterConvenioEJB", 8);
+    	Cluster clusterManterProgramaEJB = new Cluster("ManterProgramaEJB", 8);
+    	Cluster clusterIManterParticipacaoEJB = new Cluster("IManterParticipacaoEJB", 8);
+    	Cluster clusterIManterProgramaEJB = new Cluster("IManterProgramaEJB", 8);
+    	
+    	/*cluster = new Cluster("ManterConvenioEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("ManterConvenioEJB");
+    	vertices.add("IManterConvenioEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterManterConvenioEJB.getOutputVertices().add(clusterIManterConvenioEJB);
+    	clusterManterConvenioEJB.setOutputEdges(1);
+    	clusters.add(clusterManterConvenioEJB);
+    	
+    	/*cluster = new Cluster("ManterProjetoExtensaoEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("ManterProjetoExtensaoEJB");
+    	vertices.add("IManterProjetoExtensaoEJB");
+    	vertices.add("IManterProgramaEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterManterProjetoExtensaoEJB.getOutputVertices().add(clusterIManterProjetoExtensaoEJB);
+    	clusterManterProjetoExtensaoEJB.getOutputVertices().add(clusterIManterProgramaEJB);
+    	clusterManterProjetoExtensaoEJB.setOutputEdges(2);
+    	clusters.add(clusterManterProjetoExtensaoEJB);
+    	
+    	/*cluster = new Cluster("IManterProjetoExtensaoEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("IManterProjetoExtensaoEJB");
+    	vertices.add("ManterProjetoExtensaoEJB");
+    	vertices.add("ManterParticipacaoEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterIManterProjetoExtensaoEJB.getOutputVertices().add(clusterManterProjetoExtensaoEJB);
+    	clusterIManterProjetoExtensaoEJB.getOutputVertices().add(clusterManterParticipacaoEJB);
+    	clusterIManterProjetoExtensaoEJB.setOutputEdges(2);
+    	clusters.add(clusterIManterProjetoExtensaoEJB);
+    	
+    	/*cluster = new Cluster("ManterParticipacaoEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("ManterParticipacaoEJB");
+    	vertices.add("IManterConvenioEJB");
+    	vertices.add("IManterProjetoExtensaoEJB");
+    	vertices.add("IManterProgramaEJB");
+    	vertices.add("IManterParticipacaoEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterManterParticipacaoEJB.getOutputVertices().add(clusterIManterConvenioEJB);
+    	clusterManterParticipacaoEJB.getOutputVertices().add(clusterIManterProjetoExtensaoEJB);
+    	clusterManterParticipacaoEJB.getOutputVertices().add(clusterIManterProgramaEJB);
+    	clusterManterParticipacaoEJB.getOutputVertices().add(clusterIManterParticipacaoEJB);
+    	clusterManterParticipacaoEJB.setOutputEdges(4);
+    	clusters.add(clusterManterParticipacaoEJB);
+    	
+    	/*cluster = new Cluster("IManterConvenioEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("IManterConvenioEJB");
+    	vertices.add("ManterConvenioEJB");
+    	vertices.add("ManterParticipacaoEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterIManterConvenioEJB.getOutputVertices().add(clusterManterConvenioEJB);
+    	clusterIManterConvenioEJB.getOutputVertices().add(clusterManterParticipacaoEJB);
+    	clusterIManterConvenioEJB.setOutputEdges(2);
+    	clusters.add(clusterIManterConvenioEJB);
+    	
+    	/*cluster = new Cluster("ManterProgramaEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("ManterProgramaEJB");
+    	vertices.add("IManterProgramaEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterManterProgramaEJB.getOutputVertices().add(clusterIManterProgramaEJB);
+    	clusterManterProgramaEJB.setOutputEdges(1);
+    	clusters.add(clusterManterProgramaEJB);
+    	
+    	/*cluster = new Cluster("IManterParticipacaoEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("IManterParticipacaoEJB");
+    	vertices.add("ManterParticipacaoEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterIManterParticipacaoEJB.getOutputVertices().add(clusterManterParticipacaoEJB);
+    	clusterIManterParticipacaoEJB.setOutputEdges(1);
+    	clusters.add(clusterIManterParticipacaoEJB);
+    	
+    	/*cluster = new Cluster("IManterProgramaEJB", 8);
+    	vertices = new ArrayList<String>();
+    	//vertices.add("IManterProgramaEJB");
+    	vertices.add("ManterProgramaEJB");
+    	vertices.add("ManterProjetoExtensaoEJB");
+    	vertices.add("ManterParticipacaoEJB");
+    	cluster.setOutputVertices(vertices);
+    	clusters.add(cluster);*/
+    	clusterIManterProgramaEJB.getOutputVertices().add(clusterManterProgramaEJB);
+    	clusterIManterProgramaEJB.getOutputVertices().add(clusterManterProjetoExtensaoEJB);
+    	clusterIManterProgramaEJB.getOutputVertices().add(clusterManterParticipacaoEJB);
+    	clusterIManterProgramaEJB.setOutputEdges(3);
+    	clusters.add(clusterIManterProgramaEJB);
+    	
+        FastClusteringAlgorithm alg = new FastClusteringAlgorithm();
+        Cluster clusterRoot = alg.performClustering(clusters);
+        clusterRoot.toConsole(0);
+        return clusterRoot;
     }
 
 }
