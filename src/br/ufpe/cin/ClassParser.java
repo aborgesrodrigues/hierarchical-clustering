@@ -250,6 +250,27 @@ public class ClassParser {
 								    	else
 								    		classInvocation = classType;
 								    	
+								    	
+								    	/*if(node.getExpression() != null){
+								    		System.out.println("1-" + node.getExpression().resolveTypeBinding().getBinaryName());
+								    		System.out.println("11-" + node.getExpression().resolveTypeBinding().getName());
+								    		System.out.println("12-" + node.getExpression().resolveTypeBinding().getQualifiedName());
+								    		System.out.println("2-" + node.getExpression().resolveTypeBinding().getTypeDeclaration().getBinaryName());
+								    		System.out.println("3-" + node.getExpression().resolveTypeBinding().getErasure().getBinaryName());
+								    		System.out.println("4-" + node.getExpression().resolveTypeBinding().getDeclaringClass());
+								    		System.out.println("5-" + node.getExpression().resolveTypeBinding().getElementType());
+								    		System.out.println("6-" + node.getExpression().resolveTypeBinding().getComponentType());
+								    		System.out.println("6-" + node.getExpression().resolveTypeBinding().getPackage());
+								    		System.out.println("7-" + node.resolveMethodBinding().getDeclaringClass().getBinaryName());
+								    		System.out.println("8-" + node.resolveMethodBinding().getDeclaringClass().getTypeDeclaration().getBinaryName());
+								    		System.out.println("9-" + node.resolveMethodBinding().getDeclaringClass().getErasure().getBinaryName());
+								    		System.out.println("10-" + node.resolveMethodBinding().getDeclaringClass().getDeclaringClass());
+								    		//System.out.println("3-" + node.getName().getFullyQualifiedName());
+								    		//System.out.println("4-" + typeFromBinding(node.getExpression().getAST(), node.getExpression().resolveTypeBinding()));
+								    		//System.out.println("5-" + getType(typeFromBinding(node.getExpression().getAST(), node.resolveTypeBinding())));
+								    	}*/
+										//System.out.println("3-" + node.resolveBinding());
+								    	
 								    	List<Class> parameters = new ArrayList<Class>();
 								    	
 								    	for(ITypeBinding parameter : node.resolveMethodBinding().getParameterTypes()){
@@ -288,6 +309,10 @@ public class ClassParser {
 								    
 									public boolean visit(VariableDeclarationFragment node) {
 										List<String> types = getType(typeFromBinding(node.getAST(), node.resolveBinding().getType()));
+										/*System.out.println("1-" + node.resolveBinding().getType().getBinaryName());
+										System.out.println("2-" + node.getName());
+										if(node.resolveBinding().getDeclaringClass() != null)
+											System.out.println("3-" + node.resolveBinding().getDeclaringClass().getBinaryName());*/
 										
 										if(types.contains(node.resolveBinding().getType().getBinaryName()))
 											types.remove(node.resolveBinding().getType().getBinaryName());

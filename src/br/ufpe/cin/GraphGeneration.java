@@ -21,6 +21,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.apporiented.algorithm.clustering.visualization.ClusterComponent;
 import com.google.common.base.Function;
 
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
@@ -334,8 +336,72 @@ public class GraphGeneration extends JApplet {
 						}
 					}
 				}
-				DendrogramPanel dendrogramPanel = new DendrogramPanel();
-				dendrogramPanel.init(((DirectedSparseMultigraph<String, Weight>)graph), classes);
+				final DendrogramPanel dendrogramPanel = new DendrogramPanel(((DirectedSparseMultigraph<String, Weight>)graph));
+				dendrogramPanel.init(classes);
+				
+				dendrogramPanel.addMouseListener(new MouseListener(){
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						dendrogramPanel.getComponent().setDotRadius(2, true);
+						dendrogramPanel.getComponent().setSelected(false, true);
+						ClusterComponent clusterComponent = dendrogramPanel.getComponent().getComponent(e.getX(), e.getY());
+						
+						if ((e.getButton() == 1) && clusterComponent != null && !clusterComponent.getCluster().isLeaf()) {
+							clusterComponent.setDotRadius(4);
+							clusterComponent.setSelected(true);
+						}
+						
+						if(e.getClickCount() == 2 && clusterComponent != null){
+							Color color = getColor();
+							for(ClusterComponent child : clusterComponent.getChildren())
+								changeColorCluster(color, child);
+							//dendrogramPanel.setVisible(false);
+							vv.repaint();
+						}
+						dendrogramPanel.repaint();
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						System.out.println("mouseExited");
+						//component.setDotRadius(2);
+					}});
+		    	
+				dendrogramPanel.addMouseMotionListener(new MouseMotionListener(){
+
+					@Override
+					public void mouseDragged(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseMoved(MouseEvent e) {
+						dendrogramPanel.getComponent().setDotRadius(2, true);
+						ClusterComponent clusterComponent = dendrogramPanel.getComponent().getComponent(e.getX(), e.getY());
+						if (clusterComponent != null && !clusterComponent.getCluster().isLeaf() && !clusterComponent.isSelected()) 
+							clusterComponent.setDotRadius(6);
+						dendrogramPanel.repaint();
+						
+					}});
 			}
 
 			@Override
@@ -416,7 +482,7 @@ public class GraphGeneration extends JApplet {
         content.add(controls, BorderLayout.EAST);
     }
     
-    private Color getColor(){
+    public Color getColor(){
     	Random rand = new Random();
     	
     	float r = rand.nextFloat();
@@ -424,6 +490,10 @@ public class GraphGeneration extends JApplet {
     	float b = rand.nextFloat();
     	
     	Color randomColor = new Color(r, g, b);
+    	
+    	for(Color color : colors.values())
+    		if(color.equals(randomColor))
+    			randomColor = this.getColor();
     	
     	return randomColor;
     }
@@ -525,7 +595,7 @@ public class GraphGeneration extends JApplet {
 			this.createGraph(classType.getInheritage(), color, calculated);
 		}
 		
-		for(Class interfac : classType.getInterfaces()){
+		/*for(Class interfac : classType.getInterfaces()){
 			if(interfac.isInProject() && !interfac.isIgnored()){
 				this.createEdge(classType.getName(), interfac.getName(), Weight.TypeRelationship.interfacing);
 				if(colors.get(interfac.getName()) == null){
@@ -533,7 +603,7 @@ public class GraphGeneration extends JApplet {
 					interfac.setColor(color);
 				}
 			}
-		}
+		}*/
 		
 		for(Class implementsClass : classType.getImplementClass()){
 			this.createEdge(classType.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
@@ -545,12 +615,15 @@ public class GraphGeneration extends JApplet {
 		for(Class variable : classType.getVariables()){
 			//System.out.println((entry.getValue() != null ? entry.getValue().getNomeQualificado() : entry.getKey().getNomeQualificado()) + "-" + entry.getKey().getQuantidade() + ",");
 			if(variable.isInProject() && !variable.isIgnored() && (variable.getTypeClass().equals(Class.TypeClass.business) || variable.isInterface())){
-				this.createEdge(classType.getName(), variable.getName(), Weight.TypeRelationship.association);
-				//colors.put(variable.getName(), color);
-				this.createGraph(variable, color, calculated);
+				if(!variable.isInterface()){
+					this.createEdge(classType.getName(), variable.getName(), Weight.TypeRelationship.association);
+					//colors.put(variable.getName(), color);
+					this.createGraph(variable, color, calculated);
+				}
 				
 				for(Class implementsClass : variable.getImplementClass()){
-					this.createEdge(variable.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
+					//this.createEdge(variable.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
+					this.createEdge(classType.getName(), implementsClass.getName(), Weight.TypeRelationship.association);
 					//colors.put(implementsClass.getName(), color);
 					this.createGraph(implementsClass, color, calculated);
 					
@@ -570,7 +643,8 @@ public class GraphGeneration extends JApplet {
 					this.createGraph(variable, color, calculated);
 					
 					for(Class implementsClass : variable.getImplementClass()){
-						this.createEdge(variable.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
+						//this.createEdge(variable.getName(), implementsClass.getName(), Weight.TypeRelationship.implementation);
+						this.createEdge(classType.getName(), implementsClass.getName(), Weight.TypeRelationship.association);
 						//colors.put(implementsClass.getName(), color);
 						this.createGraph(implementsClass, color, calculated);
 					}
@@ -769,6 +843,18 @@ public class GraphGeneration extends JApplet {
 
 	public void setGraph(Graph<String, Weight> graph) {
 		this.graph = graph;
+	}
+	
+	public void changeColorCluster(Color color, ClusterComponent clusterComponent){
+		if(clusterComponent.getCluster().isLeaf()){
+			this.colors.put(clusterComponent.getCluster().getName(), color);
+			Class classType = classParser.getClasses().get(clusterComponent.getCluster().getName());
+			
+			classType.setColor(color);
+		}
+		
+		for(ClusterComponent child : clusterComponent.getChildren())
+			this.changeColorCluster(color, child);
 	}
 	
 }

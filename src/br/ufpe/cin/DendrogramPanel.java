@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Window;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,10 +66,12 @@ public class DendrogramPanel extends JPanel {
     private double hModel = 0.0;
     private Map<String, Cluster> clusters = new HashMap<String, Cluster>();
     private int totalEdges;
+    private DirectedSparseMultigraph<String, Weight> graph;
     
-    public DendrogramPanel(){
+    public DendrogramPanel(DirectedSparseMultigraph<String, Weight> graph){
     	totalEdges = 0;
     	clusters = new HashMap<String, Cluster>();
+    	this.graph = graph;
     }
 
     public boolean isShowDistanceValues() {
@@ -294,7 +295,7 @@ public class DendrogramPanel extends JPanel {
         }
     }
 
-    public void init(DirectedSparseMultigraph<String, Weight> graph, List<Class> classes) {
+    public void init(List<Class> classes) {
     	
         JFrame frame = new JFrame();
         frame.setSize(3000, 3000);
@@ -302,22 +303,22 @@ public class DendrogramPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         JPanel content = new JPanel();
-        DendrogramPanel dp = new DendrogramPanel();
+        //DendrogramPanel dp = new DendrogramPanel();
 
         frame.setContentPane(content);
         content.setBackground(Color.red);
         content.setLayout(new BorderLayout());
-        content.add(dp, BorderLayout.CENTER);
-        dp.setBackground(Color.WHITE);
-        dp.setLineColor(Color.BLACK);
-        dp.setScaleValueDecimals(0);
-        dp.setScaleValueInterval(1);
-        dp.setShowDistances(false);
+        content.add(this, BorderLayout.CENTER);
+        this.setBackground(Color.WHITE);
+        this.setLineColor(Color.BLACK);
+        this.setScaleValueDecimals(0);
+        this.setScaleValueInterval(1);
+        this.setShowDistances(false);
 
         System.out.println("create cluster");
         Cluster cluster = createCluster(graph, classes);
         System.out.println("cluster created");
-        dp.setModel(cluster);
+        this.setModel(cluster);
         frame.setVisible(true);
     }
     
@@ -510,5 +511,13 @@ public class DendrogramPanel extends JPanel {
         clusterRoot.toConsole(0);
         return clusterRoot;
     }
+
+	public ClusterComponent getComponent() {
+		return component;
+	}
+
+	public void setComponent(ClusterComponent component) {
+		this.component = component;
+	}
 
 }
