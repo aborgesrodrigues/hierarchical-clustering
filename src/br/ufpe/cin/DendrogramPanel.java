@@ -205,6 +205,7 @@ public class DendrogramPanel extends JPanel {
 
                 childComp.setLinkPoint(initCoord);
                 comp.getChildren().add(childComp);
+                childComp.setParent(comp);
             }
         }
         return comp;
@@ -298,7 +299,7 @@ public class DendrogramPanel extends JPanel {
     public void init(List<Class> classes) {
     	
         JFrame frame = new JFrame();
-        frame.setSize(3000, 3000);
+        frame.setSize(1000, 600);
         //frame.setLocation(1000, 1000);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -327,6 +328,7 @@ public class DendrogramPanel extends JPanel {
     	//initiate the clusters
     	for(Class classType : classes){
     		Cluster cluster = new Cluster(classType.getName(), 0);
+    		cluster.setColor(classType.getColor());
     		clusters.put(classType.getName(), cluster);
     		clustersList.add(cluster);
     	}

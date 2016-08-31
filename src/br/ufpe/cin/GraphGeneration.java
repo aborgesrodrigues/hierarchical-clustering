@@ -15,6 +15,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Paint;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -42,6 +43,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.apporiented.algorithm.clustering.visualization.ClusterComponent;
 import com.google.common.base.Function;
@@ -347,19 +349,29 @@ public class GraphGeneration extends JApplet {
 						dendrogramPanel.getComponent().setSelected(false, true);
 						ClusterComponent clusterComponent = dendrogramPanel.getComponent().getComponent(e.getX(), e.getY());
 						
-						if ((e.getButton() == 1) && clusterComponent != null && !clusterComponent.getCluster().isLeaf()) {
+						if (e.getClickCount() == 1 && e.getButton() == 3 && clusterComponent != null && !clusterComponent.getCluster().isLeaf()) {
+							dendrogramPanel.getComponent().resetColor();
 							clusterComponent.setDotRadius(4);
 							clusterComponent.setSelected(true);
+							
+							clusterComponent.setColor(getColor(), true);
+							
+							ClusterComponent auxComponent = clusterComponent.getParent();
+							while(auxComponent != null){
+								auxComponent.setColor(getColor(), true);
+								auxComponent = auxComponent.getParent();
+							}
 						}
-						
-						if(e.getClickCount() == 2 && clusterComponent != null){
-							Color color = getColor();
-							for(ClusterComponent child : clusterComponent.getChildren())
-								changeColorCluster(color, child);
-							//dendrogramPanel.setVisible(false);
+						else if(e.getClickCount() == 2 && e.getButton() == 1 && clusterComponent != null){
+							changeColorCluster(dendrogramPanel.getComponent());
+							
 							vv.repaint();
+							
+							Window w = SwingUtilities.getWindowAncestor(dendrogramPanel);
+					        w.setVisible(false);
+					        dendrogramPanel.setVisible(false);
 						}
-						dendrogramPanel.repaint();
+						//dendrogramPanel.repaint();
 					}
 
 					@Override
@@ -845,16 +857,17 @@ public class GraphGeneration extends JApplet {
 		this.graph = graph;
 	}
 	
-	public void changeColorCluster(Color color, ClusterComponent clusterComponent){
+	public void changeColorCluster(ClusterComponent clusterComponent){
 		if(clusterComponent.getCluster().isLeaf()){
-			this.colors.put(clusterComponent.getCluster().getName(), color);
+			this.colors.put(clusterComponent.getCluster().getName(), clusterComponent.getColor());
 			Class classType = classParser.getClasses().get(clusterComponent.getCluster().getName());
 			
-			classType.setColor(color);
+			classType.setColor(clusterComponent.getColor());
+			//System.out.println("changeColorCluster " + clusterComponent.getCluster().getName() + " - " + clusterComponent.getColor());
 		}
 		
 		for(ClusterComponent child : clusterComponent.getChildren())
-			this.changeColorCluster(color, child);
+			this.changeColorCluster(child);
 	}
 	
 }
