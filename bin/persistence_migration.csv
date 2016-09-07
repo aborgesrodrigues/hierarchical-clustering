@@ -81,7 +81,7 @@ org.sigaept.edu.dao.AlunoTrabalhadorDAO;org.sigaept.edu.negocio.ejb.ManterAlunoE
 org.sigaept.edu.dao.AreaTematicaDAO;org.sigaept.edu.negocio.ejb.ManterProgramaEJB;0.15
 org.sigaept.edu.dao.MatriculaDAO;org.sigaept.edu.negocio.ejb.ManterMatriculaEJB;1170.168417450458
 org.sigaept.edu.dao.TipoEstagioDAO;org.sigaept.edu.negocio.ejb.ManterRelatorioFinalEstagioEJB;0.15
-org.sigaept.edu.dao.AlunoDAO;org.sigaept.edu.negocio.ejb.ManterAlunoEJB;248.16247020729597
+org.sigaept.edu.dao.AlunoDAO;org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB;0.0
 org.sigaept.edu.dao.ReaberturaTurmaDAO;org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB;33.966764108138996
 org.sigaept.edu.dao.EstagioMatriculaDAO;org.sigaept.edu.negocio.ejb.ManterEstagioMatriculaEJB;73.45369584213898
 org.sigaept.edu.dao.PapelParticipanteDAO;org.sigaept.edu.negocio.ejb.ManterParticipacaoEJB;0.15
