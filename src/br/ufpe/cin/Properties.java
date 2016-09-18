@@ -79,4 +79,9 @@ public class Properties {
 		return System.getenv("PathToIsolatedClassesCSVFile");
 	}
 	
+	public String getPathToAmountDependenciesCSVFile() {
+		return System.getenv("PathToAmountDependenciesCSVFile");
+	}
+	
+	
 }

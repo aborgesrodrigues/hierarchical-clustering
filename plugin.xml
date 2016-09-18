@@ -28,6 +28,11 @@
             categoryId="hierarchical-clustering.commands.category"
             id="hierarchical-clustering.commands.generateGraph">
       </command>
+      <command
+            name="Calculate Amount of Dependencies"
+            categoryId="hierarchical-clustering.commands.category"
+            id="hierarchical-clustering.commands.amountDependencies">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -46,6 +51,10 @@
       <handler
             commandId="hierarchical-clustering.commands.generateGraphCommand"
             class="hierarchicalclustering.handlers.GenerateGraphHandler">
+      </handler>
+      <handler
+            commandId="hierarchical-clustering.commands.amountDependenciesCommand"
+            class="hierarchicalclustering.handlers.AmountDependenciesHandler">
       </handler>
    </extension>
    <extension
@@ -70,6 +79,12 @@
       </key>
       <key
             commandId="hierarchical-clustering.commands.generateGraphCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+      <key
+            commandId="hierarchical-clustering.commands.amountDependenciesCommand"
             contextId="org.eclipse.ui.contexts.window"
             sequence="M1+6"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
@@ -103,6 +118,11 @@
                   mnemonic="R"
                   id="hierarchical-clustering.menus.generateGraphCommand">
             </command>
+            <command
+                  commandId="hierarchical-clustering.commands.amountDependenciesCommand"
+                  mnemonic="R"
+                  id="hierarchical-clustering.menus.amountDependenciesCommand">
+            </command>
          </menu>
       </menuContribution>
       <menuContribution
@@ -132,6 +152,12 @@
                   icon="icons/sample.gif"
                   tooltip="Generate Graph"
                   id="hierarchical-clustering.toolbars.generateGraphCommand">
+            </command>
+            <command
+                  commandId="hierarchical-clustering.commands.amountDependenciesCommand"
+                  icon="icons/sample.gif"
+                  tooltip="Calculate Amount of Dependencies"
+                  id="hierarchical-clustering.toolbars.amountDependenciesCommand">
             </command>
          </toolbar>
       </menuContribution>

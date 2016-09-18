@@ -599,6 +599,8 @@ public class GraphGeneration extends JApplet {
 
 		colors.put(classType.getName(), color);
 		classType.setColor(color);
+		
+		this.createVertex(classType.getName());
 
     	//System.out.println("------" + classe.getNomeQualificado() + (classe.getHerancaClasse() != null ? " extends " + classe.getHerancaClasse().getNomeQualificado() : "") + " v=" + classe.getVariaveis().values().size() + " m=" + classe.getMethods().values().size());
 		if(classType.getInheritage() != null && classType.getInheritage().isInProject() && !classType.getInheritage().isIgnored() && classType.getInheritage().getTypeClass().equals(Class.TypeClass.business)){
