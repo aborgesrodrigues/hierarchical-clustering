@@ -24,6 +24,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -129,8 +131,10 @@ public class GraphGeneration extends JApplet {
     Map<String, Color>colors = new HashMap<String, Color>();
     Map<String, Color>customColors = new HashMap<String, Color>();
     Map<String, Color>auxColors = new HashMap<String, Color>();
+    
     private ClassParser classParser;
     private List<List<Class>> circular = new ArrayList<List<Class>>();
+    private Properties config = Properties.getInstance();
     
     /**
      * create an instance of a simple graph with controls to
@@ -221,18 +225,6 @@ public class GraphGeneration extends JApplet {
             }
         });
         
-        JButton cluster = new JButton("Cluster Picked");
-        cluster.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clusterPicked();
-			}});
-        
-        JButton uncluster = new JButton("UnCluster All");
-        uncluster.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				uncluster();
-			}});
-        
         JComboBox<?> layoutTypeComboBox = new JComboBox<Object>(layoutClasses);
         layoutTypeComboBox.setRenderer(new DefaultListCellRenderer() {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -313,6 +305,75 @@ public class GraphGeneration extends JApplet {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog((JComponent)e.getSource(), instructions, "Help", JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+        
+        JButton calculateMetrics = new JButton("Calculate");
+        calculateMetrics.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	FileWriter fileWriter = null;
+            	try {
+            		fileWriter = new FileWriter(config.getPathToComponentsMetricsCSVFile());
+            		
+            		List<Color> usedColors = new ArrayList<Color>();
+            		
+            		for(Color color: colors.values()){
+            			if(!usedColors.contains(color))
+            				usedColors.add(color);
+            		}
+            		
+            		fileWriter.append("Component;dsc;ana;dam;dcc;cam;moa;mfa;nop;cis\n");
+            		System.out.println("colors " + usedColors.size());
+            		
+            		for(Color color : usedColors){
+                    	int dsc = 0;
+                    	double ana = 0.0;
+                    	double dam = 0.0;
+                    	double dcc = 0.0;
+                    	double cam = 0.0;
+                    	double moa = 0.0;
+                    	double mfa = 0.0;
+                    	double nop = 0.0;
+                    	double cis = 0.0;
+                    	String classes = "";
+                    	
+                    	for(Class classType : classParser.getClasses().values()){
+                    		
+                    		if(classType.getTypeClass().equals(Class.TypeClass.business) && classType.getColor().equals(color)){
+                        		ana += classType.getANA();
+                        		dam += classType.getDAM();
+                        		dcc += classType.getAmountBusinessDependencies();
+                        		cam += classType.getCAM();
+                        		moa += classType.getMOA();
+                        		mfa += classType.getMFA();
+                        		nop += classType.getNOP();
+                        		cis += classType.getCIS();
+                        		
+                        		classes += classType.getName();
+                        		
+                        		System.out.println(classType.getName() + " - dam: " + classType.getDAM() + " - dcc: " + classType.getAmountBusinessDependencies() + " - ana: " + classType.getANA() + " - cam: " + classType.getCAM() + " - moa: " + classType.getMOA() + " - mfa: " + classType.getMFA() + " - nop: " + classType.getNOP() + " - cis:" + classType.getCIS());
+                        		
+                    			dsc++;
+                    		}
+                    	}
+                    	
+                    	if(dsc > 0){
+                    		fileWriter.append(classes + ";" + dsc + ";" + ana + ";" + dam + ";" + dcc + ";" + cam + ";" + moa + ";" + mfa + ";" + nop + ";" + cis + "\n");
+                    	}
+                    }
+        		} catch (Exception ex) {
+        			ex.printStackTrace();
+        		} finally{
+                    try {
+        	            fileWriter.flush();
+        	            fileWriter.close();
+        	        } catch (IOException iex) {
+        	            System.out.println("Error while flushing/closing fileWriter !!!");
+        	            iex.printStackTrace();
+        	        }
+        		}
+            	
+                
             }
         });
         
@@ -452,14 +513,6 @@ public class GraphGeneration extends JApplet {
         controls.add(zoomControls);
         controls.add(Box.createRigidArea(space));
         
-        JPanel clusterControls = new JPanel(new GridLayout(0,1));
-        clusterControls.setBorder(BorderFactory.createTitledBorder("Clustering"));
-        clusterControls.add(cluster);
-        clusterControls.add(uncluster);
-        heightConstrain(clusterControls);
-        controls.add(clusterControls);
-        controls.add(Box.createRigidArea(space));
-        
         JPanel layoutControls = new JPanel(new GridLayout(0,1));
         layoutControls.setBorder(BorderFactory.createTitledBorder("Layout"));
         layoutControls.add(layoutTypeComboBox);
@@ -481,12 +534,11 @@ public class GraphGeneration extends JApplet {
         controls.add(modePanel);
         controls.add(Box.createRigidArea(space));
         
-        JPanel colorsControls = new JPanel(new GridLayout(0,1));
-        colorsControls.setBorder(BorderFactory.createTitledBorder("Coloring"));
-        //colorsControls.add(changeColor);
-        //colorsControls.add(colorChooser);
-        heightConstrain(colorsControls);
-        controls.add(colorsControls);
+        JPanel clusterControls = new JPanel(new GridLayout(0,1));
+        clusterControls.setBorder(BorderFactory.createTitledBorder("Metrics"));
+        clusterControls.add(calculateMetrics);
+        heightConstrain(clusterControls);
+        controls.add(clusterControls);
         controls.add(Box.createRigidArea(space));
 
         controls.add(help);
@@ -603,10 +655,10 @@ public class GraphGeneration extends JApplet {
 		this.createVertex(classType.getName());
 
     	//System.out.println("------" + classe.getNomeQualificado() + (classe.getHerancaClasse() != null ? " extends " + classe.getHerancaClasse().getNomeQualificado() : "") + " v=" + classe.getVariaveis().values().size() + " m=" + classe.getMethods().values().size());
-		if(classType.getInheritage() != null && classType.getInheritage().isInProject() && !classType.getInheritage().isIgnored() && classType.getInheritage().getTypeClass().equals(Class.TypeClass.business)){
-			this.createEdge(classType.getName(), classType.getInheritage().getName(), Weight.TypeRelationship.generalization);
+		if(classType.getSuperClass() != null && classType.getSuperClass().isInProject() && !classType.getSuperClass().isIgnored() && classType.getSuperClass().getTypeClass().equals(Class.TypeClass.business)){
+			this.createEdge(classType.getName(), classType.getSuperClass().getName(), Weight.TypeRelationship.generalization);
 			//colors.put(classType.getInheritage().getName(), color);
-			this.createGraph(classType.getInheritage(), color, calculated);
+			this.createGraph(classType.getSuperClass(), color, calculated);
 		}
 		
 		/*for(Class interfac : classType.getInterfaces()){

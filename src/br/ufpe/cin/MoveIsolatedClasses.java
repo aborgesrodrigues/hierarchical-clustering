@@ -75,16 +75,16 @@ public class MoveIsolatedClasses {
 				}
 				
 				//move interface
-				if(classe.getInheritage() != null && !classe.getInheritage().isIgnored() && classe.getInheritage().isInProject()){
-					folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + classe.getInheritage().getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getInheritage().getReducedName() + ".java", "");
+				if(classe.getSuperClass() != null && !classe.getSuperClass().isIgnored() && classe.getSuperClass().isInProject()){
+					folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + classe.getSuperClass().getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getSuperClass().getReducedName() + ".java", "");
 					folder = removePartPath(folder);
 					new File(folder).mkdirs();
 					
-					File inheritageFile = new File(classe.getInheritage().getFilePath());
-					inheritageFile.renameTo(new File(folder + classe.getInheritage().getReducedName() + ".java"));
+					File inheritageFile = new File(classe.getSuperClass().getFilePath());
+					inheritageFile.renameTo(new File(folder + classe.getSuperClass().getReducedName() + ".java"));
 					
-					System.out.println("Inheritage file origin " + classe.getInheritage().getFilePath());
-					System.out.println("Move Inheritage file to " + folder + classe.getInheritage().getReducedName() + ".java");
+					System.out.println("Inheritage file origin " + classe.getSuperClass().getFilePath());
+					System.out.println("Move Inheritage file to " + folder + classe.getSuperClass().getReducedName() + ".java");
 				}
 				
 				//move persistences e copy entities
@@ -220,17 +220,17 @@ public class MoveIsolatedClasses {
 			}
 		}
 		
-		if(classe.getInheritage() != null){
-			//File file = new File(classe.getInheritage());
+		if(classe.getSuperClass() != null){
+			//File file = new File(classe.getSuperClass());
 			//copy(file, config.getPathToIsolatedClustersMigration() + classe.getName() + "/");
 			
-			//System.out.println("Entity file origin " + classe.getInheritage().getFilePath());
-			//System.out.println("Move Entity file to " + config.getPathToIsolatedClustersMigration() + classe.getName() + "/" + classe.getInheritage().getName() + ".java");
+			//System.out.println("Entity file origin " + classe.getSuperClass().getFilePath());
+			//System.out.println("Move Entity file to " + config.getPathToIsolatedClustersMigration() + classe.getName() + "/" + classe.getSuperClass().getName() + ".java");
 			
-			if(!classe.getInheritage().equals(classe) && !calculated.contains(classe.getInheritage())){
-				//System.out.println("classe.getInheritage() ");
-				//calculated.add(classe.getInheritage());
-				iterateClass(classe.getInheritage(), businessClass, newPath, calculated);
+			if(!classe.getSuperClass().equals(classe) && !calculated.contains(classe.getSuperClass())){
+				//System.out.println("classe.getSuperClass() ");
+				//calculated.add(classe.getSuperClass());
+				iterateClass(classe.getSuperClass(), businessClass, newPath, calculated);
 			}
 		}
 		

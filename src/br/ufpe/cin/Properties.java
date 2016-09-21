@@ -83,5 +83,7 @@ public class Properties {
 		return System.getenv("PathToAmountDependenciesCSVFile");
 	}
 	
-	
+	public String getPathToComponentsMetricsCSVFile() {
+		return System.getenv("PathToComponentsMetricsCSVFile");
+	}
 }

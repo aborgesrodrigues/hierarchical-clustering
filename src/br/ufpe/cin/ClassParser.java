@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InstanceofExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedType;
@@ -136,7 +137,7 @@ public class ClassParser {
 													//Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName(), superClassTypes);
 									    			Class inheritage = getClassType(node.getSuperclassType().resolveBinding().getBinaryName());
 													
-													classType.setInheritage(inheritage);
+													classType.setSuperClass(inheritage);
 													
 													List<String> superClassTypes = getType(node.getSuperclassType());
 													
@@ -166,7 +167,7 @@ public class ClassParser {
 													Type type = (Type)node.superInterfaceTypes().get(0);
 													
 													//classType.setInheritage(getClassType(type.resolveBinding().getBinaryName(), getType(type)));
-													classType.setInheritage(getClassType(type.resolveBinding().getBinaryName()));
+													classType.setSuperClass(getClassType(type.resolveBinding().getBinaryName()));
 												}
 											}
 											
@@ -203,6 +204,14 @@ public class ClassParser {
 								    	methodType = classType.getMethod(node.getName().toString(), parameters);
 								    	methodType.setName(node.getName().getFullyQualifiedName());
 								    	methodType.setClassType(classType);
+								    	
+								    	if(node.getModifiers() == Modifier.PRIVATE)
+								    		methodType.setModifier(Method.Modifier.privateMethod);
+								    	else if(node.getModifiers() == Modifier.PROTECTED)
+								    		methodType.setModifier(Method.Modifier.protectedMethod);
+								    	else if(node.getModifiers() == Modifier.PUBLIC)
+								    		methodType.setModifier(Method.Modifier.publicMethod);
+								    	
 								    	if(!node.isConstructor()){
 								    		
 							    			List<String> types = getType(node.getReturnType2());
@@ -624,9 +633,9 @@ public class ClassParser {
     		}
     	}*/
     	
-    	if(classe.getInheritage() != null){
+    	if(classe.getSuperClass() != null){
     		calculated.add(classe);
-    		abstractValue += this.calculateComplexity(classe.getInheritage(), calculated);
+    		abstractValue += this.calculateComplexity(classe.getSuperClass(), calculated);
     	}
     	
 		for(Class annotation : classe.getAnnotations()){

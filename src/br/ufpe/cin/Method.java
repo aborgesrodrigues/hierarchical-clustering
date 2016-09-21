@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Method  implements Cloneable{
+	public enum Modifier{
+		publicMethod,
+		privateMethod,
+		protectedMethod
+	}
+	
 	private Class classType;
 	private String name;
 	private Class returnType;
@@ -13,12 +19,14 @@ public class Method  implements Cloneable{
 	private List<Class> ClasssType;
 	private List<Class> instantiationsType;
 	private Map<String, Method> methodsInvocation;
+	private Modifier modifier;
 	
 	public Method(){
 		this.parametersType = new ArrayList<Class>();
 		this.ClasssType = new ArrayList<Class>();
 		this.instantiationsType = new ArrayList<Class>();
 		this.setMethodsInvocation(new HashMap<String, Method>());
+		this.modifier = null;
 	}
 	
     
@@ -177,6 +185,16 @@ public class Method  implements Cloneable{
 		fullyName = name + "(" + fullyName + ")";
 		
 		return fullyName;
+	}
+
+
+	public Modifier getModifier() {
+		return modifier;
+	}
+
+
+	public void setModifier(Modifier modifier) {
+		this.modifier = modifier;
 	}
 	
 }

@@ -21,7 +21,7 @@ public class Class {
 	private Type tipo;
 	private String name;
 	private Metric comlexity;
-	private Class inheritage;
+	private Class superClass;
 	private boolean ignored;
 	private boolean inProject;
 	private boolean primitiveType;
@@ -38,6 +38,9 @@ public class Class {
 	private String packageInfo;
 	private List<Class> implementClass;
 	private Color color;
+	private Map<String, Integer> businessDependencies;
+	private Map<String, Integer> persistenceDependencies;
+	private boolean dependenciesCalculated;
 	
 	public Class(){
 		setConnectivityStrength(new HashMap<Class, Metric>());
@@ -52,6 +55,8 @@ public class Class {
 		this.primitiveType = false;
 		this.packageInfo = "";
 		this.implementClass = new ArrayList<Class>();
+		this.dependenciesCalculated = false;
+		this.setSuperClass(null);
 	}
 	
 	public boolean equals(Object object) {
@@ -125,8 +130,39 @@ public class Class {
 		this.connectivityStrength = connectivityStrength;
 	}
 
+	public Class getSuperClass() {
+		return superClass;
+	}
+	
+	public List<Class> getSuperClassess() {
+		List<Class> superClasses = new ArrayList<Class>();
+		Class ancestral = this.superClass;
+		
+		if(ancestral != null){
+			superClasses.addAll(ancestral.getSuperClassess());
+			superClasses.add(ancestral);
+		}
+		
+		return superClasses;
+	}
+
+	public void setSuperClass(Class superClass) {
+		this.superClass = superClass;
+	}
+
 	public Map<String, Method> getMethods() {
 		return methods;
+	}
+	
+	public List<Method> getAllMethods() {
+		List<Method> allMethods = new ArrayList<Method>();
+		Class ancestral = this.getSuperClass();
+		
+		if(ancestral != null)
+			allMethods.addAll(ancestral.getAllMethods());
+		
+		allMethods.addAll(this.methods.values());
+		return allMethods;
 	}
 
 	public void setMethods(Map<String, Method> methods) {
@@ -155,14 +191,6 @@ public class Class {
 
 	public void setAnnotations(List<Class> annotationsType) {
 		this.annotations = annotationsType;
-	}
-	
-	public Class getInheritage() {
-		return inheritage;
-	}
-
-	public void setInheritage(Class inheritage) {
-		this.inheritage = inheritage;
 	}
 
 	public List<Class> getParameterizeds() {
@@ -240,8 +268,8 @@ public class Class {
 		
 		fullyName = this.getName() + fullyName;
 		
-		if(this.inheritage != null)
-			fullyName += " extends " + this.inheritage.getName();
+		if(this.superClass != null)
+			fullyName += " extends " + this.superClass.getName();
 		
 		if(this.getInterfaces().size() > 0){
 			String interfaces = "";
@@ -304,5 +332,196 @@ public class Class {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	public List<Method> getPublicMethods(){
+		List<Method> publicMethods = new ArrayList<Method>();
+		
+		for(Method method : this.methods.values()){
+			if(method.getModifier().equals(Method.Modifier.publicMethod))
+				publicMethods.add(method);
+		}
+		
+		return publicMethods;
+	}
+	
+	public List<Method> getPrivateMethods(){
+		List<Method> privateMethods = new ArrayList<Method>();
+		
+		for(Method method : this.methods.values()){
+			if(method.getModifier().equals(Method.Modifier.privateMethod))
+				privateMethods.add(method);
+		}
+		
+		return privateMethods;
+	}
+	
+	public List<Method> getProtectedMethods(){
+		List<Method> protectedMethods = new ArrayList<Method>();
+		
+		for(Method method : this.methods.values()){
+			if(method.getModifier().equals(Method.Modifier.protectedMethod))
+				protectedMethods.add(method);
+		}
+		
+		return protectedMethods;
+	}
+	
+	public int getAmountBusinessDependencies(){
+		calculateDependencies();
+		
+		return this.businessDependencies.keySet().size();
+	}
+	
+	public int getAmountPersistenceDependencies(){
+		calculateDependencies();
+		
+		return this.persistenceDependencies.keySet().size();
+	}
+	
+	private void calculateDependencies(){
+		if(!this.dependenciesCalculated){
+			this.businessDependencies = new HashMap<String, Integer>();
+			this.persistenceDependencies = new HashMap<String, Integer>();
+			
+			for(Class variable : this.getVariables())
+				addDependenciesCount(this, variable);
+			
+			for(Method method : this.getMethods().values()){
+				for(Class instantiation : method.getInstantiationsType())
+					addDependenciesCount(this, instantiation);
+				
+				for(Method methodInvocation : method.getMethodsInvocation().values())
+					addDependenciesCount(this, methodInvocation.getClassType());
+			}
+			this.dependenciesCalculated = true;
+		}
+	}
+	
+    private void addDependenciesCount(Class classOrigin, Class classDestiny){
+    	if(!classOrigin.equals(classDestiny)){
+			if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
+				if(classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType))
+					classDestiny = classDestiny.getImplementClass().get(0);//EJB has only 1 implemented class
+				
+				Integer amountDependenciesBusiness = this.businessDependencies.get(classDestiny.getName());
+				
+				amountDependenciesBusiness = amountDependenciesBusiness == null ? 1 : amountDependenciesBusiness++;
+				this.businessDependencies.put(classDestiny.getName(), amountDependenciesBusiness);
+				
+			}
+			else if(classDestiny.getTypeClass().equals(Class.TypeClass.persistence)){
+				Integer amountDependenciesPersistence = this.persistenceDependencies.get(classDestiny.getName());
+				
+				amountDependenciesPersistence = amountDependenciesPersistence == null ? 1 : amountDependenciesPersistence++;
+				this.persistenceDependencies.put(classDestiny.getName(), amountDependenciesPersistence);
+			}
+    	}
+    }
+    
+    public int getANA(){
+		Class ancestor = this.superClass;
+		int amountOfAncestor = 0;
+		
+		while(ancestor != null){
+			ancestor = ancestor.superClass;
+			amountOfAncestor++;
+		}
+		
+		return amountOfAncestor;
+    }
+    
+    public double getDAM(){
+    	if(this.getMethods().size() == 0)
+    		return 0.0;
+    	return (double)(this.getPrivateMethods().size() + this.getProtectedMethods().size()) / this.getMethods().size();
+    }
+    
+    private List<Class> getParameters(){
+    	List<Class> parameters = new ArrayList<Class>();
+    	
+    	for(Method method : this.methods.values()){
+    		for(Class parameter : method.getParametersType()){
+    			if(!parameters.contains(parameter))
+    				parameters.add(parameter);
+    		}
+    	}
+    	
+    	return parameters;
+    }
+    
+    public double getCAM(){
+    	List<Class> parameters = this.getParameters();
+    	
+    	int auxTotal = 0;
+    	
+    	for(Method method : this.methods.values()){
+    		int auxMethod = 0;
+    		for(Class parameter : method.getParametersType()){
+    			if(parameters.contains(parameter))
+    				auxMethod++;
+    		}
+    		
+    		auxTotal += auxMethod;
+    	}
+    	
+    	if(parameters.size() == 0 || this.methods.size() == 0 )
+    		return 0.0;
+    	return (double)auxTotal / (parameters.size() * this.methods.size());
+    }
+    
+    public int getMOA(){
+    	int amountOfBusinessFields = 0;
+    	for(Class field : this.getVariables()){
+    		if(field.getTypeClass().equals(Class.TypeClass.interfaceType) || field.getTypeClass().equals(Class.TypeClass.business))
+    			amountOfBusinessFields++;
+    	}
+    	
+    	return amountOfBusinessFields;
+    }
+    
+    private int getAmountAcessedMethods(){
+    	Class ancestral = this.superClass;
+    	int amountAncestralMethods = 0;
+    	
+    	if(ancestral != null)
+    		amountAncestralMethods = ancestral.getPublicMethods().size() + ancestral.getProtectedMethods().size() + ancestral.getAmountAcessedMethods();
+    	
+    	return amountAncestralMethods;
+    }
+    
+    public double getMFA(){	
+    	return (double)this.getAmountAcessedMethods() / (this.getAmountAcessedMethods() + this.getPublicMethods().size() + this.getProtectedMethods().size()); 
+    }
+    
+    public int getCIS(){
+    	return this.getPublicMethods().size();
+    }
+    
+    public int getNOP(){
+    	Class ancestral = this.superClass;
+    	int nop = 0;
+    	
+    	if(ancestral != null){
+    		for(Method ancestralMethod : ancestral.getAllMethods()){
+    			for(Method method : this.methods.values()){
+    				if(ancestralMethod.getName().equals(method.getName()) && ancestralMethod.getParametersType().size() == method.getParametersType().size()){
+    					boolean equal = true;
+    					for(int i = 0 ; i < ancestralMethod.getParametersType().size(); i++ ){
+    						if(!ancestralMethod.getParametersType().get(i).equals(method.getParametersType().get(i)) 
+    								&& !method.getParametersType().get(i).getSuperClassess().contains(ancestralMethod.getParametersType().get(i))
+    								&& !(ancestralMethod.getParametersType().get(i).getName().contains("$") && this.getParameterizeds().contains(method.getParametersType().get(i)))){
+    							equal = false;
+    							break;
+    						}
+    					}
+    					
+    	    			if(equal)
+    	    				nop++;
+    				}
+    			}
+    		}
+    	}
+    	return nop;
+    }
 
 }
