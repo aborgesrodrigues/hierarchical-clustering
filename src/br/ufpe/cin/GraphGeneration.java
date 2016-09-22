@@ -351,7 +351,7 @@ public class GraphGeneration extends JApplet {
                         		
                         		classes += classType.getName();
                         		
-                        		System.out.println(classType.getName() + " - dam: " + classType.getDAM() + " - dcc: " + classType.getAmountBusinessDependencies() + " - ana: " + classType.getANA() + " - cam: " + classType.getCAM() + " - moa: " + classType.getMOA() + " - mfa: " + classType.getMFA() + " - nop: " + classType.getNOP() + " - cis:" + classType.getCIS());
+                        		//System.out.println(classType.getName() + " - dam: " + classType.getDAM() + " - dcc: " + classType.getAmountBusinessDependencies() + " - ana: " + classType.getANA() + " - cam: " + classType.getCAM() + " - moa: " + classType.getMOA() + " - mfa: " + classType.getMFA() + " - nop: " + classType.getNOP() + " - cis:" + classType.getCIS());
                         		
                     			dsc++;
                     		}

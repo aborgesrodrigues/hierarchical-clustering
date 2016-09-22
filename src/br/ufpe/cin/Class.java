@@ -399,7 +399,20 @@ public class Class {
 	
     private void addDependenciesCount(Class classOrigin, Class classDestiny){
     	if(!classOrigin.equals(classDestiny)){
-			if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
+    		if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
+				if(classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType))
+					classDestiny = classDestiny.getImplementClass().get(0);//EJB has only 1 implemented class
+				
+				if(!classOrigin.getColor().equals(classDestiny.getColor())){					
+					Integer amountDependenciesBusiness = this.businessDependencies.get(classDestiny.getName());
+					
+					amountDependenciesBusiness = amountDependenciesBusiness == null ? 1 : amountDependenciesBusiness++;
+					this.businessDependencies.put(classDestiny.getName(), amountDependenciesBusiness);
+					System.out.println(classOrigin.getName() + ": " + classOrigin.getColor() + " - " + classDestiny.getName() + ": " + classDestiny.getColor() + " - " + classOrigin.getColor().equals(classDestiny.getColor()));
+				}
+			}
+    		
+			/*if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
 				if(classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType))
 					classDestiny = classDestiny.getImplementClass().get(0);//EJB has only 1 implemented class
 				
@@ -414,7 +427,7 @@ public class Class {
 				
 				amountDependenciesPersistence = amountDependenciesPersistence == null ? 1 : amountDependenciesPersistence++;
 				this.persistenceDependencies.put(classDestiny.getName(), amountDependenciesPersistence);
-			}
+			}*/
     	}
     }
     
