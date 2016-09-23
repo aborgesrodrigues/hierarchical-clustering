@@ -1,134 +1,88 @@
-Component;dsc;ana;dam;dcc;cam;moa;mfa;nop;cis
-org.sigaept.edu.negocio.ejb.ManterEtniaEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterConjuntoRegrasAcademicasEJBorg.sigaept.edu.negocio.ejb.ManterSituacaoAlunoCursoEJBorg.sigaept.edu.negocio.ejb.ManterRegraAcademicaEJBorg.sigaept.edu.negocio.ejb.ManterMatrizCurricularEJBorg.sigaept.edu.negocio.ejb.ManterAlunoEJBorg.sigaept.edu.negocio.ejb.AbrirPeriodoLetivoPorTurmaEJBorg.sigaept.edu.negocio.ejb.ManterCalendarioAcademicoEJBorg.sigaept.edu.negocio.ejb.ManterAvaliacaoDocenteEJBorg.sigaept.edu.negocio.ejb.ManterServidorEJBorg.sigaept.edu.negocio.ejb.ManterInscricaoElementoCurricularEJBorg.sigaept.edu.negocio.ejb.ManterTipoLogradouroEJBorg.sigaept.edu.negocio.ejb.ManterRegimeMatriculaEJBorg.sigaept.edu.negocio.ejb.VincularAlunoAClasseEJBorg.sigaept.edu.negocio.ejb.ManterAulaEJBorg.sigaept.edu.negocio.ejb.ManterHorarioAulaEJBorg.sigaept.edu.negocio.ejb.ManterMatriculaEJBorg.sigaept.edu.negocio.ejb.ManterDiarioClasseEJBorg.sigaept.edu.negocio.ejb.ManterClasseEJBorg.sigaept.edu.negocio.ejb.ManterGradeHorariaEJBorg.sigaept.edu.negocio.ejb.ManterCancelamentoMatriculaCursoEJBorg.sigaept.edu.negocio.ejb.ManterRegimeJuridicoEJBorg.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJBorg.sigaept.edu.negocio.ejb.ManterStatusAlunoEJBorg.sigaept.edu.negocio.ejb.ManterAproveitamentoAceleracaoeDispensaEJBorg.sigaept.edu.negocio.ejb.ManterUnidadeFederativaEJBorg.sigaept.edu.negocio.ejb.FecharPeriodoLetivoClasseEJBorg.sigaept.edu.negocio.ejb.ManterAbonoFaltaEJBorg.sigaept.edu.negocio.ejb.ManterTipoLancamentoDadosHistoricoEJBorg.sigaept.edu.negocio.ejb.ManterTurmaEJBorg.sigaept.edu.negocio.ejb.ManterEtapaAvaliacaoEJBorg.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJBorg.sigaept.edu.negocio.ejb.ManterCursoEJBorg.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJBorg.sigaept.edu.negocio.ejb.ManterOrganizacaoAcademicaEJBorg.sigaept.edu.negocio.ejb.ManterIngressoEJBorg.sigaept.edu.negocio.ejb.ManterPlanoEnsinoEJBorg.sigaept.edu.negocio.ejb.ManterElementoCurricularEJBorg.sigaept.edu.negocio.ejb.ManterEstruturaOrganizacionalEJBorg.sigaept.edu.negocio.ejb.ManterPessoaExternaEJB;39;34.0;0.7567022567680464;0.0;7.214352599977141;110.0;14.38907849724027;48.0;1106.0
-org.sigaept.edu.negocio.ejb.ManterPeriodoLetivoEJB;1;1.0;0.0;2.0;0.3333333333333333;2.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterTipoPeriodoLetivoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoVinculoClasseEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoSanguineoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterConjuntoTemplateRelatorioEstagioEJB;1;1.0;0.0;0.0;0.5555555555555556;0.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterAreaProcedenciaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterEgressoEJB;1;1.0;0.0;0.0;0.5;0.0;0.6666666666666666;2.0;4.0
-org.sigaept.edu.negocio.ejb.ManterCategoriaProgramaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoRegistroLegalEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.MenuEJB;1;0.0;0.0;0.0;0.2;0.0;0.0;0.0;5.0
-org.sigaept.edu.negocio.ejb.AuditObjetoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoCargaHorariaParticipanteEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJBorg.sigaept.edu.negocio.ejb.ManterAtividadeComplementarMatriculaEJBorg.sigaept.edu.negocio.ejb.ManterRelatorioFinalEstagioEJBorg.sigaept.edu.negocio.ejb.ManterPlanoEstagioEJBorg.sigaept.edu.negocio.ejb.ManterSupervisaoEstagioEJB;5;5.0;0.2;2.0;2.061688311688312;7.0;2.6210526315789475;3.0;41.0
-org.sigaept.edu.negocio.ejb.ManterEditalProjetoPesquisaExtensaoEJB;1;1.0;0.0;1.0;0.175;1.0;0.3333333333333333;6.0;16.0
-org.sigaept.edu.negocio.ejb.ImprimirDiarioDeClasseEJB;1;0.0;0.0;4.0;0.5;4.0;0.0;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterDataLimiteEtapaEJB;1;1.0;0.08333333333333333;0.0;0.21296296296296297;0.0;0.42105263157894735;0.0;11.0
-org.sigaept.edu.negocio.ejb.ManterEnadeEJB;1;1.0;0.0;0.0;0.2222222222222222;0.0;0.5714285714285714;0.0;6.0
-org.sigaept.edu.negocio.ejb.AuditTipoOperacaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterFuncaoServidorEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterConvenioEstagioEJB;1;1.0;0.0;0.0;0.40625;0.0;0.5;0.0;8.0
-org.sigaept.edu.negocio.ejb.ManterNivelFuncionalServidorEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.AuditSessaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPoloEadEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPCCMatriculaEJB;1;1.0;0.0;1.0;0.3;1.0;0.6666666666666666;1.0;4.0
-org.sigaept.edu.negocio.ejb.ManterSituacaoFuncionamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterSituacaoAvaliacaoProjetoExtensaoEJBorg.sigaept.edu.negocio.ejb.ManterAvaliarProjetoExtensaoEJB;2;2.0;0.0;0.0;0.75;1.0;1.5555555555555554;1.0;5.0
-org.sigaept.edu.negocio.ejb.ManterAreaTematicaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterClasseServidorEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterDescricaoCriterioClassificacaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoOcorrenciaEJB;1;1.0;0.0;0.0;0.21428571428571427;0.0;0.5333333333333333;1.0;7.0
-org.sigaept.edu.negocio.ejb.ManterTipoIngressoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPermissaoEJBorg.sigaept.edu.negocio.ejb.ManterPerfilEJBorg.sigaept.edu.negocio.ejb.ManterContextoPermissaoAcessoEJB;3;3.0;0.0;0.0;0.9490196078431372;2.0;1.558095238095238;5.0;27.0
-org.sigaept.edu.negocio.ejb.ManterOcorrenciaAlunoEJBorg.sigaept.edu.negocio.ejb.ManterEstagioMatriculaEJB;2;2.0;0.23076923076923078;3.0;0.7403846153846154;4.0;1.1111111111111112;0.0;14.0
-org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoCursoSuperiorEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterPlanoEstudoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterServidorPentahoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoAtividadeComplementarEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterInstituicaoExternaEJB;1;1.0;0.0;0.0;0.20833333333333334;0.0;0.5;2.0;8.0
-org.sigaept.edu.negocio.ejb.ManterFormaOfertaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoUnidadeOrganizacionalEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.AuditDadosEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterEmailEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterCancelamentoMatriculaClasseEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterOrgaoExpedidorEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterInscricaoProgramasAssistenciaEstudantilEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.CopiarTurmaEJB;1;0.0;0.0;1.0;1.0;1.0;0.0;0.0;1.0
-org.sigaept.edu.negocio.ejb.ManterTipoEscolaOrigemEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.AuditStatusTransacaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterSituacaoCursoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTipoFeriadoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.FecharPeriodoLetivoPorTurmaEJB;1;0.0;0.0;3.0;0.19642857142857142;3.0;0.0;0.0;24.0
-org.sigaept.edu.negocio.ejb.ManterSexoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterConselhoClasseEJB;1;1.0;0.0;3.0;0.2727272727272727;3.0;0.42105263157894735;0.0;11.0
-org.sigaept.edu.negocio.ejb.ManterDiaSemanaEJB;1;1.0;0.0;0.0;0.3333333333333333;0.0;0.7272727272727273;2.0;3.0
-org.sigaept.edu.negocio.ejb.ManterEstadoCivilEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterOrgaosExternos;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterEquipamentoEnsinoEJB;1;1.0;0.0;0.0;0.23076923076923078;0.0;0.38095238095238093;1.0;13.0
-org.sigaept.edu.negocio.ejb.ManterEducacensoEJB;1;1.0;0.5;3.0;0.3;3.0;0.6153846153846154;0.0;5.0
-org.sigaept.edu.negocio.ejb.ManterSistemaEnsinoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterLancamentoDadosHistoricoEJB;1;1.0;0.0;0.0;0.6;0.0;0.6153846153846154;0.0;5.0
-org.sigaept.edu.negocio.ejb.ManterParentescoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterCargoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoCursoTecnicoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterAmbienteAprendizagemEJB;1;1.0;0.0;0.0;0.13852813852813853;0.0;0.27586206896551724;1.0;21.0
-org.sigaept.edu.negocio.ejb.ManterEstagioEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterGrauFormacaoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterTipoAtoAutorizativoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterAgenciaPagamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterGrupoEJBorg.sigaept.edu.negocio.ejb.ManterCDUEJBorg.sigaept.edu.negocio.ejb.ManterUsuarioEJBorg.sigaept.edu.negocio.ejb.EfetuarLoginEJB;4;3.0;0.1588235294117647;1.0;0.7911637382225618;7.0;1.3978609625668448;10.0;51.0
-org.sigaept.edu.negocio.ejb.ManterVerificacaoCasoEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.AuditColecaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterModalidadeCursoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterDataFixaEJB;1;1.0;0.0;0.0;0.5;0.0;0.7272727272727273;2.0;3.0
-org.sigaept.edu.negocio.ejb.ManterNecessidadeEspecialEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPapelParticipanteEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.RelatorioEJB;1;0.0;0.0;0.0;0.8333333333333334;0.0;0.0;0.0;2.0
-org.sigaept.edu.negocio.ejb.AuditAcessoEJB;1;1.0;0.0;0.0;1.0;0.0;0.8888888888888888;0.0;1.0
-org.sigaept.edu.negocio.ejb.ManterAreaUnescoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPerguntasProgramasAssistenciaEstudantilEJB;1;1.0;0.0;0.0;0.45;0.0;0.6153846153846154;0.0;5.0
-org.sigaept.edu.negocio.ejb.ManterTipoParentescoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8;1.0;2.0
-org.sigaept.edu.negocio.ejb.ManterConvenioEJBorg.sigaept.edu.negocio.ejb.ManterProjetoExtensaoEJBorg.sigaept.edu.negocio.ejb.ManterParticipacaoEJBorg.sigaept.edu.negocio.ejb.ManterProgramaEJB;4;4.0;0.0;0.0;0.6034507727282664;4.0;1.3590168970814132;9.0;65.0
-org.sigaept.edu.negocio.ejb.ManterCategoriaAmbienteAprendizagemEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterVisitaTecnicaGerencialEJB;1;1.0;0.0;0.0;0.6666666666666666;0.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterRelatorioPentahoEJB;1;1.0;0.0;1.0;0.5;1.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterAreaIngressoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterValidaDocumentoEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterAreaConhecimentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTCCMatriculaEJB;1;1.0;0.0;1.0;0.3;1.0;0.6666666666666666;1.0;4.0
-org.sigaept.edu.negocio.ejb.ManterBancoPagamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterAplicacaoPerguntasAssistenciaEstudantilEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterConfiguracaoGeralEJB;1;1.0;0.0;0.0;0.0;0.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoCursoNaoCatalagoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterProgramaAssistenciaEstudantilEJB;1;1.0;0.0;0.0;0.4666666666666667;0.0;0.6153846153846154;0.0;5.0
-org.sigaept.edu.negocio.ejb.ManterVersaoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;0.0;1.0
-org.sigaept.edu.negocio.ejb.ManterTipoEixoTecnologicoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterTipoDataEspecialEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.AuditTabelaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterReservaEquipamentoEnsinoEJB;1;1.0;0.0;0.0;0.6904761904761905;0.0;0.5714285714285714;0.0;6.0
-org.sigaept.edu.negocio.ejb.ManterReservaAmbienteDeAprendizagemEJB;1;1.0;0.0;0.0;0.25;0.0;0.4444444444444444;0.0;10.0
-org.sigaept.edu.negocio.ejb.ManterCriterioClassificacaoEJB;1;1.0;0.0;0.0;0.20833333333333334;0.0;0.5714285714285714;3.0;6.0
-org.sigaept.edu.negocio.ejb.ManterTipoDataAcademicaEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterTermoEstagioEJB;1;1.0;0.0;0.0;0.3333333333333333;0.0;0.7272727272727273;1.0;3.0
-org.sigaept.edu.negocio.ejb.ManterRegimeTrabalhoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPedidoRenovacaoMatriculaEJB;1;1.0;0.0;2.0;0.12941176470588237;2.0;0.32;0.0;17.0
-org.sigaept.edu.negocio.ejb.ManterTipoTelefoneEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterEditalProcessoSeletivoEJB;1;1.0;0.0;0.0;1.25;0.0;0.6666666666666666;0.0;4.0
-org.sigaept.edu.negocio.ejb.ManterTreinamentoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterContaCorrentePagamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterLocalizacaoEJB;1;1.0;0.0;0.0;0.45;0.0;0.6153846153846154;1.0;5.0
-org.sigaept.edu.negocio.ejb.ManterPeriodicidadeIngressoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterProfissaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterMunicipioEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterSituacaoVinculoEJB;1;1.0;0.0;0.0;0.0;0.0;0.8888888888888888;1.0;1.0
-org.sigaept.edu.negocio.ejb.ManterCategoriaProjetoExtensaoEJB;1;1.0;0.0;0.0;0.16666666666666666;0.0;0.5714285714285714;1.0;6.0
-org.sigaept.edu.negocio.ejb.ManterOfertaVagaEJB;1;1.0;0.0;0.0;0.30952380952380953;0.0;0.5333333333333333;0.0;7.0
-org.sigaept.edu.negocio.ejb.ManterAprovadoProcessoSeletivoEJB;1;1.0;0.0;0.0;0.3888888888888889;0.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;1.0;2.0
-org.sigaept.edu.negocio.ejb.ManterProgramaEducacaoSuperiorEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPeriodoAcompanhamentoEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;1.0;2.0
-org.sigaept.edu.negocio.ejb.ManterMaterialApoioEJB;1;1.0;0.0;0.0;0.25;0.0;0.4444444444444444;3.0;10.0
-org.sigaept.edu.negocio.ejb.ManterRelatorioAcompanhamentoEJB;1;1.0;0.0;0.0;1.0;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterTipoEquipamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterPaisEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterAreaEstagioEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterEventoExternoEJB;1;1.0;0.0;0.0;0.3333333333333333;0.0;0.6153846153846154;0.0;5.0
-org.sigaept.edu.negocio.ejb.ManterRelatorioEstagioEJB;1;1.0;0.0;0.0;0.19047619047619047;0.0;0.5333333333333333;0.0;7.0
-org.sigaept.edu.negocio.ejb.ManterProcedimentoTreinamentoEJB;1;1.0;0.0;0.0;0.3333333333333333;0.0;0.6666666666666666;1.0;4.0
-org.sigaept.edu.negocio.ejb.ManterPeriodoInscricaoProgramaAssisEstudantilEJB;1;1.0;0.0;0.0;0.6666666666666666;0.0;0.7272727272727273;0.0;3.0
-org.sigaept.edu.negocio.ejb.ManterTemplateRelatorioEstagioEJB;1;1.0;0.0;0.0;0.5;0.0;0.8;0.0;2.0
-org.sigaept.edu.negocio.ejb.ManterTipoAvaliacaoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
-org.sigaept.edu.negocio.ejb.ManterFonteFinanciamentoEJB;1;1.0;0.0;0.0;0.0;0.0;1.0;0.0;0.0
+Component;csc;component size
+org.sigaept.edu.negocio.ejb.ManterEtniaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterConjuntoRegrasAcademicasEJB, org.sigaept.edu.negocio.ejb.AbrirPeriodoLetivoPorTurmaEJB, org.sigaept.edu.negocio.ejb.ManterCalendarioAcademicoEJB, org.sigaept.edu.negocio.ejb.ManterAvaliacaoDocenteEJB, org.sigaept.edu.negocio.ejb.ManterInscricaoElementoCurricularEJB, org.sigaept.edu.negocio.ejb.ManterAulaEJB, org.sigaept.edu.negocio.ejb.ManterHorarioAulaEJB, org.sigaept.edu.negocio.ejb.ManterDiarioClasseEJB, org.sigaept.edu.negocio.ejb.ManterClasseEJB, org.sigaept.edu.negocio.ejb.ManterGradeHorariaEJB, org.sigaept.edu.negocio.ejb.FecharPeriodoLetivoClasseEJB, org.sigaept.edu.negocio.ejb.ManterTipoLancamentoDadosHistoricoEJB, org.sigaept.edu.negocio.ejb.ManterEtapaAvaliacaoEJB, org.sigaept.edu.negocio.ejb.ManterCursoEJB, org.sigaept.edu.negocio.ejb.ManterPlanoEnsinoEJB, ;222;15
+org.sigaept.edu.negocio.ejb.ManterPeriodoLetivoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTipoSanguineoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterConjuntoTemplateRelatorioEstagioEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterEgressoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTipoLogradouroEJB, org.sigaept.edu.negocio.ejb.ManterRegimeJuridicoEJB, org.sigaept.edu.negocio.ejb.ManterUnidadeFederativaEJB, org.sigaept.edu.negocio.ejb.ManterElementoOrganizacionalEJB, org.sigaept.edu.negocio.ejb.ManterOrganizacaoAcademicaEJB, org.sigaept.edu.negocio.ejb.ManterEstruturaOrganizacionalEJB, ;52;6
+org.sigaept.edu.negocio.ejb.MenuEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterRelatorioAlunoEJB, org.sigaept.edu.negocio.ejb.ManterAtividadeComplementarMatriculaEJB, org.sigaept.edu.negocio.ejb.ManterRelatorioFinalEstagioEJB, org.sigaept.edu.negocio.ejb.ManterPlanoEstagioEJB, org.sigaept.edu.negocio.ejb.ManterSupervisaoEstagioEJB, ;36;5
+org.sigaept.edu.negocio.ejb.ManterEditalProjetoPesquisaExtensaoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterDataLimiteEtapaEJB, ;8;1
+org.sigaept.edu.negocio.ejb.ManterEnadeEJB, ;8;1
+org.sigaept.edu.negocio.ejb.ManterConvenioEstagioEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterNivelFuncionalServidorEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterPCCMatriculaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterSituacaoAvaliacaoProjetoExtensaoEJB, org.sigaept.edu.negocio.ejb.ManterAvaliarProjetoExtensaoEJB, ;6;2
+org.sigaept.edu.negocio.ejb.ManterClasseServidorEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterAbonoFaltaEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterTipoOcorrenciaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterPermissaoEJB, org.sigaept.edu.negocio.ejb.ManterPerfilEJB, org.sigaept.edu.negocio.ejb.ManterContextoPermissaoAcessoEJB, ;18;3
+org.sigaept.edu.negocio.ejb.ManterOcorrenciaAlunoEJB, org.sigaept.edu.negocio.ejb.ManterEstagioMatriculaEJB, ;20;2
+org.sigaept.edu.negocio.ejb.ManterMatriculaEJB, org.sigaept.edu.negocio.ejb.ManterIngressoEJB, ;24;2
+org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoCursoSuperiorEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterInstituicaoExternaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterInscricaoProgramasAssistenciaEstudantilEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTipoEscolaOrigemEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterSexoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterConselhoClasseEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterDiaSemanaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterEstadoCivilEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterRegraAcademicaEJB, ;10;1
+org.sigaept.edu.negocio.ejb.ManterEquipamentoEnsinoEJB, ;8;1
+org.sigaept.edu.negocio.ejb.ManterEducacensoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterElementoCurricularEJB, ;30;1
+org.sigaept.edu.negocio.ejb.ManterCargoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterCancelamentoMatriculaCursoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterAmbienteAprendizagemEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ReaberturaTurmaClasseEJB, ;20;1
+org.sigaept.edu.negocio.ejb.ManterGrauFormacaoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterRegimeMatriculaEJB, org.sigaept.edu.negocio.ejb.VincularAlunoAClasseEJB, ;36;2
+org.sigaept.edu.negocio.ejb.ManterGrupoEJB, org.sigaept.edu.negocio.ejb.ManterCDUEJB, org.sigaept.edu.negocio.ejb.ManterUsuarioEJB, org.sigaept.edu.negocio.ejb.EfetuarLoginEJB, ;26;4
+org.sigaept.edu.negocio.ejb.ManterVerificacaoCasoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterMatrizCurricularEJB, ;22;1
+org.sigaept.edu.negocio.ejb.ManterDataFixaEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterServidorEJB, ;36;1
+org.sigaept.edu.negocio.ejb.ManterAlunoEJB, org.sigaept.edu.negocio.ejb.ManterPessoaFisicaEJB, org.sigaept.edu.negocio.ejb.ManterPessoaExternaEJB, ;50;3
+org.sigaept.edu.negocio.ejb.ManterStatusAlunoEJB, ;8;1
+org.sigaept.edu.negocio.ejb.RelatorioEJB, ;2;1
+org.sigaept.edu.negocio.ejb.AuditAcessoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterPerguntasProgramasAssistenciaEstudantilEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterTipoParentescoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterConvenioEJB, org.sigaept.edu.negocio.ejb.ManterProjetoExtensaoEJB, org.sigaept.edu.negocio.ejb.ManterParticipacaoEJB, org.sigaept.edu.negocio.ejb.ManterProgramaEJB, ;58;4
+org.sigaept.edu.negocio.ejb.ManterVisitaTecnicaGerencialEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterRelatorioPentahoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterValidaDocumentoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterTCCMatriculaEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterAplicacaoPerguntasAssistenciaEstudantilEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterConfiguracaoGeralEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterProgramaAssistenciaEstudantilEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterVersaoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterSituacaoAlunoCursoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterTipoEixoTecnologicoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTipoDataEspecialEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterReservaEquipamentoEnsinoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterReservaAmbienteDeAprendizagemEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterCriterioClassificacaoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterTermoEstagioEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterPedidoRenovacaoMatriculaEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterEditalProcessoSeletivoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTreinamentoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterLocalizacaoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterPeriodicidadeIngressoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterSituacaoVinculoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterCategoriaProjetoExtensaoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterOfertaVagaEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterAprovadoProcessoSeletivoEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterEixoTecnologicoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterPeriodoAcompanhamentoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterMaterialApoioEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterAproveitamentoAceleracaoeDispensaEJB, ;14;1
+org.sigaept.edu.negocio.ejb.ManterRelatorioAcompanhamentoEJB, ;2;1
+org.sigaept.edu.negocio.ejb.ManterTurmaEJB, ;14;1
+org.sigaept.edu.negocio.ejb.ManterEventoExternoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterRelatorioEstagioEJB, ;6;1
+org.sigaept.edu.negocio.ejb.ManterProcedimentoTreinamentoEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterPeriodoInscricaoProgramaAssisEstudantilEJB, ;4;1
+org.sigaept.edu.negocio.ejb.ManterTemplateRelatorioEstagioEJB, ;2;1

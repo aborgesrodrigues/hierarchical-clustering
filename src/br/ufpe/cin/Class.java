@@ -38,8 +38,8 @@ public class Class {
 	private String packageInfo;
 	private List<Class> implementClass;
 	private Color color;
-	private Map<String, Integer> businessDependencies;
-	private Map<String, Integer> persistenceDependencies;
+	private List<Class> innerClassDependencies;
+	private List<Class> outerClassDependencies;
 	private boolean dependenciesCalculated;
 	
 	public Class(){
@@ -55,8 +55,10 @@ public class Class {
 		this.primitiveType = false;
 		this.packageInfo = "";
 		this.implementClass = new ArrayList<Class>();
-		this.dependenciesCalculated = false;
+		this.innerClassDependencies = new ArrayList<Class>();
+		this.outerClassDependencies = new ArrayList<Class>();
 		this.setSuperClass(null);
+		dependenciesCalculated = false;
 	}
 	
 	public boolean equals(Object object) {
@@ -366,175 +368,47 @@ public class Class {
 		return protectedMethods;
 	}
 	
-	public int getAmountBusinessDependencies(){
-		calculateDependencies();
-		
-		return this.businessDependencies.keySet().size();
-	}
-	
-	public int getAmountPersistenceDependencies(){
-		calculateDependencies();
-		
-		return this.persistenceDependencies.keySet().size();
-	}
-	
 	private void calculateDependencies(){
-		if(!this.dependenciesCalculated){
-			this.businessDependencies = new HashMap<String, Integer>();
-			this.persistenceDependencies = new HashMap<String, Integer>();
-			
+		if(!dependenciesCalculated){
 			for(Class variable : this.getVariables())
-				addDependenciesCount(this, variable);
+				addClassDependencies(variable);
 			
 			for(Method method : this.getMethods().values()){
-				for(Class instantiation : method.getInstantiationsType())
-					addDependenciesCount(this, instantiation);
-				
 				for(Method methodInvocation : method.getMethodsInvocation().values())
-					addDependenciesCount(this, methodInvocation.getClassType());
+					addClassDependencies(methodInvocation.getClassType());
 			}
 			this.dependenciesCalculated = true;
 		}
 	}
 	
-    private void addDependenciesCount(Class classOrigin, Class classDestiny){
-    	if(!classOrigin.equals(classDestiny)){
-    		if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
-				if(classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType))
-					classDestiny = classDestiny.getImplementClass().get(0);//EJB has only 1 implemented class
-				
-				if(!classOrigin.getColor().equals(classDestiny.getColor())){					
-					Integer amountDependenciesBusiness = this.businessDependencies.get(classDestiny.getName());
-					
-					amountDependenciesBusiness = amountDependenciesBusiness == null ? 1 : amountDependenciesBusiness++;
-					this.businessDependencies.put(classDestiny.getName(), amountDependenciesBusiness);
-					System.out.println(classOrigin.getName() + ": " + classOrigin.getColor() + " - " + classDestiny.getName() + ": " + classDestiny.getColor() + " - " + classOrigin.getColor().equals(classDestiny.getColor()));
-				}
+	private void addClassDependencies(Class dependentClass){
+		if(dependentClass.getTypeClass().equals(Class.TypeClass.business) || dependentClass.getTypeClass().equals(Class.TypeClass.interfaceType)){
+			if(dependentClass.getTypeClass().equals(Class.TypeClass.interfaceType))
+				dependentClass = dependentClass.getImplementClass().get(0);
+			
+			if(dependentClass.getColor().equals(this.getColor())){
+				if(!this.innerClassDependencies.contains(dependentClass))
+					this.innerClassDependencies.add(dependentClass);
 			}
-    		
-			/*if(classDestiny.getTypeClass().equals(Class.TypeClass.business) || classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType)){
-				if(classDestiny.getTypeClass().equals(Class.TypeClass.interfaceType))
-					classDestiny = classDestiny.getImplementClass().get(0);//EJB has only 1 implemented class
-				
-				Integer amountDependenciesBusiness = this.businessDependencies.get(classDestiny.getName());
-				
-				amountDependenciesBusiness = amountDependenciesBusiness == null ? 1 : amountDependenciesBusiness++;
-				this.businessDependencies.put(classDestiny.getName(), amountDependenciesBusiness);
-				
+			else{
+				if(!this.outerClassDependencies.contains(dependentClass))
+					this.outerClassDependencies.add(dependentClass);
 			}
-			else if(classDestiny.getTypeClass().equals(Class.TypeClass.persistence)){
-				Integer amountDependenciesPersistence = this.persistenceDependencies.get(classDestiny.getName());
-				
-				amountDependenciesPersistence = amountDependenciesPersistence == null ? 1 : amountDependenciesPersistence++;
-				this.persistenceDependencies.put(classDestiny.getName(), amountDependenciesPersistence);
-			}*/
-    	}
-    }
-    
-    public int getANA(){
-		Class ancestor = this.superClass;
-		int amountOfAncestor = 0;
-		
-		while(ancestor != null){
-			ancestor = ancestor.superClass;
-			amountOfAncestor++;
 		}
-		
-		return amountOfAncestor;
-    }
-    
-    public double getDAM(){
-    	if(this.getMethods().size() == 0)
-    		return 0.0;
-    	return (double)(this.getPrivateMethods().size() + this.getProtectedMethods().size()) / this.getMethods().size();
-    }
-    
-    private List<Class> getParameters(){
-    	List<Class> parameters = new ArrayList<Class>();
-    	
-    	for(Method method : this.methods.values()){
-    		for(Class parameter : method.getParametersType()){
-    			if(!parameters.contains(parameter))
-    				parameters.add(parameter);
-    		}
-    	}
-    	
-    	return parameters;
-    }
-    
-    public double getCAM(){
-    	List<Class> parameters = this.getParameters();
-    	
-    	int auxTotal = 0;
-    	
-    	for(Method method : this.methods.values()){
-    		int auxMethod = 0;
-    		for(Class parameter : method.getParametersType()){
-    			if(parameters.contains(parameter))
-    				auxMethod++;
-    		}
-    		
-    		auxTotal += auxMethod;
-    	}
-    	
-    	if(parameters.size() == 0 || this.methods.size() == 0 )
-    		return 0.0;
-    	return (double)auxTotal / (parameters.size() * this.methods.size());
-    }
-    
-    public int getMOA(){
-    	int amountOfBusinessFields = 0;
-    	for(Class field : this.getVariables()){
-    		if(field.getTypeClass().equals(Class.TypeClass.interfaceType) || field.getTypeClass().equals(Class.TypeClass.business))
-    			amountOfBusinessFields++;
-    	}
-    	
-    	return amountOfBusinessFields;
-    }
-    
-    private int getAmountAcessedMethods(){
-    	Class ancestral = this.superClass;
-    	int amountAncestralMethods = 0;
-    	
-    	if(ancestral != null)
-    		amountAncestralMethods = ancestral.getPublicMethods().size() + ancestral.getProtectedMethods().size() + ancestral.getAmountAcessedMethods();
-    	
-    	return amountAncestralMethods;
-    }
-    
-    public double getMFA(){	
-    	return (double)this.getAmountAcessedMethods() / (this.getAmountAcessedMethods() + this.getPublicMethods().size() + this.getProtectedMethods().size()); 
-    }
-    
-    public int getCIS(){
-    	return this.getPublicMethods().size();
-    }
-    
-    public int getNOP(){
-    	Class ancestral = this.superClass;
-    	int nop = 0;
-    	
-    	if(ancestral != null){
-    		for(Method ancestralMethod : ancestral.getAllMethods()){
-    			for(Method method : this.methods.values()){
-    				if(ancestralMethod.getName().equals(method.getName()) && ancestralMethod.getParametersType().size() == method.getParametersType().size()){
-    					boolean equal = true;
-    					for(int i = 0 ; i < ancestralMethod.getParametersType().size(); i++ ){
-    						if(!ancestralMethod.getParametersType().get(i).equals(method.getParametersType().get(i)) 
-    								&& !method.getParametersType().get(i).getSuperClassess().contains(ancestralMethod.getParametersType().get(i))
-    								&& !(ancestralMethod.getParametersType().get(i).getName().contains("$") && this.getParameterizeds().contains(method.getParametersType().get(i)))){
-    							equal = false;
-    							break;
-    						}
-    					}
-    					
-    	    			if(equal)
-    	    				nop++;
-    				}
-    			}
-    		}
-    	}
-    	return nop;
-    }
+		else if(dependentClass.getTypeClass().equals(Class.TypeClass.persistence)){
+			if(!this.innerClassDependencies.contains(dependentClass))
+				this.innerClassDependencies.add(dependentClass);
+		}
+	}
+
+	public List<Class> getInnerClassDependencies() {
+		calculateDependencies();
+		return innerClassDependencies;
+	}
+
+	public List<Class> getOuterClassDependencies() {
+		calculateDependencies();
+		return outerClassDependencies;
+	}
 
 }

@@ -23,12 +23,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Point2D;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +56,6 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.util.Pair;
 import edu.uci.ics.jung.visualization.DefaultVisualizationModel;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 import edu.uci.ics.jung.visualization.VisualizationModel;
@@ -322,44 +319,27 @@ public class GraphGeneration extends JApplet {
             				usedColors.add(color);
             		}
             		
-            		fileWriter.append("Component;dsc;ana;dam;dcc;cam;moa;mfa;nop;cis\n");
+            		fileWriter.append("Component;csc;component size\n");
             		System.out.println("colors " + usedColors.size());
             		
             		for(Color color : usedColors){
-                    	int dsc = 0;
-                    	double ana = 0.0;
-                    	double dam = 0.0;
-                    	double dcc = 0.0;
-                    	double cam = 0.0;
-                    	double moa = 0.0;
-                    	double mfa = 0.0;
-                    	double nop = 0.0;
-                    	double cis = 0.0;
+                    	int csc = 0;
+                    	int componentSize = 0;
                     	String classes = "";
                     	
                     	for(Class classType : classParser.getClasses().values()){
                     		
                     		if(classType.getTypeClass().equals(Class.TypeClass.business) && classType.getColor().equals(color)){
-                        		ana += classType.getANA();
-                        		dam += classType.getDAM();
-                        		dcc += classType.getAmountBusinessDependencies();
-                        		cam += classType.getCAM();
-                        		moa += classType.getMOA();
-                        		mfa += classType.getMFA();
-                        		nop += classType.getNOP();
-                        		cis += classType.getCIS();
-                        		
-                        		classes += classType.getName();
+                    			csc += classType.getInnerClassDependencies().size() * 2;
+                    			componentSize++;
+                        		classes += classType.getName() + ", ";
                         		
                         		//System.out.println(classType.getName() + " - dam: " + classType.getDAM() + " - dcc: " + classType.getAmountBusinessDependencies() + " - ana: " + classType.getANA() + " - cam: " + classType.getCAM() + " - moa: " + classType.getMOA() + " - mfa: " + classType.getMFA() + " - nop: " + classType.getNOP() + " - cis:" + classType.getCIS());
-                        		
-                    			dsc++;
                     		}
                     	}
                     	
-                    	if(dsc > 0){
-                    		fileWriter.append(classes + ";" + dsc + ";" + ana + ";" + dam + ";" + dcc + ";" + cam + ";" + moa + ";" + mfa + ";" + nop + ";" + cis + "\n");
-                    	}
+                    	if(csc > 0)
+                    		fileWriter.append(classes + ";" + csc + ";" + componentSize + "\n");
                     }
         		} catch (Exception ex) {
         			ex.printStackTrace();
@@ -745,7 +725,7 @@ public class GraphGeneration extends JApplet {
     	return  constructor.newInstance(args);
     }
     
-    private void clusterPicked() {
+    /*private void clusterPicked() {
     	cluster(true);
     }
     
@@ -753,7 +733,7 @@ public class GraphGeneration extends JApplet {
     	cluster(false);
     }
     
-    /*private void changeColorPicked(Color color) {
+    private void changeColorPicked(Color color) {
     	Collection<String> picked = ps.getPicked();
     	for(String vertex : picked){
     		changeColor(vertex, color, new ArrayList<String>(), false);
@@ -815,7 +795,7 @@ public class GraphGeneration extends JApplet {
     	auxColors = new HashMap<String, Color>();
 
     	vv.repaint();
-    }*/
+    }
 
     @SuppressWarnings("unchecked")
 	private void cluster(boolean state) {
@@ -865,7 +845,7 @@ public class GraphGeneration extends JApplet {
     		this.clusteringLayout.removeAll();
     		vv.setGraphLayout(clusteringLayout);
     	}
-    }
+    }*/
     
     public void createVertex(String v1){
     	//layout.lock(true);
