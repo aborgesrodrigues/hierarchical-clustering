@@ -19,7 +19,7 @@ public class AmountDependencies{
     		//int amountDependenciesPersistence = 0;
     		fileWriter = new FileWriter(config.getPathToAmountDependenciesCSVFile());
     		
-    		fileWriter.append("Business Class;Amount Business Dependencies; Amount Persistence Dependencies\n");
+    		fileWriter.append("Type;Class;Amount Business Dependencies; Amount Persistence Dependencies\n");
     		
 	    	for(Class classType : classParser.getClasses().values()){
 	    		this.businessDependencies = new HashMap<String, Integer>();
@@ -36,7 +36,7 @@ public class AmountDependencies{
 	    					addDependenciesCount(classType, methodInvocation.getClassType());
 	    			}
 	    			
-	    			fileWriter.append(classType.getName() + ";" + businessDependencies.keySet().size() + ";" + persistenceDependencies.keySet().size()  + "\n");
+	    			fileWriter.append(classType.getTypeClass().toString() + ";" + classType.getName() + ";" + businessDependencies.keySet().size() + ";" + persistenceDependencies.keySet().size()  + "\n");
 	    			System.out.println("---" + classType.getName());
 	    			for(String classAux : businessDependencies.keySet())
 	    				System.out.println("------" + classAux);
