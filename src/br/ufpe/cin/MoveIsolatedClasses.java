@@ -37,13 +37,13 @@ public class MoveIsolatedClasses {
 		
 		for(Class classe : classes){
 			if(isolatedClasses.contains(classe)){
-				String folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + classe.getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getReducedName() + ".java", "");
+				String folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + classe.getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getReducedName() + ".java", "");
 				folder = removePartPath(folder);
 				System.out.println("MoveIsolatedClasses " + classe.getName());
 				
 				//create folder
-				//new File(config.getPathToIsolatedClustersMigration() + classe.getName()).mkdir();
-				//System.out.println("Create folder " + config.getPathToIsolatedClustersMigration() + classe.getName());
+				//new File(config.getPathToClustersMigration() + classe.getName()).mkdir();
+				//System.out.println("Create folder " + config.getPathToClustersMigration() + classe.getName());
 				
 				//move business file
 				new File(folder).mkdirs();
@@ -55,14 +55,14 @@ public class MoveIsolatedClasses {
 				
 				for(Class parameterized : classe.getParameterizeds()){
 					if(!parameterized.isIgnored() && parameterized.isInProject()){
-						iterateClass(parameterized, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+						iterateClass(parameterized, classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 					}
 				}
 				
 				//move interface
 				for(Class interfaceClass : classe.getInterfaces()){
 					if(interfaceClass != null){
-						folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + interfaceClass.getFilePath().replace(config.getPathSourceCode(), "").replace(interfaceClass.getReducedName() + ".java", "");
+						folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + interfaceClass.getFilePath().replace(config.getPathSourceCode(), "").replace(interfaceClass.getReducedName() + ".java", "");
 						folder = removePartPath(folder);
 						new File(folder).mkdirs();
 						
@@ -76,7 +76,7 @@ public class MoveIsolatedClasses {
 				
 				//move interface
 				if(classe.getSuperClass() != null && !classe.getSuperClass().isIgnored() && classe.getSuperClass().isInProject()){
-					folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + classe.getSuperClass().getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getSuperClass().getReducedName() + ".java", "");
+					folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + classe.getSuperClass().getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getSuperClass().getReducedName() + ".java", "");
 					folder = removePartPath(folder);
 					new File(folder).mkdirs();
 					
@@ -93,16 +93,16 @@ public class MoveIsolatedClasses {
 					
 					if(method.getReturnType() != null){
 						if(!method.getReturnType().isIgnored() && method.getReturnType().isInProject())						
-							iterateClass(method.getReturnType(), classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+							iterateClass(method.getReturnType(), classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 					}
 					
 					for(Method methodInvocation : method.getMethodsInvocation().values()){
 						Class persistenceClass = methodInvocation.getClassType();
 						if(persistenceClass.isInProject() && !persistenceClass.isIgnored()){
 							if(persistenceClass.getTypeClass().equals(Class.TypeClass.entity))
-								iterateClass(persistenceClass, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+								iterateClass(persistenceClass, classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 							else{
-								folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + persistenceClass.getFilePath().replace(config.getPathSourceCode(), "").replace(persistenceClass.getReducedName() + ".java", "");
+								folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + persistenceClass.getFilePath().replace(config.getPathSourceCode(), "").replace(persistenceClass.getReducedName() + ".java", "");
 								folder = removePartPath(folder);
 								new File(folder).mkdirs();
 								
@@ -119,9 +119,9 @@ public class MoveIsolatedClasses {
 					for(Class instantiationClass : method.getInstantiationsType()){
 						if(instantiationClass.isInProject() && !instantiationClass.isIgnored()){
 							if(instantiationClass.getTypeClass().equals(Class.TypeClass.entity))
-								iterateClass(instantiationClass, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+								iterateClass(instantiationClass, classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 							else{
-								folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + instantiationClass.getFilePath().replace(config.getPathSourceCode(), "").replace(instantiationClass.getReducedName() + ".java", "");
+								folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + instantiationClass.getFilePath().replace(config.getPathSourceCode(), "").replace(instantiationClass.getReducedName() + ".java", "");
 								folder = removePartPath(folder);
 								new File(folder).mkdirs();
 								
@@ -135,23 +135,23 @@ public class MoveIsolatedClasses {
 					}
 					
 					for(Class entityClass : method.getParametersType()){
-						iterateClass(entityClass, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+						iterateClass(entityClass, classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 						
 						//System.out.println("Entity file origin " + entityClass.getFilePath());
-						//System.out.println("Move Entity file to " + config.getPathToIsolatedClustersMigration() + classe.getName() + "/" + entityClass.getName() + ".java");
+						//System.out.println("Move Entity file to " + config.getPathToClustersMigration() + classe.getName() + "/" + entityClass.getName() + ".java");
 					}
 					
 					if(method.getReturnType() != null){
-						iterateClass(method.getReturnType(), classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+						iterateClass(method.getReturnType(), classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 					}
 				}
 				
 				for(Class variableClasse : classe.getVariables()){
 					if(variableClasse != null && !variableClasse.isIgnored() && variableClasse.isInProject()){
 						if(variableClasse.getTypeClass().equals(Class.TypeClass.entity))
-							iterateClass(variableClasse, classe, config.getPathToIsolatedClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
+							iterateClass(variableClasse, classe, config.getPathToClustersMigration() + classe.getName() + "/", new ArrayList<Class>());
 						else{
-							folder = config.getPathToIsolatedClustersMigration() + "/" + classe.getName() + "/" + variableClasse.getFilePath().replace(config.getPathSourceCode(), "").replace(variableClasse.getReducedName() + ".java", "");
+							folder = config.getPathToClustersMigration() + "/" + classe.getName() + "/" + variableClasse.getFilePath().replace(config.getPathSourceCode(), "").replace(variableClasse.getReducedName() + ".java", "");
 							folder = removePartPath(folder);
 							new File(folder).mkdirs();
 							
@@ -195,7 +195,7 @@ public class MoveIsolatedClasses {
 			calculated.add(classe);
 		//System.out.println("class " + classe.getName());
 		
-		String folder = config.getPathToIsolatedClustersMigration() + "/" + businessClass.getName() + "/" + classe.getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getReducedName() + ".java", "");
+		String folder = config.getPathToClustersMigration() + "/" + businessClass.getName() + "/" + classe.getFilePath().replace(config.getPathSourceCode(), "").replace(classe.getReducedName() + ".java", "");
 		folder = removePartPath(folder);
 		new File(folder).mkdirs();
 		
@@ -222,10 +222,10 @@ public class MoveIsolatedClasses {
 		
 		if(classe.getSuperClass() != null){
 			//File file = new File(classe.getSuperClass());
-			//copy(file, config.getPathToIsolatedClustersMigration() + classe.getName() + "/");
+			//copy(file, config.getPathToClustersMigration() + classe.getName() + "/");
 			
 			//System.out.println("Entity file origin " + classe.getSuperClass().getFilePath());
-			//System.out.println("Move Entity file to " + config.getPathToIsolatedClustersMigration() + classe.getName() + "/" + classe.getSuperClass().getName() + ".java");
+			//System.out.println("Move Entity file to " + config.getPathToClustersMigration() + classe.getName() + "/" + classe.getSuperClass().getName() + ".java");
 			
 			if(!classe.getSuperClass().equals(classe) && !calculated.contains(classe.getSuperClass())){
 				//System.out.println("classe.getSuperClass() ");

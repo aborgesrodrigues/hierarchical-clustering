@@ -305,7 +305,7 @@ public class GraphGeneration extends JApplet {
             }
         });
         
-        JButton calculateMetrics = new JButton("Calculate");
+        JButton calculateMetrics = new JButton("Calculate Metrics");
         calculateMetrics.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	FileWriter fileWriter = null;
@@ -354,6 +354,26 @@ public class GraphGeneration extends JApplet {
         		}
             	
                 
+            }
+        });
+        
+        JButton createComponents = new JButton("CreateComponents");
+        createComponents.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+        		List<Color> usedColors = new ArrayList<Color>();
+        		
+        		for(Color color: colors.values()){
+        			if(!usedColors.contains(color))
+        				usedColors.add(color);
+        		}
+        		
+        		for(Color color : usedColors){
+        			for(Class classType : classParser.getClasses().values()){
+	            		if(classType.getTypeClass().equals(Class.TypeClass.business) && classType.getColor().equals(color)){
+	            			ComponentsCreator.create(classType);
+	            		}
+        			}
+        		}
             }
         });
         
@@ -515,8 +535,9 @@ public class GraphGeneration extends JApplet {
         controls.add(Box.createRigidArea(space));
         
         JPanel clusterControls = new JPanel(new GridLayout(0,1));
-        clusterControls.setBorder(BorderFactory.createTitledBorder("Metrics"));
+        clusterControls.setBorder(BorderFactory.createTitledBorder("Actions"));
         clusterControls.add(calculateMetrics);
+        clusterControls.add(createComponents);
         heightConstrain(clusterControls);
         controls.add(clusterControls);
         controls.add(Box.createRigidArea(space));

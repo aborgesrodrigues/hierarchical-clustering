@@ -20,7 +20,7 @@ public class Properties {
 	}
 	
 	public String getPathSourceCode() {
-		return System.getenv("PathSourceCode");
+		return System.getenv("PathToSourceCode");
 	}
 	
 	public List<String> getPackagesToIgnore() {
@@ -63,8 +63,8 @@ public class Properties {
 		return System.getenv("EntityPackage");
 	}
 	
-	public String getPathToIsolatedClustersMigration() {
-		return System.getenv("PathToIsolatedClustersMigration");
+	public String getPathToClustersMigration() {
+		return System.getenv("PathToClustersMigration");
 	}
 	
 	public boolean keepParametizedClassesTogether() {

@@ -24,7 +24,7 @@ public class AmountDependencies{
 	    	for(Class classType : classParser.getClasses().values()){
 	    		this.businessDependencies = new HashMap<String, Integer>();
 	    		this.persistenceDependencies = new HashMap<String, Integer>();
-	    		if(classType.getTypeClass().equals(Class.TypeClass.business)){
+	    		if(classType.getTypeClass().equals(Class.TypeClass.business) || classType.getTypeClass().equals(Class.TypeClass.persistence)){
 	    			for(Class variable : classType.getVariables())
 	    				addDependenciesCount(classType, variable);
 	    			
