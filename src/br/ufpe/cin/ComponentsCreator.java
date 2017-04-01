@@ -39,8 +39,8 @@ public class ComponentsCreator {
 				file = new File(interfaceClass.getFilePath());
 				copyFile(file, folder);
 				
-				System.out.println("Interface file origin " + interfaceClass.getFilePath());
-				System.out.println("Copy Interface file to " + folder + interfaceClass.getReducedName() + ".java");
+				//System.out.println("Interface file origin " + interfaceClass.getFilePath());
+				//System.out.println("Copy Interface file to " + folder + interfaceClass.getReducedName() + ".java");
 			}
 		}
 		
@@ -53,8 +53,8 @@ public class ComponentsCreator {
 			file = new File(classType.getSuperClass().getFilePath());
 			copyFile(file, folder);
 			
-			System.out.println("Inheritage file origin " + classType.getSuperClass().getFilePath());
-			System.out.println("Copy Inheritage file to " + folder + classType.getSuperClass().getReducedName() + ".java");
+			//System.out.println("Inheritage file origin " + classType.getSuperClass().getFilePath());
+			//System.out.println("Copy Inheritage file to " + folder + classType.getSuperClass().getReducedName() + ".java");
 		}
 		
 		//move persistences e copy entities
@@ -79,8 +79,8 @@ public class ComponentsCreator {
 						file = new File(persistenceClass.getFilePath());
 						copyFile(file, folder);
 						
-						System.out.println("PersistenceI file origin " + persistenceClass.getFilePath());
-						System.out.println("Move PersistenceI file to " + folder + persistenceClass.getReducedName() + ".java");
+						//System.out.println("PersistenceI file origin " + persistenceClass.getFilePath());
+						//System.out.println("Move PersistenceI file to " + folder + persistenceClass.getReducedName() + ".java");
 					}
 				}
 				
@@ -98,8 +98,8 @@ public class ComponentsCreator {
 						file = new File(instantiationClass.getFilePath());
 						copyFile(file, folder);
 						
-						System.out.println("Instatiation file origin " + instantiationClass.getFilePath());
-						System.out.println("Copy isntantiationClass file to " + folder + instantiationClass.getReducedName() + ".java");
+						//System.out.println("Instatiation file origin " + instantiationClass.getFilePath());
+						//System.out.println("Copy isntantiationClass file to " + folder + instantiationClass.getReducedName() + ".java");
 					}
 				}
 			}
@@ -120,6 +120,12 @@ public class ComponentsCreator {
 			if(variableClass != null && !variableClass.isIgnored() && variableClass.isInProject()){
 				if(variableClass.getTypeClass().equals(Class.TypeClass.entity))
 					iterateClass(variableClass, classType, config.getPathToClustersMigration() + classType.getName() + "/", new ArrayList<Class>());
+				/*else if(variableClass.getTypeClass().equals(Class.TypeClass.interfaceType)) {
+					for(Class businessClass : variableClass.getImplementClass()){
+						calculated.add(businessClass);
+						ComponentsCreator.create(businessClass, calculated);
+					}
+				}*/
 				else{
 					folder = config.getPathToClustersMigration() + "/" + classType.getColor().toString() + "/" + variableClass.getFilePath().replace(config.getPathSourceCode(), "").replace(variableClass.getReducedName() + ".java", "");
 					folder = removePartPath(folder);
@@ -128,15 +134,15 @@ public class ComponentsCreator {
 					file = new File(variableClass.getFilePath());
 					copyFile(file, folder);
 					
-					System.out.println("Variable file origin " + variableClass.getFilePath() + variableClass.getTypeClass().toString());
-					System.out.println("Copy Variable file to " + folder + variableClass.getReducedName() + ".java");
+					//System.out.println("Variable file origin " + variableClass.getFilePath() + variableClass.getTypeClass().toString());
+					//System.out.println("Copy Variable file to " + folder + variableClass.getReducedName() + ".java");
 				}
 				
 			}
 		}
 		
-		System.out.println("");
-		System.out.println("");
+		//System.out.println("");
+		//System.out.println("");
     }
 	
 	
@@ -179,9 +185,9 @@ public class ComponentsCreator {
 		File file = new File(classe.getFilePath());
 		copyFile(file, folder);
 		
-		System.out.println("businessClass " + businessClass.getReducedName());
-		System.out.println("Entity file origin " + classe.getFilePath());
-		System.out.println("Copy Entity file to " + folder + classe.getReducedName() + ".java");
+		//System.out.println("businessClass " + businessClass.getReducedName());
+		//System.out.println("Entity file origin " + classe.getFilePath());
+		//System.out.println("Copy Entity file to " + folder + classe.getReducedName() + ".java");
 		
 		for(Class annotationClass : classe.getAnnotations()){
 			if(annotationClass != null){
@@ -285,13 +291,13 @@ public class ComponentsCreator {
 		    	 
 		    	    inStream.close();
 		    	    outStream.close();
-		    	    System.out.println("File is copied successful!");
+		    	    //System.out.println("File is copied successful!");
 		    	    
 		    	    //delete the original file
 		    	    //afile.delete();
 	    	    }
 	    	    else{
-	    	    	System.out.println("Erro ao copiar " + file.getName() + " afile (" + afile.getAbsolutePath() + ") " + afile.exists() + " bfile (" + bfile.getAbsolutePath() + ") " + bfile.exists());
+	    	    	//System.out.println("Erro ao copiar " + file.getName() + " afile (" + afile.getAbsolutePath() + ") " + afile.exists() + " bfile (" + bfile.getAbsolutePath() + ") " + bfile.exists());
 	    	    }
 	    	    
 	    	}catch(IOException e){
